@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.UIElements;
 
 public class WaifuController 
     : MonoBehaviour
@@ -16,12 +18,15 @@ public class WaifuController
     // love dictates how much they will recover with the rest action
     public int love;
     public TextMeshProUGUI TextUI;
+    public UnityEngine.UI.Slider slider;
+    //public GameObject slider;
 
     // Start is called before the first frame update
     void Start()
     {
-        health = healthMax;
-        TextUI = TextUI.GetComponent<TextMeshProUGUI>();
+        //health = healthMax;
+        //TextUI = TextUI.GetComponent<TextMeshProUGUI>();
+        slider = GameObject.Find("Player Health").GetComponent<UnityEngine.UI.Slider>();
     }
 
     void Update()
@@ -59,6 +64,9 @@ public class WaifuController
         ///health + " / " + healthMax);
         string text = "" + health.ToString() + "/" + healthMax.ToString();
         TextUI.SetText(text,true);
+
+        //Debug.Log(slider.value);
+        slider.value = (float)health / (float) healthMax;
     }
 
     public void TakeDamage(int damage)
