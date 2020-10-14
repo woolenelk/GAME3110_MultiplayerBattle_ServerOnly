@@ -292,7 +292,7 @@ GameObject:
   - component: {fileID: 1312091574}
   - component: {fileID: 1312091575}
   m_Layer: 5
-  m_Name: Player Health
+  m_Name: Health Bar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -616,4 +616,4 @@ MonoBehaviour:
   attack: 30
   love: 36
   TextUI: {fileID: 1148418658}
-  slider: {fileID: 0}
+  slider: {fileID: 1312091575}

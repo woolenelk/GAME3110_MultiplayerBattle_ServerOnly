@@ -26,7 +26,7 @@ public class WaifuController
     {
         //health = healthMax;
         //TextUI = TextUI.GetComponent<TextMeshProUGUI>();
-        slider = GameObject.Find("Player Health").GetComponent<UnityEngine.UI.Slider>();
+        //slider = GameObject.Find("Player Health").GetComponent<UnityEngine.UI.Slider>();
     }
 
     void Update()
