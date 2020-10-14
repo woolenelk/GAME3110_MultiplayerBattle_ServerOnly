@@ -1405,6 +1405,7 @@ GameObject:
   - component: {fileID: 907307013}
   - component: {fileID: 907307015}
   - component: {fileID: 907307014}
+  - component: {fileID: 907307016}
   m_Layer: 5
   m_Name: PlayerDetailsUI
   m_TagString: Untagged
@@ -1471,6 +1472,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 907307012}
   m_CullTransparentMesh: 0
+--- !u!114 &907307016
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 907307012}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a9700c70e421a614abd9de6cce6b8b89, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  nameText: {fileID: 269735915}
+  healthText: {fileID: 412807282}
+  slider: {fileID: 1417074868}
 --- !u!1 &930282815
 GameObject:
   m_ObjectHideFlags: 0
@@ -2727,6 +2743,9 @@ MonoBehaviour:
   state: 0
   playerCharacter: {fileID: 8947344928008487959, guid: e5e646bb217c8224aab9e6479b735cae, type: 3}
   enemyCharacter: {fileID: 7300391372917459201, guid: 36b91e24d154ef4449051c9cc3136394, type: 3}
+  dialogueText: {fileID: 1309564191}
+  playerDetailsUI: {fileID: 907307016}
+  enemyDetailsUI: {fileID: 1952584574}
 --- !u!1 &1698962026
 GameObject:
   m_ObjectHideFlags: 0
@@ -2975,6 +2994,7 @@ GameObject:
   - component: {fileID: 1952584571}
   - component: {fileID: 1952584573}
   - component: {fileID: 1952584572}
+  - component: {fileID: 1952584574}
   m_Layer: 5
   m_Name: EnemyDetailsUI
   m_TagString: Untagged
@@ -3041,6 +3061,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1952584570}
   m_CullTransparentMesh: 0
+--- !u!114 &1952584574
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1952584570}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a9700c70e421a614abd9de6cce6b8b89, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  nameText: {fileID: 138012183}
+  healthText: {fileID: 930282817}
+  slider: {fileID: 1423670890}
 --- !u!1001 &946339003916196953
 PrefabInstance:
   m_ObjectHideFlags: 0

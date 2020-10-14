@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
-using UnityEngine.XR.WSA.Input;
 
 public enum BattleState { 
     START,
@@ -14,9 +14,22 @@ public enum BattleState {
 
 public class BattleSystem : MonoBehaviour
 {
+    //knows the state of the current game
     public BattleState state;
+    //which characters to instantiate
     public GameObject playerCharacter;
     public GameObject enemyCharacter;
+
+    //details of our charatcer
+    WaifuDetails playerDetails;
+    WaifuDetails enemyDetails;
+
+    public TextMeshProUGUI dialogueText;
+
+    // the UI panels for the respective characters
+    public DetailsUI playerDetailsUI;
+    public DetailsUI enemyDetailsUI;
+
 
     // Start is called before the first frame update
     void Start()
@@ -27,8 +40,20 @@ public class BattleSystem : MonoBehaviour
 
     void CreatePlayers()
     {
-        Instantiate(playerCharacter);
-        Instantiate(enemyCharacter);
+        //instantiate player and get their detials
+        GameObject player = Instantiate(playerCharacter);
+        playerDetails = player.GetComponent<WaifuDetails>();
+
+        //instantiate enemy and get their detials
+        GameObject enemy = Instantiate(enemyCharacter);
+        enemyDetails = enemy.GetComponent<WaifuDetails>();
+
+
+        dialogueText.text = "You face off against " + enemyDetails.characterName;
+
+        playerDetailsUI.FillUI(playerDetails);
+        enemyDetailsUI.FillUI(enemyDetails);
+
     }
 
 
