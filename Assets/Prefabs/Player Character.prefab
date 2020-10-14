@@ -615,5 +615,6 @@ MonoBehaviour:
   defence: 25
   attack: 30
   love: 36
+  characterName: player-chan
   TextUI: {fileID: 1148418658}
   slider: {fileID: 1312091575}

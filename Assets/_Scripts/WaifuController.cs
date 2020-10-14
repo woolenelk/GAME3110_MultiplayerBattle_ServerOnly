@@ -17,6 +17,10 @@ public class WaifuController
     public int attack;
     // love dictates how much they will recover with the rest action
     public int love;
+
+    public string characterName;
+
+
     public TextMeshProUGUI TextUI;
     public UnityEngine.UI.Slider slider;
     //public GameObject slider;

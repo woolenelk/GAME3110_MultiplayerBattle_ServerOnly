@@ -481,6 +481,7 @@ MonoBehaviour:
   defence: 50
   attack: 15
   love: 35
+  characterName: enemy-chan
   TextUI: {fileID: 3356626613732493831}
   slider: {fileID: 3356626611821605651}
 --- !u!1 &3356626613732493825
