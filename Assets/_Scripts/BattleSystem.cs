@@ -22,7 +22,15 @@ public class BattleSystem : MonoBehaviour
     void Start()
     {
         state = BattleState.START;
+        CreatePlayers();
     }
+
+    void CreatePlayers()
+    {
+        Instantiate(playerCharacter);
+        Instantiate(enemyCharacter);
+    }
+
 
     
 }
