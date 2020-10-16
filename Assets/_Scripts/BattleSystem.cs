@@ -180,6 +180,7 @@ public class BattleSystem : MonoBehaviour
     {
         if (state != BattleState.PLAYER1)
             return;
+        state = BattleState.PROCESSING;
         StartCoroutine(Player1Rest());
     }
 
