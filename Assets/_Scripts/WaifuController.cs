@@ -8,35 +8,7 @@ using UnityEngine.UIElements;
 public class WaifuController 
     : MonoBehaviour
 {
-    // how much health points they will have
-    public int health;
-    public int healthMax;
-    // defence how much damage they will block from each attack
-    public int defence;
-    // attack is how much damage they will deal
-    public int attack;
-    // love dictates how much they will recover with the rest action
-    public int love;
-
-    public string characterName;
-
-
-    public TextMeshProUGUI TextUI;
-    public UnityEngine.UI.Slider slider;
-    //public GameObject slider;
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        //health = healthMax;
-        //TextUI = TextUI.GetComponent<TextMeshProUGUI>();
-        //slider = GameObject.Find("Player Health").GetComponent<UnityEngine.UI.Slider>();
-    }
-
-    void Update()
-    {
-        UpdateHealth();
-    }
+    public WaifuDetails myStats;
 
     public void AbilityAttack1()
     {
@@ -62,20 +34,4 @@ public class WaifuController
     {
 
     }
-
-    public void UpdateHealth()
-    {
-        ///health + " / " + healthMax);
-        string text = "" + health.ToString() + "/" + healthMax.ToString();
-        TextUI.SetText(text,true);
-
-        //Debug.Log(slider.value);
-        slider.value = (float)health / (float) healthMax;
-    }
-
-    public void TakeDamage(int damage)
-    {
-        health -= damage;
-    }
-
 }

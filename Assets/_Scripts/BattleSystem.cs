@@ -9,7 +9,8 @@ public enum BattleState {
     PLAYER1,
     PLAYER2,
     WIN,
-    LOOSE
+    LOOSE,
+    PROCESSING
 }
 
 
@@ -46,7 +47,7 @@ public class BattleSystem : MonoBehaviour
         GameObject player = Instantiate(playerCharacter);
         playerDetails = player.GetComponent<WaifuDetails>();
 
-        //instantiate enemy and get their detials
+        //nstantiate enemy and get their detials
         GameObject enemy = Instantiate(enemyCharacter);
         enemyDetails = enemy.GetComponent<WaifuDetails>();
 
@@ -71,6 +72,115 @@ public class BattleSystem : MonoBehaviour
         dialogueText.text = "What would you like your waifu to do?";
     }
 
+    IEnumerator Player1Attack1()
+    {
+        //Damage
+        bool defeated = enemyDetails.TakeDamage(playerDetails.attack);
 
-    
+        enemyDetailsUI.UpdateHP(enemyDetails.health);
+        playerDetailsUI.UpdateHP(playerDetails.health);
+
+        dialogueText.text = "The attack was successful";
+
+        yield return new WaitForSeconds(1f);
+
+        if (defeated)
+        {
+            state = BattleState.WIN;
+            EndBattle();
+        }
+        else
+        {
+            state = BattleState.PLAYER2;
+            StartCoroutine(EnemyTurn());
+        }
+
+    }
+
+
+    void EndBattle()
+    {
+        if (state == BattleState.WIN)
+        {
+            dialogueText.text = "You won the battle!";
+
+        }
+        else if (state == BattleState.LOOSE)
+        {
+            dialogueText.text = "You lost the battle!";
+
+        }
+    }
+
+    IEnumerator EnemyTurn()
+    {
+        //put AI HERE
+
+        dialogueText.text = enemyDetails.characterName + " attacks!";
+
+        yield return new WaitForSeconds(2f);
+
+        bool defeated = playerDetails.TakeDamage(enemyDetails.attack);
+        playerDetailsUI.UpdateHP(playerDetails.health);
+
+        yield return new WaitForSeconds(2f);
+
+        if (defeated)
+        {
+            state = BattleState.LOOSE;
+            EndBattle();
+        }
+        else
+        {
+            state = BattleState.PLAYER1;
+            Player1Turn();
+        }
+
+
+    }
+
+    IEnumerator Player1Rest()
+    {
+        playerDetails.Rest(playerDetails.love);
+        playerDetailsUI.UpdateHP(playerDetails.health);
+        dialogueText.text = playerDetails.characterName + " has been healed by your love.";
+        yield return new WaitForSeconds(1f);
+        state = BattleState.PLAYER2;
+        StartCoroutine(EnemyTurn());
+    }
+
+    public void OnButtonAttack1()
+    {
+        if (state != BattleState.PLAYER1)
+            return;
+        state = BattleState.PROCESSING;
+        StartCoroutine(Player1Attack1());
+
+    }
+
+    public void OnButtonAttack2()
+    {
+        if (state != BattleState.PLAYER1)
+            return;
+    }
+
+    public void OnButtonAttack3()
+    {
+        if (state != BattleState.PLAYER1)
+            return;
+    }
+
+    public void OnButtonGuardUp()
+    {
+        if (state != BattleState.PLAYER1)
+            return;
+    }
+
+    public void OnButtonRest()
+    {
+        if (state != BattleState.PLAYER1)
+            return;
+        StartCoroutine(Player1Rest());
+    }
+
 }

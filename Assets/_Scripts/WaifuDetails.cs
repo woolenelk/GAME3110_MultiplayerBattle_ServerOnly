@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class WaifuDetails : MonoBehaviour
 {
+    public string characterName;
     // how much health points they will have
     public int health;
     public int healthMax;
@@ -14,5 +15,20 @@ public class WaifuDetails : MonoBehaviour
     // love dictates how much they will recover with the rest action
     public int love;
 
-    public string characterName;
+    public bool TakeDamage( int damage)
+    {
+        health -= damage;
+
+        if (health <= 0)
+            return true;
+
+        return false;
+    }
+    
+    public void Rest (int heal)
+    {
+        health += heal;
+        if (health > healthMax)
+            health = healthMax;
+    }
 }
