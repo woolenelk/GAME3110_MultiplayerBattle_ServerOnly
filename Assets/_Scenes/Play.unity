@@ -2738,6 +2738,7 @@ MonoBehaviour:
   state: 0
   playerCharacter: {fileID: 8947344928008487959, guid: e5e646bb217c8224aab9e6479b735cae, type: 3}
   enemyCharacter: {fileID: 7300391372917459201, guid: 36b91e24d154ef4449051c9cc3136394, type: 3}
+  Waifus: {fileID: 11400000, guid: 236121473a90b044ab4ac1dd9fff7b97, type: 2}
   dialogueText: {fileID: 1309564191}
   playerDetailsUI: {fileID: 907307016}
   enemyDetailsUI: {fileID: 1952584574}
@@ -2858,6 +2859,71 @@ RectTransform:
   m_AnchoredPosition: {x: -5, y: 0}
   m_SizeDelta: {x: -20, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1001 &1944913882
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 8947344928008487958, guid: e5e646bb217c8224aab9e6479b735cae, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8947344928008487958, guid: e5e646bb217c8224aab9e6479b735cae, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8947344928008487958, guid: e5e646bb217c8224aab9e6479b735cae, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8947344928008487958, guid: e5e646bb217c8224aab9e6479b735cae, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8947344928008487958, guid: e5e646bb217c8224aab9e6479b735cae, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8947344928008487958, guid: e5e646bb217c8224aab9e6479b735cae, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8947344928008487958, guid: e5e646bb217c8224aab9e6479b735cae, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8947344928008487958, guid: e5e646bb217c8224aab9e6479b735cae, type: 3}
+      propertyPath: m_RootOrder
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 8947344928008487958, guid: e5e646bb217c8224aab9e6479b735cae, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8947344928008487958, guid: e5e646bb217c8224aab9e6479b735cae, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8947344928008487958, guid: e5e646bb217c8224aab9e6479b735cae, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8947344928008487959, guid: e5e646bb217c8224aab9e6479b735cae, type: 3}
+      propertyPath: m_Name
+      value: Player
+      objectReference: {fileID: 0}
+    - target: {fileID: 8947344928008487959, guid: e5e646bb217c8224aab9e6479b735cae, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9186225000485266898, guid: e5e646bb217c8224aab9e6479b735cae, type: 3}
+      propertyPath: waifu
+      value: 
+      objectReference: {fileID: 11400000, guid: 8d7c39288f70d1b4ea9ffc5b43ca4a46, type: 2}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: e5e646bb217c8224aab9e6479b735cae, type: 3}
 --- !u!1 &1952428981
 GameObject:
   m_ObjectHideFlags: 0

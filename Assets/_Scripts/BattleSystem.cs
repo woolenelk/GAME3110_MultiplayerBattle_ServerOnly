@@ -22,6 +22,8 @@ public class BattleSystem : MonoBehaviour
     public GameObject playerCharacter;
     public GameObject enemyCharacter;
 
+    public WaifuMasterList Waifus;
+
     //details of our charatcer
     WaifuDetails playerDetails;
     WaifuDetails enemyDetails;
@@ -31,6 +33,8 @@ public class BattleSystem : MonoBehaviour
     // the UI panels for the respective characters
     public DetailsUI playerDetailsUI;
     public DetailsUI enemyDetailsUI;
+
+    public 
 
 
     // Start is called before the first frame update
@@ -43,19 +47,10 @@ public class BattleSystem : MonoBehaviour
     //a corutine to allow for us to have delays
     IEnumerator CreatePlayers()
     {
-        //instantiate player and get their detials
-        GameObject player = Instantiate(playerCharacter);
-        playerDetails = player.GetComponent<WaifuDetails>();
 
-        //nstantiate enemy and get their detials
-        GameObject enemy = Instantiate(enemyCharacter);
-        enemyDetails = enemy.GetComponent<WaifuDetails>();
-
-
-        dialogueText.text = "You face off against " + enemyDetails.CharacterName;
-
-        playerDetailsUI.FillUI(playerDetails);
-        enemyDetailsUI.FillUI(enemyDetails);
+        CreatePlayer();
+        CreateEnemy();
+        UpdateCharactersUI();
 
         yield return new WaitForSeconds(3.0f);
 
@@ -64,6 +59,30 @@ public class BattleSystem : MonoBehaviour
 
         Player1Turn();
 
+    }
+
+    void CreatePlayer()
+    {
+        //instantiate player and get their detials
+        GameObject player = Instantiate(playerCharacter);
+        playerDetails = player.GetComponent<WaifuDetails>();
+        //playerDetails.waifu = Waifus.waifuList[PlayerPrefs.GetInt("Player1")];
+        playerDetails.waifu = Waifus.waifuList[0];
+        playerDetails.waifuSprite.sprite = playerDetails.waifu.characterImage;
+        playerDetails.Health = playerDetails.waifu.HealthMax;
+    }
+
+    void CreateEnemy()
+    {
+        //nstantiate enemy and get their detials
+        GameObject enemy = Instantiate(enemyCharacter);
+        enemyDetails = enemy.GetComponent<WaifuDetails>();
+        enemyDetails.waifu = Waifus.waifuList[0];
+        enemyDetails.waifuSprite.sprite = enemyDetails.waifu.characterImage;
+        enemyDetails.Health = enemyDetails.waifu.HealthMax;
+
+        
+        dialogueText.text = "You face off against " + enemyDetails.waifu.CharacterName;
     }
 
 
@@ -75,7 +94,7 @@ public class BattleSystem : MonoBehaviour
     IEnumerator Player1Attack1()
     {
         //Damage
-        bool defeated = enemyDetails.TakeDamage(playerDetails.Attack);
+        bool defeated = enemyDetails.TakeDamage(playerDetails.waifu.Attack);
 
         enemyDetailsUI.UpdateHP(enemyDetails.Health);
         playerDetailsUI.UpdateHP(playerDetails.Health);
@@ -116,12 +135,12 @@ public class BattleSystem : MonoBehaviour
     {
         //put AI HERE
 
-        dialogueText.text = enemyDetails.CharacterName + " attacks!";
+        dialogueText.text = enemyDetails.waifu.CharacterName + " attacks!";
 
         yield return new WaitForSeconds(2f);
 
-        bool defeated = playerDetails.TakeDamage(enemyDetails.Attack);
-        playerDetailsUI.UpdateHP(playerDetails.Health);
+        bool defeated = playerDetails.TakeDamage(enemyDetails.waifu.Attack);
+        UpdateCharactersUI();
 
         yield return new WaitForSeconds(2f);
 
@@ -141,9 +160,10 @@ public class BattleSystem : MonoBehaviour
 
     IEnumerator Player1Rest()
     {
-        playerDetails.Rest(playerDetails.Love);
+        playerDetails.Rest(playerDetails.waifu.Love);
         playerDetailsUI.UpdateHP(playerDetails.Health);
-        dialogueText.text = playerDetails.CharacterName + " has been healed by your love.";
+        dialogueText.text = playerDetails.waifu.CharacterName + " has been healed by your love.";
+        UpdateCharactersUI();
         yield return new WaitForSeconds(1f);
         state = BattleState.PLAYER2;
         StartCoroutine(EnemyTurn());
@@ -182,6 +202,12 @@ public class BattleSystem : MonoBehaviour
             return;
         state = BattleState.PROCESSING;
         StartCoroutine(Player1Rest());
+    }
+
+    void UpdateCharactersUI()
+    {
+        enemyDetailsUI.FillUI(enemyDetails);
+        playerDetailsUI.FillUI(playerDetails);
     }
 
 }
