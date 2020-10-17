@@ -70,9 +70,6 @@ public class BattleSystem : MonoBehaviour
         playerDetails.waifu = Waifus.waifuList[0];
         playerDetails.waifuSprite.sprite = playerDetails.waifu.characterImage;
         playerDetails.Health = playerDetails.waifu.HealthMax;
-
-
-
     }
 
     void CreateEnemy()
@@ -209,8 +206,8 @@ public class BattleSystem : MonoBehaviour
 
     void UpdateCharactersUI()
     {
-        enemyDetailsUI.FillUI(enemyCharacter);
-        playerDetailsUI.FillUI(playerCharacter);
+        enemyDetailsUI.FillUI(enemyDetails);
+        playerDetailsUI.FillUI(playerDetails);
     }
 
 }

@@ -76,8 +76,10 @@ public class WaifuDetails : MonoBehaviour
         Health -= damage;
 
         if (Health <= 0)
+        {
+            Health = 0;
             return true;
-
+        }
         return false;
     }
     

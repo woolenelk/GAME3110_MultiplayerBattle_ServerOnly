@@ -11,9 +11,8 @@ public class DetailsUI : MonoBehaviour
     public Slider slider;
 
 
-    public void FillUI(GameObject character)
+    public void FillUI(WaifuDetails details)
     {
-        WaifuDetails details = character.GetComponent<WaifuDetails>();
         WaifuCreator baseDetails = details.waifu; ;
 
         nameText.text = baseDetails.CharacterName;
