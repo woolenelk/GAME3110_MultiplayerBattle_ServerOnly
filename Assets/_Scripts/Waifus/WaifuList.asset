@@ -15,3 +15,5 @@ MonoBehaviour:
   waifuList:
   - {fileID: 11400000, guid: 8d7c39288f70d1b4ea9ffc5b43ca4a46, type: 2}
   - {fileID: 11400000, guid: 7c48944238fe33d45933e85772ccd9c7, type: 2}
+  - {fileID: 11400000, guid: f55d576d69c29754cb8cca272cf56ce7, type: 2}
+  - {fileID: 11400000, guid: 018651848d67168418a4e0ce57854a31, type: 2}

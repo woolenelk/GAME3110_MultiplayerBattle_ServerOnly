@@ -42,6 +42,9 @@ public class WaifuCreator : ScriptableObject
     [SerializeField]
     private int love;
 
+    [SerializeField]
+    public AbilityList abilities;
+
     public string CharacterName
     {
         get { return characterName; }

@@ -77,7 +77,7 @@ public class BattleSystem : MonoBehaviour
         //nstantiate enemy and get their detials
         GameObject enemy = Instantiate(enemyCharacter);
         enemyDetails = enemy.GetComponent<WaifuDetails>();
-        enemyDetails.waifu = Waifus.waifuList[0];
+        enemyDetails.waifu = Waifus.waifuList[1];
         enemyDetails.waifuSprite.sprite = enemyDetails.waifu.characterImage;
         enemyDetails.Health = enemyDetails.waifu.HealthMax;
 
