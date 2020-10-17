@@ -11,15 +11,18 @@ public class DetailsUI : MonoBehaviour
     public Slider slider;
 
 
-    public void FillUI(WaifuDetails details)
+    public void FillUI(GameObject character)
     {
-        nameText.text = details.CharacterName;
+        WaifuDetails details = character.GetComponent<WaifuDetails>();
+        WaifuCreator baseDetails = details.waifu; ;
 
-        string text = "" + details.Health.ToString() + "/" + details.HealthMax.ToString();
+        nameText.text = baseDetails.CharacterName;
+
+        string text = "" + details.Health.ToString() + "/" + baseDetails.HealthMax.ToString();
         healthText.SetText(text, true);
 
         //Debug.Log(slider.value);
-        slider.maxValue = details.HealthMax;
+        slider.maxValue = baseDetails.HealthMax;
         slider.value = details.Health;
 
     }
