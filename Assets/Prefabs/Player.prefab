@@ -126,9 +126,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: efcaa0141cd011d44a3ea41a78b26eeb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 50
+  characterName: Waifu-chan
+  health: 100
   healthMax: 100
   defence: 50
   attack: 15
   love: 30
-  characterName: Waifu-chan
+  statBuffs: 00000000000000000000000000000000
+  masterAbilityList: {fileID: 11400000, guid: ca305f31d483b8c418d85f96011f39b6, type: 2}
