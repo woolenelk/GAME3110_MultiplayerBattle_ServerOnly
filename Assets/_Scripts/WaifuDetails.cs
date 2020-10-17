@@ -65,8 +65,6 @@ public class WaifuDetails : MonoBehaviour
     [SerializeField]
     public WaifuCreator waifu;
 
-    [SerializeField]
-    public AbilityList abilities;
 
     public SpriteRenderer waifuSprite;
 

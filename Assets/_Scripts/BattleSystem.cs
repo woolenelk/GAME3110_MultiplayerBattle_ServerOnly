@@ -85,6 +85,12 @@ public class BattleSystem : MonoBehaviour
         dialogueText.text = "You face off against " + enemyDetails.waifu.CharacterName;
     }
 
+    void UpdateCharactersUI()
+    {
+        enemyDetailsUI.FillUI(enemyDetails);
+        playerDetailsUI.FillUI(playerDetails);
+    }
+
 
     void Player1Turn()
     {
@@ -204,10 +210,6 @@ public class BattleSystem : MonoBehaviour
         StartCoroutine(Player1Rest());
     }
 
-    void UpdateCharactersUI()
-    {
-        enemyDetailsUI.FillUI(enemyDetails);
-        playerDetailsUI.FillUI(playerDetails);
-    }
+    
 
 }
