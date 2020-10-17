@@ -13,14 +13,14 @@ public class DetailsUI : MonoBehaviour
 
     public void FillUI(WaifuDetails details)
     {
-        nameText.text = details.characterName;
+        nameText.text = details.CharacterName;
 
-        string text = "" + details.health.ToString() + "/" + details.healthMax.ToString();
+        string text = "" + details.Health.ToString() + "/" + details.HealthMax.ToString();
         healthText.SetText(text, true);
 
         //Debug.Log(slider.value);
-        slider.maxValue = details.healthMax;
-        slider.value = details.health;
+        slider.maxValue = details.HealthMax;
+        slider.value = details.Health;
 
     }
 

@@ -52,7 +52,7 @@ public class BattleSystem : MonoBehaviour
         enemyDetails = enemy.GetComponent<WaifuDetails>();
 
 
-        dialogueText.text = "You face off against " + enemyDetails.characterName;
+        dialogueText.text = "You face off against " + enemyDetails.CharacterName;
 
         playerDetailsUI.FillUI(playerDetails);
         enemyDetailsUI.FillUI(enemyDetails);
@@ -75,10 +75,10 @@ public class BattleSystem : MonoBehaviour
     IEnumerator Player1Attack1()
     {
         //Damage
-        bool defeated = enemyDetails.TakeDamage(playerDetails.attack);
+        bool defeated = enemyDetails.TakeDamage(playerDetails.Attack);
 
-        enemyDetailsUI.UpdateHP(enemyDetails.health);
-        playerDetailsUI.UpdateHP(playerDetails.health);
+        enemyDetailsUI.UpdateHP(enemyDetails.Health);
+        playerDetailsUI.UpdateHP(playerDetails.Health);
 
         dialogueText.text = "The attack was successful";
 
@@ -116,12 +116,12 @@ public class BattleSystem : MonoBehaviour
     {
         //put AI HERE
 
-        dialogueText.text = enemyDetails.characterName + " attacks!";
+        dialogueText.text = enemyDetails.CharacterName + " attacks!";
 
         yield return new WaitForSeconds(2f);
 
-        bool defeated = playerDetails.TakeDamage(enemyDetails.attack);
-        playerDetailsUI.UpdateHP(playerDetails.health);
+        bool defeated = playerDetails.TakeDamage(enemyDetails.Attack);
+        playerDetailsUI.UpdateHP(playerDetails.Health);
 
         yield return new WaitForSeconds(2f);
 
@@ -141,9 +141,9 @@ public class BattleSystem : MonoBehaviour
 
     IEnumerator Player1Rest()
     {
-        playerDetails.Rest(playerDetails.love);
-        playerDetailsUI.UpdateHP(playerDetails.health);
-        dialogueText.text = playerDetails.characterName + " has been healed by your love.";
+        playerDetails.Rest(playerDetails.Love);
+        playerDetailsUI.UpdateHP(playerDetails.Health);
+        dialogueText.text = playerDetails.CharacterName + " has been healed by your love.";
         yield return new WaitForSeconds(1f);
         state = BattleState.PLAYER2;
         StartCoroutine(EnemyTurn());
