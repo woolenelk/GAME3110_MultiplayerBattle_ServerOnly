@@ -40,6 +40,9 @@ public class Ability : ScriptableObject
     [SerializeField]
     private int[] enemyDebuff = new int[3];
 
+    [SerializeField]
+    private float LoveHealMultiplier;
+
     public int AbilityId
     {
         get { return abilityID; }
@@ -84,6 +87,11 @@ public class Ability : ScriptableObject
     public int[] EnemyDebuff
     {
         get { return enemyDebuff; }
+    }
+
+    public float LoveMultiplier
+    {
+        get { return LoveHealMultiplier; }
     }
 }
 

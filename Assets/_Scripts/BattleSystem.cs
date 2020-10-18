@@ -111,6 +111,8 @@ public class BattleSystem : MonoBehaviour
         defender.buffs[(int)BUFF_ARRAY.DEFENCE] -= move.SelfDebuff[(int)BUFF_ARRAY.DEFENCE];
         defender.buffs[(int)BUFF_ARRAY.LOVE]    -= move.SelfDebuff[(int)BUFF_ARRAY.LOVE];
 
+        attacker.Rest((int)(attacker.waifu.Love * move.LoveMultiplier));
+
         if (CheckPlayerWin())
         {
             state = BattleState.WIN;
