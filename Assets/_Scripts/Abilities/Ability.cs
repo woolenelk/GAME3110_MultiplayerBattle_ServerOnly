@@ -28,6 +28,7 @@ public class Ability : ScriptableObject
     [SerializeField]
     private int costHP;
 
+
     [SerializeField]
     private int[] selfBuff = new int[3];
 

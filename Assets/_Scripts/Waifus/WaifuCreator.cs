@@ -7,31 +7,11 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "Waifu", menuName = "ScriptableObjects/Waifu", order = 3)]
 public class WaifuCreator : ScriptableObject
 {
-    //[SerializeField]
-    //public string characterName;
-    //// how much health points they will have
-    //[SerializeField]
-    //public int health;
-    //[SerializeField]
-    //public int healthMax;
-    //// defence how much damage they will block from each attack
-    //[SerializeField]
-    //public int defence;
-    //// attack is how much damage they will deal
-    //[SerializeField]
-    //public int attack;
-    //// love dictates how much they will recover with the rest action
-    //[SerializeField]
-    //public int love;
-
-
     public Sprite characterImage;
 
     [SerializeField]
     private string characterName;
-    //// how much health points they will have
-    //[SerializeField]
-    //private int health;
+    // how much health points they will have
     [SerializeField]
     private int healthMax;
     // defence how much damage they will block from each attack
@@ -43,18 +23,15 @@ public class WaifuCreator : ScriptableObject
     // love dictates how much they will recover with the rest action
     [SerializeField]
     private int love;
+
     [SerializeField]
     private AbilityList myAbilities;
+
     public string CharacterName
     {
         get { return characterName; }
     }
 
-    //public int Health
-    //{
-    //    get { return health; }
-        
-    //}
 
     public int HealthMax
     {

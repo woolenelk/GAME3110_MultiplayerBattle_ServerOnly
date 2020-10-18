@@ -19,3 +19,4 @@ MonoBehaviour:
   attack: 40
   love: 30
   myAbilities: {fileID: 11400000, guid: 157bc98db3969114eab5218013c382ec, type: 2}
+
