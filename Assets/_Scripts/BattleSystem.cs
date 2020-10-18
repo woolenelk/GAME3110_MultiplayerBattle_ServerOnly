@@ -104,7 +104,7 @@ public class BattleSystem : MonoBehaviour
         dialogueText.text = attacker.waifu.CharacterName + " uses " + move.AbilityName+ "!";
         yield return new WaitForSeconds(1);
         defenderDefeated = defender.TakeDamage((int)(attacker.waifu.Attack * move.AttackMultipier * (1.0f+0.05f*attacker.buffs[(int)BUFF_ARRAY.ATTACK]) ) );
-        attackerDefeated = attacker.TakeDamage((int)(move.CostHp));
+        attackerDefeated = attacker.Recoil((int)(move.CostHp));
        
         // buffs and debuffs
         attacker.buffs[(int)BUFF_ARRAY.ATTACK]   = move.SelfBuff  [(int)BUFF_ARRAY.ATTACK];
@@ -209,7 +209,7 @@ public class BattleSystem : MonoBehaviour
 
         int move = (int)UnityEngine.Random.Range(0, 5);
 
-        StartCoroutine(Attack(move, enemyDetails, playerDetails));
+        StartCoroutine(Attack(0, enemyDetails, playerDetails));
 
         yield return new WaitForSeconds(1.0f);
     }

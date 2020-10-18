@@ -43,6 +43,18 @@ public class WaifuDetails : MonoBehaviour
         return false;
     }
     
+    public bool Recoil ( int Damage)
+    {
+        Health -= Damage;
+
+        if (Health <= 0)
+        {
+            Health = 0;
+            return true;
+        }
+        return false;
+    }
+
     public void Rest (int heal)
     {
         Health += heal;
