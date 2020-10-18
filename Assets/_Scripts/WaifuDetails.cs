@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class WaifuDetails : MonoBehaviour
 {
+
     
     // how much health points they have
     [SerializeField]
@@ -17,11 +18,22 @@ public class WaifuDetails : MonoBehaviour
     }
 
     [SerializeField]
+    private int health;
+    public int Health
+    {
+        get { return health; }
+        set { health = value; }
+    }
+
+    [SerializeField]
     public WaifuCreator waifu;
 
 
-    public SpriteRenderer waifuSprite;
 
+    [SerializeField]
+    public int[] buffs = new int[(int)BUFF_ARRAY.COUNT];
+
+    public SpriteRenderer waifuSprite;
 
     public bool TakeDamage( int damage)
     {

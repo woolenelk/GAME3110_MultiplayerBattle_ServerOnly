@@ -12,10 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ae9e240d81ebf7c40bb891ce404df6d1, type: 3}
   m_Name: Sarah
   m_EditorClassIdentifier: 
+  characterImage: {fileID: 21300000, guid: 75a013c17cd9add40a8593449b5db186, type: 3}
   characterName: Sarah
-  health: 500
   healthMax: 500
   defence: 500
   attack: 1
   love: 500
-  characterImage: {fileID: 21300000, guid: 75a013c17cd9add40a8593449b5db186, type: 3}
+  myAbilities: {fileID: 11400000, guid: 25ad09a0675b0ad4ea81b2c7424860ee, type: 2}

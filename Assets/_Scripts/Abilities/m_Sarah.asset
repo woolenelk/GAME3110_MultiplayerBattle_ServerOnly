@@ -10,13 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 59d282eedb9f19d45a0b784be080e444, type: 3}
-  m_Name: m_Lisa
+  m_Name: m_Sarah
   m_EditorClassIdentifier: 
   abilityList:
-  - {fileID: 11400000, guid: d1d40c63cb197a341acd6cc200467241, type: 2}
   - {fileID: 11400000, guid: ae3164fce7a1551418acfc991abca323, type: 2}
-  - {fileID: 11400000, guid: d110a35ce16f9f94983d28a5c4337278, type: 2}
+  - {fileID: 11400000, guid: 2a3b78f35b309b448ad3cc581d95bafc, type: 2}
   - {fileID: 11400000, guid: d50c1ab54f468034aabf23c80251bd05, type: 2}
+  - {fileID: 11400000, guid: 1b2e246fb6baaf04fb0c59f4889dad28, type: 2}
   - {fileID: 11400000, guid: c90bc61655091974f89ae19dbe584124, type: 2}
-  - {fileID: 11400000, guid: ae3164fce7a1551418acfc991abca323, type: 2}
-

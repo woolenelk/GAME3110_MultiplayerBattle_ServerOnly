@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+
+
 [CreateAssetMenu(fileName = "Waifu", menuName = "ScriptableObjects/Waifu", order = 3)]
 public class WaifuCreator : ScriptableObject
 {
@@ -23,7 +25,7 @@ public class WaifuCreator : ScriptableObject
     private int love;
 
     [SerializeField]
-    public AbilityList abilities;
+    private AbilityList myAbilities;
 
     public string CharacterName
     {
@@ -49,6 +51,11 @@ public class WaifuCreator : ScriptableObject
     public int Love
     {
         get { return love; }
+    }
+
+    public AbilityList MyAbilties
+    {
+        get { return myAbilities; }
     }
 
 }
