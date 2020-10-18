@@ -7,8 +7,7 @@ public class WaifuDetails : MonoBehaviour
     //[SerializeField]
     //private string characterName;
     //// how much health points they will have
-    [SerializeField]
-    private int health;
+
     //[SerializeField]
     //private int healthMax;
     //// defence how much damage they will block from each attack
@@ -30,12 +29,6 @@ public class WaifuDetails : MonoBehaviour
     //{
     //    get { return characterName; }
     //}
-
-    public int Health
-    {
-        get { return health; }
-        set { health = value; }
-    }
 
     //public int HealthMax
     //{
@@ -63,13 +56,20 @@ public class WaifuDetails : MonoBehaviour
     //}
 
     [SerializeField]
+    private int health;
+    public int Health
+    {
+        get { return health; }
+        set { health = value; }
+    }
+
+    [SerializeField]
     public WaifuCreator waifu;
 
     public SpriteRenderer waifuSprite;
 
-    public AbilityList masterAbilityList;
-
-    Ability[] MyAbilities = {  };
+    [SerializeField]
+    public int[] buffs = new int[(int)BUFF_ARRAY.COUNT];
 
     public bool TakeDamage( int damage)
     {

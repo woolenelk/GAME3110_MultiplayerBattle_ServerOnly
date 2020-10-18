@@ -2,6 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+enum BUFF_ARRAY
+{
+    ATTACK,
+    DEFENCE,
+    LOVE,
+    COUNT
+}
+
 [CreateAssetMenu(fileName = "Ability", menuName = "ScriptableObjects/Ability", order = 1)]
 public class Ability : ScriptableObject
 {
@@ -19,6 +27,18 @@ public class Ability : ScriptableObject
 
     [SerializeField]
     private int costHP;
+
+    [SerializeField]
+    private int[] selfBuff = new int[3];
+
+    [SerializeField]
+    private int[] selfDebuff = new int[3];
+
+    [SerializeField]
+    private int[] enemyBuff = new int[3];
+
+    [SerializeField]
+    private int[] enemyDebuff = new int[3];
 
     public int AbilityId
     {
@@ -44,6 +64,26 @@ public class Ability : ScriptableObject
     public int CostHp
     {
         get { return costHP; }
+    }
+
+    public int [] SelfBuff
+    {
+        get { return selfBuff; }
+    }
+
+    public int[] SelfDebuff
+    {
+        get { return SelfDebuff; }
+    }
+
+    public int[] EnemyBuff
+    {
+        get { return enemyBuff; }
+    }
+
+    public int[] EnemyDebuff
+    {
+        get { return enemyDebuff; }
     }
 }
 

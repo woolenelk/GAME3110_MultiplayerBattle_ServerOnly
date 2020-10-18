@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+
+
 [CreateAssetMenu(fileName = "Waifu", menuName = "ScriptableObjects/Waifu", order = 3)]
 public class WaifuCreator : ScriptableObject
 {
@@ -41,7 +43,8 @@ public class WaifuCreator : ScriptableObject
     // love dictates how much they will recover with the rest action
     [SerializeField]
     private int love;
-
+    [SerializeField]
+    private AbilityList myAbilities;
     public string CharacterName
     {
         get { return characterName; }
@@ -71,6 +74,11 @@ public class WaifuCreator : ScriptableObject
     public int Love
     {
         get { return love; }
+    }
+
+    public AbilityList MyAbilties
+    {
+        get { return myAbilities; }
     }
 
 }

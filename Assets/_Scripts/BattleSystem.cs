@@ -85,6 +85,75 @@ public class BattleSystem : MonoBehaviour
         dialogueText.text = "You face off against " + enemyDetails.waifu.CharacterName;
     }
 
+    IEnumerator Attack (int ability, WaifuDetails attacker, WaifuDetails defender )
+    {
+        bool defenderDefeated = false;
+        bool attackerDefeated = false;
+        Ability move = attacker.waifu.MyAbilties.abilityList[ability];
+        defenderDefeated = defender.TakeDamage((int)(attacker.waifu.Attack * move.AttackMultipier));
+        attackerDefeated = attacker.TakeDamage((int)(move.CostHp));
+
+        UpdateCharactersUI();
+
+        // buffs and debuffs
+
+        attacker.buffs[(int)BUFF_ARRAY.ATTACK]   = move.SelfBuff  [(int)BUFF_ARRAY.ATTACK];
+        attacker.buffs[(int)BUFF_ARRAY.DEFENCE]  = move.SelfBuff  [(int)BUFF_ARRAY.DEFENCE];
+        attacker.buffs[(int)BUFF_ARRAY.LOVE]     = move.SelfBuff  [(int)BUFF_ARRAY.LOVE];
+        attacker.buffs[(int)BUFF_ARRAY.ATTACK]  -= move.SelfDebuff[(int)BUFF_ARRAY.ATTACK];
+        attacker.buffs[(int)BUFF_ARRAY.DEFENCE] -= move.SelfDebuff[(int)BUFF_ARRAY.DEFENCE];
+        attacker.buffs[(int)BUFF_ARRAY.LOVE]    -= move.SelfDebuff[(int)BUFF_ARRAY.LOVE];
+
+        defender.buffs[(int)BUFF_ARRAY.ATTACK]   = move.SelfBuff  [(int)BUFF_ARRAY.ATTACK];
+        defender.buffs[(int)BUFF_ARRAY.DEFENCE]  = move.SelfBuff  [(int)BUFF_ARRAY.DEFENCE];
+        defender.buffs[(int)BUFF_ARRAY.LOVE]     = move.SelfBuff  [(int)BUFF_ARRAY.LOVE];
+        defender.buffs[(int)BUFF_ARRAY.ATTACK]  -= move.SelfDebuff[(int)BUFF_ARRAY.ATTACK];
+        defender.buffs[(int)BUFF_ARRAY.DEFENCE] -= move.SelfDebuff[(int)BUFF_ARRAY.DEFENCE];
+        defender.buffs[(int)BUFF_ARRAY.LOVE]    -= move.SelfDebuff[(int)BUFF_ARRAY.LOVE];
+
+        if (CheckPlayerWin())
+        {
+            state = BattleState.WIN;
+            EndBattle();
+        }
+        if (CheckEnemyWin())
+        {
+            state = BattleState.LOOSE;
+            EndBattle();
+        }
+
+        yield return new WaitForSeconds(2);
+
+        if (state == BattleState.PLAYER2)
+        {
+            state = BattleState.PLAYER1;
+            Player1Turn();
+        }
+        else if (state == BattleState.PROCESSING)
+        {
+            state = BattleState.PLAYER2;
+            StartCoroutine(EnemyTurn());
+        }
+        
+    }
+
+    bool CheckPlayerWin()
+    {
+        /// return true if playerHasWon
+        if (enemyDetails.Health <= 0)
+            return true;
+        return false;
+    }
+
+    bool CheckEnemyWin()
+    {
+        if (playerDetails.Health <= 0)
+        {
+            return true;
+        }
+        return false;
+    }
+
 
     void Player1Turn()
     {
@@ -174,7 +243,7 @@ public class BattleSystem : MonoBehaviour
         if (state != BattleState.PLAYER1)
             return;
         state = BattleState.PROCESSING;
-        StartCoroutine(Player1Attack1());
+        StartCoroutine(Attack(0, playerDetails, enemyDetails)) ;
 
     }
 
