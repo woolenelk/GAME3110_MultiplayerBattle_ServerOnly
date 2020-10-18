@@ -209,7 +209,7 @@ public class BattleSystem : MonoBehaviour
 
         int move = (int)UnityEngine.Random.Range(0, 5);
 
-        StartCoroutine(Attack(0, enemyDetails, playerDetails));
+        StartCoroutine(Attack(move, enemyDetails, playerDetails));
 
         yield return new WaitForSeconds(1.0f);
     }
