@@ -17,13 +17,6 @@ public class WaifuDetails : MonoBehaviour
         set { health = value; }
     }
 
-    [SerializeField]
-    private int health;
-    public int Health
-    {
-        get { return health; }
-        set { health = value; }
-    }
 
     [SerializeField]
     public WaifuCreator waifu;

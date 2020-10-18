@@ -168,30 +168,30 @@ public class BattleSystem : MonoBehaviour
         dialogueText.text = "What would you like your waifu to do?";
     }
 
-    IEnumerator Player1Attack1()
-    {
-        //Damage
-        bool defeated = enemyDetails.TakeDamage(playerDetails.waifu.Attack);
+    //IEnumerator Player1Attack1()
+    //{
+    //    //Damage
+    //    bool defeated = enemyDetails.TakeDamage(playerDetails.waifu.Attack);
 
-        enemyDetailsUI.UpdateHP(enemyDetails.Health);
-        playerDetailsUI.UpdateHP(playerDetails.Health);
+    //    enemyDetailsUI.UpdateHP(enemyDetails.Health);
+    //    playerDetailsUI.UpdateHP(playerDetails.Health);
 
-        dialogueText.text = "The attack was successful";
+    //    dialogueText.text = "The attack was successful";
 
-        yield return new WaitForSeconds(2.0f);
+    //    yield return new WaitForSeconds(2.0f);
 
-        if (defeated)
-        {
-            state = BattleState.WIN;
-            EndBattle();
-        }
-        else
-        {
-            state = BattleState.PLAYER2;
-            StartCoroutine(EnemyTurn());
-        }
+    //    if (defeated)
+    //    {
+    //        state = BattleState.WIN;
+    //        EndBattle();
+    //    }
+    //    else
+    //    {
+    //        state = BattleState.PLAYER2;
+    //        StartCoroutine(EnemyTurn());
+    //    }
 
-    }
+    //}
 
 
     void EndBattle()
