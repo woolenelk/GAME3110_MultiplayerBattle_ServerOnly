@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: A_Taunt
   m_EditorClassIdentifier: 
   abilityID: 0
-  abilityName: 
+  abilityName: Taunt
   attackMultiplier: 0
   description: Taunts opponent. Sharply lower their defence while raising their attack.
   costHP: 0
@@ -21,3 +21,4 @@ MonoBehaviour:
   selfDebuff: 000000000000000000000000
   enemyBuff: 010000000000000000000000
   enemyDebuff: 000000000300000000000000
+  LoveHealMultiplier: 0

@@ -33,6 +33,7 @@ public class BattleSystem : MonoBehaviour
     // the UI panels for the respective characters
     public DetailsUI playerDetailsUI;
     public DetailsUI enemyDetailsUI;
+    public TextMeshProUGUI[] abilitiesButtons;
 
     public 
 
@@ -51,6 +52,7 @@ public class BattleSystem : MonoBehaviour
         CreatePlayer();
         CreateEnemy();
         UpdateCharactersUI();
+        UpdateAbilityUI();
 
         yield return new WaitForSeconds(3.0f);
 
@@ -83,6 +85,15 @@ public class BattleSystem : MonoBehaviour
 
         
         dialogueText.text = "You face off against " + enemyDetails.waifu.CharacterName;
+    }
+
+    void UpdateAbilityUI()
+    {
+        for (int i = 0; i < 5; i++)
+        {
+            abilitiesButtons[i].text = playerDetails.waifu.MyAbilties.abilityList[i].AbilityName;
+        }
+        
     }
 
     IEnumerator Attack (int ability, WaifuDetails attacker, WaifuDetails defender )
