@@ -77,12 +77,18 @@ public class BattleSystem : MonoBehaviour
         //nstantiate enemy and get their detials
         GameObject enemy = Instantiate(enemyCharacter);
         enemyDetails = enemy.GetComponent<WaifuDetails>();
-        enemyDetails.waifu = Waifus.waifuList[0];
+        enemyDetails.waifu = Waifus.waifuList[1];
         enemyDetails.waifuSprite.sprite = enemyDetails.waifu.characterImage;
         enemyDetails.Health = enemyDetails.waifu.HealthMax;
 
         
         dialogueText.text = "You face off against " + enemyDetails.waifu.CharacterName;
+    }
+
+    void UpdateCharactersUI()
+    {
+        enemyDetailsUI.FillUI(enemyDetails);
+        playerDetailsUI.FillUI(playerDetails);
     }
 
 
@@ -101,7 +107,7 @@ public class BattleSystem : MonoBehaviour
 
         dialogueText.text = "The attack was successful";
 
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(2.0f);
 
         if (defeated)
         {
@@ -137,12 +143,12 @@ public class BattleSystem : MonoBehaviour
 
         dialogueText.text = enemyDetails.waifu.CharacterName + " attacks!";
 
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(1.0f);
 
         bool defeated = playerDetails.TakeDamage(enemyDetails.waifu.Attack);
         UpdateCharactersUI();
 
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(1.0f);
 
         if (defeated)
         {
@@ -164,50 +170,51 @@ public class BattleSystem : MonoBehaviour
         playerDetailsUI.UpdateHP(playerDetails.Health);
         dialogueText.text = playerDetails.waifu.CharacterName + " has been healed by your love.";
         UpdateCharactersUI();
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(2.0f);
         state = BattleState.PLAYER2;
         StartCoroutine(EnemyTurn());
     }
 
-    public void OnButtonAttack1()
+    public void OnButtonAttack1(AudioSource buttonSound)
     {
         if (state != BattleState.PLAYER1)
             return;
         state = BattleState.PROCESSING;
+        buttonSound.Play();
         StartCoroutine(Player1Attack1());
 
     }
 
-    public void OnButtonAttack2()
+    public void OnButtonAttack2(AudioSource buttonSound)
     {
         if (state != BattleState.PLAYER1)
             return;
+        buttonSound.Play();
     }
 
-    public void OnButtonAttack3()
+    public void OnButtonAttack3(AudioSource buttonSound)
     {
         if (state != BattleState.PLAYER1)
             return;
+        buttonSound.Play();
     }
 
-    public void OnButtonGuardUp()
+    public void OnButtonGuardUp(AudioSource buttonSound)
     {
         if (state != BattleState.PLAYER1)
             return;
+        buttonSound.Play();
     }
 
-    public void OnButtonRest()
+    public void OnButtonRest(AudioSource buttonSound)
     {
         if (state != BattleState.PLAYER1)
             return;
         state = BattleState.PROCESSING;
+        buttonSound.Play();
         StartCoroutine(Player1Rest());
     }
 
-    void UpdateCharactersUI()
-    {
-        enemyDetailsUI.FillUI(enemyDetails);
-        playerDetailsUI.FillUI(playerDetails);
-    }
+    
 
 }

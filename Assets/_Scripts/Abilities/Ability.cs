@@ -20,6 +20,7 @@ public class Ability : ScriptableObject
     [SerializeField]
     private int costHP;
 
+
     public int AbilityId
     {
         get { return abilityID; }
