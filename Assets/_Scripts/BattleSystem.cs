@@ -251,18 +251,21 @@ public class BattleSystem : MonoBehaviour
     {
         if (state != BattleState.PLAYER1)
             return;
+        StartCoroutine(Attack(1, playerDetails, enemyDetails));
     }
 
     public void OnButtonAttack3()
     {
         if (state != BattleState.PLAYER1)
             return;
+        StartCoroutine(Attack(2, playerDetails, enemyDetails));
     }
 
     public void OnButtonGuardUp()
     {
         if (state != BattleState.PLAYER1)
             return;
+        StartCoroutine(Attack(3, playerDetails, enemyDetails));
     }
 
     public void OnButtonRest()

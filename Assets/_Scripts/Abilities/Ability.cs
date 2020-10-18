@@ -73,7 +73,7 @@ public class Ability : ScriptableObject
 
     public int[] SelfDebuff
     {
-        get { return SelfDebuff; }
+        get { return selfDebuff; }
     }
 
     public int[] EnemyBuff
