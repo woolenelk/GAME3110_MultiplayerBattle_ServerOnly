@@ -15,5 +15,10 @@ MonoBehaviour:
   abilityID: 2
   abilityName: Tackle
   attackMultiplier: 1.5
-  description: This is a move
+  description: Deals increased damage but get hurt in the process.
   costHP: 10
+  selfBuff: 000000000000000000000000
+  selfDebuff: 000000000000000000000000
+  enemyBuff: 000000000000000000000000
+  enemyDebuff: 000000000000000000000000
+  LoveHealMultiplier: 0

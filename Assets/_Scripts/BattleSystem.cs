@@ -101,13 +101,12 @@ public class BattleSystem : MonoBehaviour
         bool defenderDefeated = false;
         bool attackerDefeated = false;
         Ability move = attacker.waifu.MyAbilties.abilityList[ability];
-        defenderDefeated = defender.TakeDamage((int)(attacker.waifu.Attack * move.AttackMultipier));
+        dialogueText.text = attacker.waifu.CharacterName + " uses " + move.AbilityName+ "!";
+        yield return new WaitForSeconds(1);
+        defenderDefeated = defender.TakeDamage((int)(attacker.waifu.Attack * move.AttackMultipier * (1.0f+0.05f*attacker.buffs[(int)BUFF_ARRAY.ATTACK]) ) );
         attackerDefeated = attacker.TakeDamage((int)(move.CostHp));
-
-        UpdateCharactersUI();
-
+       
         // buffs and debuffs
-
         attacker.buffs[(int)BUFF_ARRAY.ATTACK]   = move.SelfBuff  [(int)BUFF_ARRAY.ATTACK];
         attacker.buffs[(int)BUFF_ARRAY.DEFENCE]  = move.SelfBuff  [(int)BUFF_ARRAY.DEFENCE];
         attacker.buffs[(int)BUFF_ARRAY.LOVE]     = move.SelfBuff  [(int)BUFF_ARRAY.LOVE];
@@ -122,7 +121,15 @@ public class BattleSystem : MonoBehaviour
         defender.buffs[(int)BUFF_ARRAY.DEFENCE] -= move.SelfDebuff[(int)BUFF_ARRAY.DEFENCE];
         defender.buffs[(int)BUFF_ARRAY.LOVE]    -= move.SelfDebuff[(int)BUFF_ARRAY.LOVE];
 
-        attacker.Rest((int)(attacker.waifu.Love * move.LoveMultiplier));
+        dialogueText.text = move.Description;
+        yield return new WaitForSeconds(1);
+
+
+        attacker.Rest((int)(attacker.waifu.Love * move.LoveMultiplier* (1.0f + 0.05f * attacker.buffs[(int)BUFF_ARRAY.LOVE])));
+
+        UpdateCharactersUI();
+
+        yield return new WaitForSeconds(2);
 
         if (CheckPlayerWin())
         {
@@ -135,7 +142,6 @@ public class BattleSystem : MonoBehaviour
             EndBattle();
         }
 
-        yield return new WaitForSeconds(2);
 
         if (state == BattleState.PLAYER2)
         {
@@ -179,32 +185,6 @@ public class BattleSystem : MonoBehaviour
         dialogueText.text = "What would you like your waifu to do?";
     }
 
-    //IEnumerator Player1Attack1()
-    //{
-    //    //Damage
-    //    bool defeated = enemyDetails.TakeDamage(playerDetails.waifu.Attack);
-
-    //    enemyDetailsUI.UpdateHP(enemyDetails.Health);
-    //    playerDetailsUI.UpdateHP(playerDetails.Health);
-
-    //    dialogueText.text = "The attack was successful";
-
-    //    yield return new WaitForSeconds(2.0f);
-
-    //    if (defeated)
-    //    {
-    //        state = BattleState.WIN;
-    //        EndBattle();
-    //    }
-    //    else
-    //    {
-    //        state = BattleState.PLAYER2;
-    //        StartCoroutine(EnemyTurn());
-    //    }
-
-    //}
-
-
     void EndBattle()
     {
         if (state == BattleState.WIN)
@@ -227,34 +207,11 @@ public class BattleSystem : MonoBehaviour
 
         yield return new WaitForSeconds(1.0f);
 
-        bool defeated = playerDetails.TakeDamage(enemyDetails.waifu.Attack);
-        UpdateCharactersUI();
+        int move = (int)UnityEngine.Random.Range(0, 5);
+
+        StartCoroutine(Attack(move, enemyDetails, playerDetails));
 
         yield return new WaitForSeconds(1.0f);
-
-        if (defeated)
-        {
-            state = BattleState.LOOSE;
-            EndBattle();
-        }
-        else
-        {
-            state = BattleState.PLAYER1;
-            Player1Turn();
-        }
-
-
-    }
-
-    IEnumerator Player1Rest()
-    {
-        playerDetails.Rest(playerDetails.waifu.Love);
-        playerDetailsUI.UpdateHP(playerDetails.Health);
-        dialogueText.text = playerDetails.waifu.CharacterName + " has been healed by your love.";
-        UpdateCharactersUI();
-        yield return new WaitForSeconds(2.0f);
-        state = BattleState.PLAYER2;
-        StartCoroutine(EnemyTurn());
     }
 
     public void OnButtonAttack1(AudioSource buttonSound)
@@ -262,9 +219,9 @@ public class BattleSystem : MonoBehaviour
         if (state != BattleState.PLAYER1)
             return;
         state = BattleState.PROCESSING;
-        StartCoroutine(Attack(0, playerDetails, enemyDetails)) ;
         buttonSound.Play();
-
+        StartCoroutine(Attack(0, playerDetails, enemyDetails)) ;
+        
 
     }
 
@@ -272,24 +229,29 @@ public class BattleSystem : MonoBehaviour
     {
         if (state != BattleState.PLAYER1)
             return;
-        StartCoroutine(Attack(1, playerDetails, enemyDetails));
+        state = BattleState.PROCESSING;
         buttonSound.Play();
+        StartCoroutine(Attack(1, playerDetails, enemyDetails));
     }
 
     public void OnButtonAttack3(AudioSource buttonSound)
     {
         if (state != BattleState.PLAYER1)
             return;
-        StartCoroutine(Attack(2, playerDetails, enemyDetails));
+        state = BattleState.PROCESSING;
         buttonSound.Play();
+        StartCoroutine(Attack(2, playerDetails, enemyDetails));
+        
     }
 
     public void OnButtonGuardUp(AudioSource buttonSound)
     {
         if (state != BattleState.PLAYER1)
             return;
-        StartCoroutine(Attack(3, playerDetails, enemyDetails));
+        state = BattleState.PROCESSING;
         buttonSound.Play();
+        StartCoroutine(Attack(3, playerDetails, enemyDetails));
+        
     }
 
     public void OnButtonRest(AudioSource buttonSound)
@@ -298,7 +260,7 @@ public class BattleSystem : MonoBehaviour
             return;
         state = BattleState.PROCESSING;
         buttonSound.Play();
-        StartCoroutine(Player1Rest());
+        StartCoroutine(Attack(4, playerDetails, enemyDetails));
     }
 
     

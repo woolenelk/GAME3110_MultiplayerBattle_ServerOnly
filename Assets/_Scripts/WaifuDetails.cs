@@ -16,12 +16,9 @@ public class WaifuDetails : MonoBehaviour
         get { return health; }
         set { health = value; }
     }
-
-
+    
     [SerializeField]
     public WaifuCreator waifu;
-
-
 
     [SerializeField]
     public int[] buffs = new int[(int)BUFF_ARRAY.COUNT];
@@ -30,6 +27,12 @@ public class WaifuDetails : MonoBehaviour
 
     public bool TakeDamage( int damage)
     {
+        //Debug.Log("Damage in  : " + damage);
+        //Debug.Log("Defence    : " + waifu.Defence);
+        float modifiedDefence = waifu.Defence * (1 + (0.05f * buffs[(int)BUFF_ARRAY.DEFENCE]));
+        float defencePercent = (1.0f - (modifiedDefence / (150.0f + modifiedDefence)));
+        damage = (int)(damage * defencePercent);
+        //Debug.Log("Damage out : " + damage);
         Health -= damage;
 
         if (Health <= 0)

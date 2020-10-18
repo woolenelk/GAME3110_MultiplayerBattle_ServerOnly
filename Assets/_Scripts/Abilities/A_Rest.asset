@@ -17,3 +17,8 @@ MonoBehaviour:
   attackMultiplier: 0
   description: Resting will restore some health based on your love.
   costHP: 0
+  selfBuff: 000000000000000000000000
+  selfDebuff: 000000000000000000000000
+  enemyBuff: 000000000000000000000000
+  enemyDebuff: 000000000000000000000000
+  LoveHealMultiplier: 1
