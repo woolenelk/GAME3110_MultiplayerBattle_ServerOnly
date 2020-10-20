@@ -13,12 +13,12 @@ MonoBehaviour:
   m_Name: A_Win
   m_EditorClassIdentifier: 
   abilityID: 0
-  abilityName: 
-  attackMultiplier: 0
-  description: This is a move
+  abilityName: Win
+  attackMultiplier: 5000
+  description: you like to cheat
   costHP: 0
-  selfBuff: 000000000000000000000000
+  selfBuff: 320000003200000032000000
   selfDebuff: 000000000000000000000000
   enemyBuff: 000000000000000000000000
   enemyDebuff: 000000000000000000000000
-  LoveHealMultiplier: 0
+  LoveHealMultiplier: 5
