@@ -2,20 +2,12 @@
 using UnityEngine;
 using UnityEngine.Events;
 
-[System.Serializable]
-public class LoginEvent : UnityEvent<string, string>
-{
-
-}
 
 public class LoginButtonBehaviour : MonoBehaviour
 {
     public GameObject errorMessage;
     public float errorMessageDuration;
-    IEnumerator errorMessageCoroutine;
-    public LoginEvent eventPlayerLogin;
-
-    
+    IEnumerator errorMessageCoroutine;    
 
     private void Start()
     {
@@ -24,15 +16,13 @@ public class LoginButtonBehaviour : MonoBehaviour
 
     public void OnLoginButtonPressed()
     {
-        //Check for player credientals against server
-        eventPlayerLogin.Invoke("kevin","test");
 
         NetworkClient networkManager = FindObjectOfType<NetworkClient>();
         networkManager.Login("kevin", "test");
 
         //if credentials valid move to lobbies scene
-            Debug.Log("Login Button Pressed");
-            //SceneManager.LoadScene("Lobbies");
+        Debug.Log("Login Button Pressed");
+        //SceneManager.LoadScene("Lobbies");
 
         //if credentials fail display error notification of incorrect credentials
         if(errorMessageCoroutine != null)
