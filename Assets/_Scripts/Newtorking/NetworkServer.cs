@@ -8,6 +8,7 @@ using System.Text;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine.Networking;
 
 public class NetworkServer : MonoBehaviour
 {
@@ -17,6 +18,10 @@ public class NetworkServer : MonoBehaviour
 
     public List<NetworkObjects.NetworkPlayer> connectedPlayers;
     public NetworkObjects.NetworkPlayer droppedPlayer;
+
+
+    
+    
 
     void Start ()
     {
@@ -29,9 +34,36 @@ public class NetworkServer : MonoBehaviour
             m_Driver.Listen();
 
         m_Connections = new NativeList<NetworkConnection>(16, Allocator.Persistent);
-
+        StartCoroutine(SendLoginWebRequest("kevin23", "test1"));
         //StartCoroutine(SendHandshakeToAllClient());
         //StartCoroutine(SendUpdateToAllClient());
+    }
+
+    IEnumerator SendLoginWebRequest (string userID, string password)
+    {
+        //string jsonString = "{\"username\":"+ userID +" , \"Password\":"+ password + "}";
+        //string username = "galal";
+        //byte[] myData = System.Text.Encoding.UTF8.GetBytes(jsonString);
+
+        string url = "https://pnz7w1hjm3.execute-api.us-east-2.amazonaws.com/default/FinalAssignmentGetPlayer?UserID="+userID;
+
+        // UnityWebRequest www = UnityWebRequest.Post("https://9rtvrin7r5.execute-api.us-east-2.amazonaws.com/default/UnityTest%22,username);
+        UnityWebRequest www = UnityWebRequest.Get(url);
+
+        www.SetRequestHeader("Content-Type", "application/json");
+        yield return www.SendWebRequest();
+
+        if (www.isNetworkError || www.isHttpError)
+        {
+            Debug.Log(www.error);
+        }
+        else
+        {
+            Debug.Log(www.downloadHandler.text);
+
+            //var message = JsonUtility.FromJson(www.downloadHandler.text);
+            //message
+        }
     }
 
     //IEnumerator SendHandshakeToAllClient()
@@ -64,7 +96,6 @@ public class NetworkServer : MonoBehaviour
     //            ServerUpdateMsg m = new ServerUpdateMsg();
     //            m.players = connectedPlayers;
     //            SendToClient(JsonUtility.ToJson(m), m_Connections[i]);
-
     //        }
     //        yield return new WaitForFixedUpdate();
     //    }
@@ -114,6 +145,12 @@ public class NetworkServer : MonoBehaviour
         NetworkHeader header = JsonUtility.FromJson<NetworkHeader>(recMsg);
 
         switch(header.cmd){
+            case Commands.PLAYERLOGIN:
+                PlayerLoginMsg loginMsg = JsonUtility.FromJson<PlayerLoginMsg>(recMsg);
+
+
+                break;
+
             case Commands.HANDSHAKE:
             HandshakeMsg hsMsg = JsonUtility.FromJson<HandshakeMsg>(recMsg);
             Debug.Log("Handshake message received!");

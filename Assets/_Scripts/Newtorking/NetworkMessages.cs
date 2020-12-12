@@ -38,11 +38,11 @@ namespace NetworkMessages
         }
     };
 
-    public class PlayerLogin : NetworkHeader
+    public class PlayerLoginMsg : NetworkHeader
     {
         public string userID;
         public string password;
-        public PlayerLogin()
+        public PlayerLoginMsg()
         {
             cmd = Commands.PLAYERLOGIN;
             userID = "";

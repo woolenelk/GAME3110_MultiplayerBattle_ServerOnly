@@ -165,7 +165,7 @@ public class NetworkClient : MonoBehaviour
 
     public void Login(string UserID, string Password)
     {
-        PlayerLogin loginmsg = new PlayerLogin();
+        PlayerLoginMsg loginmsg = new PlayerLoginMsg();
         loginmsg.userID = UserID;
         loginmsg.password = Password;
         SendToServer(JsonUtility.ToJson(loginmsg));
