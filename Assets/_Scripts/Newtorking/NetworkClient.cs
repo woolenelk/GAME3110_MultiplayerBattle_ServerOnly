@@ -205,7 +205,8 @@ public class NetworkClient : MonoBehaviour
     public void OnDestroy()
     {
         m_Driver.Dispose();
-    }   
+    }  
+    
     void Update()
     {
         m_Driver.ScheduleUpdate().Complete();
@@ -236,10 +237,29 @@ public class NetworkClient : MonoBehaviour
             cmd = m_Connection.PopEvent(m_Driver, out stream);
         }
 
-        SpawnPlayers();
-        UpdatePosition();
-        UpdatePlayers();
-        DestroyPlayers();
+        //SpawnPlayers();
+        //UpdatePosition();
+        //UpdatePlayers();
+        //DestroyPlayers();
 
     }
+
+    public void Login(string UserID, string Password)
+    {
+        PlayerLogin loginmsg = new PlayerLogin();
+        loginmsg.userID = UserID;
+        loginmsg.password = Password;
+        SendToServer(JsonUtility.ToJson(loginmsg));
+    }
+
+    public void Register(string UserID, string Password)
+    {
+        PlayerRegister loginmsg = new PlayerRegister();
+        loginmsg.userID = UserID;
+        loginmsg.password = Password;
+        SendToServer(JsonUtility.ToJson(loginmsg));
+    }
+
+
+
 }

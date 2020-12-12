@@ -31,7 +31,7 @@ public class NetworkServer : MonoBehaviour
         m_Connections = new NativeList<NetworkConnection>(16, Allocator.Persistent);
 
         //StartCoroutine(SendHandshakeToAllClient());
-        StartCoroutine(SendUpdateToAllClient());
+        //StartCoroutine(SendUpdateToAllClient());
     }
 
     //IEnumerator SendHandshakeToAllClient()
@@ -52,23 +52,23 @@ public class NetworkServer : MonoBehaviour
     //    }
     //}
 
-    IEnumerator SendUpdateToAllClient()
-    {
-        //send the update to all players connected to the server
-        while (true)
-        {
-            for (int i = 0; i < m_Connections.Length; i++)
-            {
-                if (!m_Connections[i].IsCreated)
-                    continue;
-                ServerUpdateMsg m = new ServerUpdateMsg();
-                m.players = connectedPlayers;
-                SendToClient(JsonUtility.ToJson(m), m_Connections[i]);
+    //IEnumerator SendUpdateToAllClient()
+    //{
+    //    //send the update to all players connected to the server
+    //    while (true)
+    //    {
+    //        for (int i = 0; i < m_Connections.Length; i++)
+    //        {
+    //            if (!m_Connections[i].IsCreated)
+    //                continue;
+    //            ServerUpdateMsg m = new ServerUpdateMsg();
+    //            m.players = connectedPlayers;
+    //            SendToClient(JsonUtility.ToJson(m), m_Connections[i]);
 
-            }
-            yield return new WaitForFixedUpdate();
-        }
-    }
+    //        }
+    //        yield return new WaitForFixedUpdate();
+    //    }
+    //}
 
 
 
