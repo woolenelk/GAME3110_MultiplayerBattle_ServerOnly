@@ -3,12 +3,22 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using TMPro;
+using UnityEngine.Events;
+
+[System.Serializable]
+public class LoginEvent : UnityEvent<string, string>
+{
+
+}
 
 public class LoginButtonBehaviour : MonoBehaviour
 {
     public GameObject errorMessage;
     public float errorMessageDuration;
     IEnumerator errorMessageCoroutine;
+    public LoginEvent eventPlayerLogin;
+
+    
 
     private void Start()
     {
@@ -18,7 +28,7 @@ public class LoginButtonBehaviour : MonoBehaviour
     public void OnLoginButtonPressed()
     {
         //Check for player credientals against server
-
+        eventPlayerLogin.Invoke("kevin","test");
         //if credentials valid move to lobbies scene
             Debug.Log("Login Button Pressed");
             //SceneManager.LoadScene("Lobbies");

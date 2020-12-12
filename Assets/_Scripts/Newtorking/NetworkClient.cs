@@ -7,6 +7,10 @@ using System;
 using System.Text;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.Events;
+
+
+
 
 public class NetworkClient : MonoBehaviour
 {
@@ -20,8 +24,12 @@ public class NetworkClient : MonoBehaviour
     public string myId = "";
     public List<NetworkObjects.NetworkPlayer> droppedPlayers;
 
+   
+
     void Start ()
     {
+        FindObjectOfType<LoginButtonBehaviour>().eventPlayerLogin.AddListener(Login);
+
         m_Driver = NetworkDriver.Create();
         m_Connection = default(NetworkConnection);
         var endpoint = NetworkEndPoint.Parse(serverIP,serverPort);
@@ -205,7 +213,8 @@ public class NetworkClient : MonoBehaviour
     public void OnDestroy()
     {
         m_Driver.Dispose();
-    }   
+    }  
+    
     void Update()
     {
         m_Driver.ScheduleUpdate().Complete();
@@ -236,10 +245,29 @@ public class NetworkClient : MonoBehaviour
             cmd = m_Connection.PopEvent(m_Driver, out stream);
         }
 
-        SpawnPlayers();
-        UpdatePosition();
-        UpdatePlayers();
-        DestroyPlayers();
+        //SpawnPlayers();
+        //UpdatePosition();
+        //UpdatePlayers();
+        //DestroyPlayers();
 
     }
+
+    public void Login(string UserID, string Password)
+    {
+        PlayerLogin loginmsg = new PlayerLogin();
+        loginmsg.userID = UserID;
+        loginmsg.password = Password;
+        SendToServer(JsonUtility.ToJson(loginmsg));
+    }
+
+    public void Register(string UserID, string Password)
+    {
+        PlayerRegister loginmsg = new PlayerRegister();
+        loginmsg.userID = UserID;
+        loginmsg.password = Password;
+        SendToServer(JsonUtility.ToJson(loginmsg));
+    }
+
+
+
 }
