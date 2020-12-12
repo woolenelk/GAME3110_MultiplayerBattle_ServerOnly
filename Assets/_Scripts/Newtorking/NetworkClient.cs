@@ -2,12 +2,7 @@
 using Unity.Collections;
 using Unity.Networking.Transport;
 using NetworkMessages;
-using NetworkObjects;
-using System;
 using System.Text;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine.Events;
 
 
 
@@ -20,15 +15,12 @@ public class NetworkClient : MonoBehaviour
     public ushort serverPort;
 
 
-    public List<NetworkObjects.NetworkPlayer> connectedPlayers;
     public string myId = "";
-    public List<NetworkObjects.NetworkPlayer> droppedPlayers;
 
    
 
     void Start ()
     {
-        FindObjectOfType<LoginButtonBehaviour>().eventPlayerLogin.AddListener(Login);
 
         m_Driver = NetworkDriver.Create();
         m_Connection = default(NetworkConnection);
@@ -89,7 +81,6 @@ public class NetworkClient : MonoBehaviour
                     myId = hsMsg.player.id;
                     Debug.Log("My id is:" + myId);
                 }
-                connectedPlayers.Add(hsMsg.player);
 
                     break;
                 case Commands.PLAYER_UPDATE:
@@ -102,51 +93,17 @@ public class NetworkClient : MonoBehaviour
                 Debug.Log("Server update message received!");
                 for (int i = 0; i < suMsg.players.Count; i++)
                 {
-                    foreach (NetworkObjects.NetworkPlayer player in connectedPlayers)
-                    {
-                        if (player.id == suMsg.players[i].id)//get the matching player from the server and out player list
-                        {
-                        ;
-                        }
-                    }
+                   
 
                 }
                 break;
             case Commands.NEWPLAYER_UPDATE:
                 NewPlayerUpdateMsg npMsg = JsonUtility.FromJson<NewPlayerUpdateMsg>(recMsg);
-                for (int i = 0; i < npMsg.players.Count; i++)
-                {
-                    //check if there are any new players that were added
-                    bool playerFound = false;
-                    foreach (NetworkObjects.NetworkPlayer player in connectedPlayers)
-                    {
-                        if (npMsg.players[i].id == player.id)
-                        {
-                            playerFound = true;
-                            Debug.Log("already have the player");
-
-                        }
-
-                    }
-                    if (!playerFound) // the player in the latest game state is new and we need to add them
-                    {
-                        connectedPlayers.Add(npMsg.players[i]);
-
-                        Debug.Log("Added other player to conencted players");
-
-                    }
-                }
+                
                 break;
             case Commands.DROPPED_UPDATE:
                 DroppedUpdateMsg dpMsg = JsonUtility.FromJson<DroppedUpdateMsg>(recMsg);
-                foreach (NetworkObjects.NetworkPlayer player in connectedPlayers)
-                {
-                    if (player.id == dpMsg.player.id)
-                    {
-                        Debug.Log("found dropped player");
-                        droppedPlayers.Add(player);
-                    }
-                }
+                
                 break;
             default:
             Debug.Log("Unrecognized message received!");
@@ -154,51 +111,7 @@ public class NetworkClient : MonoBehaviour
         }
     }
 
-    void SpawnPlayers()
-    {
-        foreach (NetworkObjects.NetworkPlayer player in connectedPlayers)
-        {
-            
-        }
-
-
-
-    }
-
-    void UpdatePlayers()
-    {
-        //update player position
-        foreach (NetworkObjects.NetworkPlayer player in connectedPlayers)
-        {
-            
-        }
-    }
-
-    void DestroyPlayers()
-    {
-
-        
-        //clear the dropped players
-        droppedPlayers.Clear();
-
-    }
-
-    //send our player data to the server
-    void UpdatePosition()
-    {
-        
-        foreach (NetworkObjects.NetworkPlayer player in connectedPlayers)
-        {
-            if (player.id == myId) //find our player
-            {
-
-                //send out player info to the server
-                PlayerUpdateMsg m = new PlayerUpdateMsg();
-                SendToServer(JsonUtility.ToJson(m));
-
-            }
-        }
-    }
+   
 
     void Disconnect(){
         m_Connection.Disconnect(m_Driver);
@@ -245,10 +158,7 @@ public class NetworkClient : MonoBehaviour
             cmd = m_Connection.PopEvent(m_Driver, out stream);
         }
 
-        //SpawnPlayers();
-        //UpdatePosition();
-        //UpdatePlayers();
-        //DestroyPlayers();
+    
 
     }
 

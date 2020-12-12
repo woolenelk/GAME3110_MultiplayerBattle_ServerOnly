@@ -1,8 +1,5 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
-using TMPro;
 using UnityEngine.Events;
 
 [System.Serializable]
@@ -29,6 +26,10 @@ public class LoginButtonBehaviour : MonoBehaviour
     {
         //Check for player credientals against server
         eventPlayerLogin.Invoke("kevin","test");
+
+        NetworkClient networkManager = FindObjectOfType<NetworkClient>();
+        networkManager.Login("kevin", "test");
+
         //if credentials valid move to lobbies scene
             Debug.Log("Login Button Pressed");
             //SceneManager.LoadScene("Lobbies");
