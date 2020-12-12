@@ -42,23 +42,27 @@ namespace NetworkMessages
     {
         public string userID;
         public string password;
+        public bool successful;
         public PlayerLoginMsg()
         {
             cmd = Commands.PLAYERLOGIN;
             userID = "";
             password = "";
+            successful = false;
         }
     }
 
-    public class PlayerRegister : NetworkHeader
+    public class PlayerRegisterMsg : NetworkHeader
     {
         public string userID;
         public string password;
-        public PlayerRegister()
+        public bool successful;
+        public PlayerRegisterMsg()
         {
             cmd = Commands.PLAYERREGISTER;
             userID = "";
             password = "";
+            successful = false;
         }
     }
 
@@ -120,5 +124,10 @@ namespace NetworkObjects
         public string Password;
         public string Wins;
         public string Loses;
+    }
+
+    public class PlayerList
+    {
+        Item[] Items;
     }
 }

@@ -34,14 +34,15 @@ public class NetworkServer : MonoBehaviour
             m_Driver.Listen();
 
         m_Connections = new NativeList<NetworkConnection>(16, Allocator.Persistent);
-        StartCoroutine(SendLoginWebRequest("kevin", "test1"));
+        //StartCoroutine(SendLoginWebRequest("kevin2", "test1", 0));
+        StartCoroutine(SendRegisterWebRequest("kevin3", "test1", 0));
         //StartCoroutine(SendHandshakeToAllClient());
         //StartCoroutine(SendUpdateToAllClient());
     }
 
-    IEnumerator SendLoginWebRequest (string userID, string password)
+    IEnumerator SendLoginWebRequest(string userID, string password, int connection)
     {
-        string url = "https://pnz7w1hjm3.execute-api.us-east-2.amazonaws.com/default/FinalAssignmentGetPlayer?UserID="+userID;
+        string url = "https://pnz7w1hjm3.execute-api.us-east-2.amazonaws.com/default/FinalAssignmentGetPlayer?UserID=" + userID;
         UnityWebRequest www = UnityWebRequest.Get(url);
         www.SetRequestHeader("Content-Type", "application/json");
         yield return www.SendWebRequest();
@@ -49,6 +50,10 @@ public class NetworkServer : MonoBehaviour
         if (www.isNetworkError || www.isHttpError)
         {
             Debug.Log(www.error);
+            PlayerLoginMsg m = new PlayerLoginMsg();
+            m.userID = userID;
+            SendToClient(JsonUtility.ToJson(m), m_Connections[connection]);
+            // login unsuccessful
         }
         else
         {
@@ -56,8 +61,46 @@ public class NetworkServer : MonoBehaviour
             NetworkObjects.Item test = JsonUtility.FromJson<NetworkObjects.Item>(www.downloadHandler.text);
             Debug.Log(test.UserID);
             //message
+            if (password == test.Password)
+            {
+                PlayerLoginMsg m = new PlayerLoginMsg();
+                m.userID = userID;
+                m.successful = true;
+                SendToClient(JsonUtility.ToJson(m), m_Connections[connection]);
+                // login successful
+            }
+            else
+            {
+                PlayerLoginMsg m = new PlayerLoginMsg();
+                m.userID = userID;
+                SendToClient(JsonUtility.ToJson(m), m_Connections[connection]);
+                // login unsuccessful
+            }
+        }
+    }
 
+    IEnumerator SendRegisterWebRequest(string userID, string password, int connection)
+    {
+        string url = "https://mmhs1umqc0.execute-api.us-east-2.amazonaws.com/default/FinalAssignmentAddPlayer?UserID=" + userID + "&Password=" + password;
+        UnityWebRequest www = UnityWebRequest.Get(url);
+        www.SetRequestHeader("Content-Type", "application/json");
+        yield return www.SendWebRequest();
 
+        if (www.isNetworkError || www.isHttpError)
+        {
+            Debug.Log(www.error);
+            PlayerRegisterMsg m = new PlayerRegisterMsg();
+            m.userID = userID;
+            // SendToClient(JsonUtility.ToJson(m), m_Connections[connection]);
+            // register unsuccessful
+        }
+        else
+        {
+            PlayerRegisterMsg m = new PlayerRegisterMsg();
+            m.userID = userID;
+            m.successful = true;
+            // SendToClient(JsonUtility.ToJson(m), m_Connections[connection]);
+            // register sucessful
         }
     }
 
@@ -65,7 +108,6 @@ public class NetworkServer : MonoBehaviour
     //{
     //    while(true)
     //    {
-    //        for (int i = 0; i < m_Connections.Length; i++)
     //        {
     //            if (!m_Connections[i].IsCreated)
     //                continue;
@@ -110,6 +152,7 @@ public class NetworkServer : MonoBehaviour
 
     void OnConnect(NetworkConnection c){
         m_Connections.Add(c);
+        Debug.Log(c.ToString());
         Debug.Log("Accepted a connection");
         Debug.Log("Added player:" + c.InternalId.ToString());
         // Example to send a handshake message:
@@ -131,7 +174,8 @@ public class NetworkServer : MonoBehaviour
         }
     }
 
-    void OnData(DataStreamReader stream, int i){
+    void OnData(DataStreamReader stream, int i)  // i is the index in m_connection to get ip address
+    {
         NativeArray<byte> bytes = new NativeArray<byte>(stream.Length,Allocator.Temp);
         stream.ReadBytes(bytes);
         string recMsg = Encoding.ASCII.GetString(bytes.ToArray());
@@ -140,31 +184,32 @@ public class NetworkServer : MonoBehaviour
         switch(header.cmd){
             case Commands.PLAYERLOGIN:
                 PlayerLoginMsg loginMsg = JsonUtility.FromJson<PlayerLoginMsg>(recMsg);
-
-
+                StartCoroutine(SendLoginWebRequest(loginMsg.userID, loginMsg.password, i));
                 break;
-
+            case Commands.PLAYERREGISTER:
+                PlayerRegisterMsg registerMsg = JsonUtility.FromJson<PlayerRegisterMsg>(recMsg);
+                StartCoroutine(SendRegisterWebRequest(registerMsg.userID, registerMsg.password, i));
+                break;
             case Commands.HANDSHAKE:
-            HandshakeMsg hsMsg = JsonUtility.FromJson<HandshakeMsg>(recMsg);
-            Debug.Log("Handshake message received!");
-            break;
+                HandshakeMsg hsMsg = JsonUtility.FromJson<HandshakeMsg>(recMsg);
+                Debug.Log("Handshake message received!");
+                break;
             case Commands.PLAYER_UPDATE:
-            PlayerUpdateMsg puMsg = JsonUtility.FromJson<PlayerUpdateMsg>(recMsg);
-            //Debug.Log("Player update message received!");
-            //update the specific players data
-            foreach (NetworkObjects.NetworkPlayer player in connectedPlayers)
-            {
+                PlayerUpdateMsg puMsg = JsonUtility.FromJson<PlayerUpdateMsg>(recMsg);
+                //Debug.Log("Player update message received!");
+                //update the specific players data
+                foreach (NetworkObjects.NetworkPlayer player in connectedPlayers)
+                {
                     
-
-            }
-            break;
+                }
+                break;
             case Commands.SERVER_UPDATE:
-            ServerUpdateMsg suMsg = JsonUtility.FromJson<ServerUpdateMsg>(recMsg);
-            Debug.Log("Server update message received!");
-            break;
+                ServerUpdateMsg suMsg = JsonUtility.FromJson<ServerUpdateMsg>(recMsg);
+                Debug.Log("Server update message received!");
+                break;
             default:
-            Debug.Log("SERVER ERROR: Unrecognized message received!");
-            break;
+                Debug.Log("SERVER ERROR: Unrecognized message received!");
+                break;
         }
     }
 

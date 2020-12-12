@@ -262,7 +262,7 @@ public class NetworkClient : MonoBehaviour
 
     public void Register(string UserID, string Password)
     {
-        PlayerRegister loginmsg = new PlayerRegister();
+        PlayerRegisterMsg loginmsg = new PlayerRegisterMsg();
         loginmsg.userID = UserID;
         loginmsg.password = Password;
         SendToServer(JsonUtility.ToJson(loginmsg));
