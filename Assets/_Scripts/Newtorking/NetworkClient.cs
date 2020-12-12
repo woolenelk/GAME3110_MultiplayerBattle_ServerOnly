@@ -7,6 +7,10 @@ using System;
 using System.Text;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.Events;
+
+
+
 
 public class NetworkClient : MonoBehaviour
 {
@@ -20,8 +24,12 @@ public class NetworkClient : MonoBehaviour
     public string myId = "";
     public List<NetworkObjects.NetworkPlayer> droppedPlayers;
 
+   
+
     void Start ()
     {
+        FindObjectOfType<LoginButtonBehaviour>().eventPlayerLogin.AddListener(Login);
+
         m_Driver = NetworkDriver.Create();
         m_Connection = default(NetworkConnection);
         var endpoint = NetworkEndPoint.Parse(serverIP,serverPort);
