@@ -35,7 +35,7 @@ public class NetworkServer : MonoBehaviour
 
         m_Connections = new NativeList<NetworkConnection>(16, Allocator.Persistent);
         //StartCoroutine(SendLoginWebRequest("kevin2", "test1", 0));
-        StartCoroutine(SendRegisterWebRequest("kevin3", "test1", 0));
+        //StartCoroutine(SendRegisterWebRequest("kevin3", "test1", 0));
         //StartCoroutine(SendHandshakeToAllClient());
         //StartCoroutine(SendUpdateToAllClient());
     }
@@ -103,40 +103,6 @@ public class NetworkServer : MonoBehaviour
             // register sucessful
         }
     }
-
-    //IEnumerator SendHandshakeToAllClient()
-    //{
-    //    while(true)
-    //    {
-    //        {
-    //            if (!m_Connections[i].IsCreated)
-    //                continue;
-    //            HandshakeMsg m = new HandshakeMsg();
-    //            m.player.id = m_Connections[i].InternalId.ToString();
-    //            SendToClient(JsonUtility.ToJson(m), m_Connections[i]); 
-    //        }
-    //        yield return new WaitForSeconds(2);
-    //    }
-    //}
-
-    //IEnumerator SendUpdateToAllClient()
-    //{
-    //    //send the update to all players connected to the server
-    //    while (true)
-    //    {
-    //        for (int i = 0; i < m_Connections.Length; i++)
-    //        {
-    //            if (!m_Connections[i].IsCreated)
-    //                continue;
-    //            ServerUpdateMsg m = new ServerUpdateMsg();
-    //            m.players = connectedPlayers;
-    //            SendToClient(JsonUtility.ToJson(m), m_Connections[i]);
-    //        }
-    //        yield return new WaitForFixedUpdate();
-    //    }
-    //}
-
-
 
     void SendToClient(string message, NetworkConnection c){
         var writer = m_Driver.BeginSend(NetworkPipeline.Null, c);

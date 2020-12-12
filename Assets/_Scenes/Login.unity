@@ -694,6 +694,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   errorMessage: {fileID: 2044407922}
   errorMessageDuration: 2
+  eventPlayerLogin:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0

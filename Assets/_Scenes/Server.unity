@@ -166,7 +166,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3467334ca871e4a1caded6bb1dacfbd9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  serverPort: 12345
+  serverPort: 12346
   connectedPlayers: []
   droppedPlayer:
     id: 
