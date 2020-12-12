@@ -113,4 +113,12 @@ namespace NetworkObjects
         public NetworkPlayer(){
         }
     }
+    [System.Serializable]
+    public class Item
+    {
+        public string UserID;
+        public string Password;
+        public string Wins;
+        public string Loses;
+    }
 }
