@@ -34,22 +34,15 @@ public class NetworkServer : MonoBehaviour
             m_Driver.Listen();
 
         m_Connections = new NativeList<NetworkConnection>(16, Allocator.Persistent);
-        StartCoroutine(SendLoginWebRequest("kevin23", "test1"));
+        StartCoroutine(SendLoginWebRequest("kevin", "test1"));
         //StartCoroutine(SendHandshakeToAllClient());
         //StartCoroutine(SendUpdateToAllClient());
     }
 
     IEnumerator SendLoginWebRequest (string userID, string password)
     {
-        //string jsonString = "{\"username\":"+ userID +" , \"Password\":"+ password + "}";
-        //string username = "galal";
-        //byte[] myData = System.Text.Encoding.UTF8.GetBytes(jsonString);
-
         string url = "https://pnz7w1hjm3.execute-api.us-east-2.amazonaws.com/default/FinalAssignmentGetPlayer?UserID="+userID;
-
-        // UnityWebRequest www = UnityWebRequest.Post("https://9rtvrin7r5.execute-api.us-east-2.amazonaws.com/default/UnityTest%22,username);
         UnityWebRequest www = UnityWebRequest.Get(url);
-
         www.SetRequestHeader("Content-Type", "application/json");
         yield return www.SendWebRequest();
 
@@ -60,9 +53,11 @@ public class NetworkServer : MonoBehaviour
         else
         {
             Debug.Log(www.downloadHandler.text);
-
-            //var message = JsonUtility.FromJson(www.downloadHandler.text);
+            NetworkObjects.Item test = JsonUtility.FromJson<NetworkObjects.Item>(www.downloadHandler.text);
+            Debug.Log(test.UserID);
             //message
+
+
         }
     }
 
@@ -74,11 +69,9 @@ public class NetworkServer : MonoBehaviour
     //        {
     //            if (!m_Connections[i].IsCreated)
     //                continue;
-
     //            HandshakeMsg m = new HandshakeMsg();
     //            m.player.id = m_Connections[i].InternalId.ToString();
     //            SendToClient(JsonUtility.ToJson(m), m_Connections[i]); 
-
     //        }
     //        yield return new WaitForSeconds(2);
     //    }
