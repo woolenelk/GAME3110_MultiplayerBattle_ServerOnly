@@ -10,6 +10,8 @@ namespace NetworkMessages
         HANDSHAKE,
         PLAYER_INPUT,
         NEWPLAYER_UPDATE,
+        PLAYERLOGIN,
+        PLAYERREGISTER,
         DROPPED_UPDATE
     }
     
@@ -35,6 +37,30 @@ namespace NetworkMessages
             player = new NetworkObjects.NetworkPlayer();
         }
     };
+
+    public class PlayerLogin : NetworkHeader
+    {
+        public string userID;
+        public string password;
+        public PlayerLogin()
+        {
+            cmd = Commands.PLAYERLOGIN;
+            userID = "";
+            password = "";
+        }
+    }
+
+    public class PlayerRegister : NetworkHeader
+    {
+        public string userID;
+        public string password;
+        public PlayerRegister()
+        {
+            cmd = Commands.PLAYERREGISTER;
+            userID = "";
+            password = "";
+        }
+    }
 
     public class PlayerInputMsg:NetworkHeader{
         public Input myInput;
