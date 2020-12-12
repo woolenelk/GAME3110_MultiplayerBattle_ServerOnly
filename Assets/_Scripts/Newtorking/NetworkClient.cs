@@ -21,7 +21,6 @@ public class NetworkClient : MonoBehaviour
 
     void Start ()
     {
-        FindObjectOfType<LoginButtonBehaviour>().eventPlayerLogin.AddListener(Login);
 
         m_Driver = NetworkDriver.Create();
         m_Connection = default(NetworkConnection);
