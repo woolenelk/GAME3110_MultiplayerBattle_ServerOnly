@@ -26,6 +26,8 @@ public class NetworkClient : MonoBehaviour
         m_Connection = default(NetworkConnection);
         var endpoint = NetworkEndPoint.Parse(serverIP,serverPort);
         m_Connection = m_Driver.Connect(endpoint);
+
+        DontDestroyOnLoad(gameObject);
     }
     
     void SendToServer(string message){
