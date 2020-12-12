@@ -12,7 +12,7 @@ namespace NetworkMessages
         NEWPLAYER_UPDATE,
         DROPPED_UPDATE
     }
-
+    
     [System.Serializable]
     public class NetworkHeader{
         public Commands cmd;
