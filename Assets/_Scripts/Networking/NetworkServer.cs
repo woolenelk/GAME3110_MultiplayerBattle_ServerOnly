@@ -19,14 +19,20 @@ public class NetworkServer : MonoBehaviour
     public List<NetworkObjects.NetworkPlayer> connectedPlayers;
     public NetworkObjects.NetworkPlayer droppedPlayer;
 
-    public Dictionary<string, NetworkConnection> d_Connections;
+   
+
+    public Dictionary<string, NetworkConnection> d_connections; // string is USERID, CONNECTION IS IP.ADDRESS/PORT
     public Dictionary<int,NetworkObjects.Lobby> AvailableLobbies = new Dictionary<int, NetworkObjects.Lobby>();
 
     private int LOBBYCURRENTMAXID = 0;
     
     void Start ()
     {
-        d_Connections = new Dictionary<string, NetworkConnection>();
+        
+
+
+
+        d_connections = new Dictionary<string, NetworkConnection>();
         m_Driver = NetworkDriver.Create();
         var endpoint = NetworkEndPoint.AnyIpv4;
         endpoint.Port = serverPort;
@@ -49,6 +55,7 @@ public class NetworkServer : MonoBehaviour
         www.SetRequestHeader("Content-Type", "application/json");
         yield return www.SendWebRequest();
         Debug.Log(www.downloadHandler.text);
+        
         if (www.isNetworkError || www.isHttpError)
         {
             Debug.Log(www.error);
@@ -69,6 +76,7 @@ public class NetworkServer : MonoBehaviour
                 m.userID = userID;
                 m.successful = true;
                 SendToClient(JsonUtility.ToJson(m), m_Connections[connection]);
+                d_connections.Add(userID, m_Connections[connection]);
                 // login successful
             }
             else
@@ -135,6 +143,7 @@ public class NetworkServer : MonoBehaviour
             m.userID = userID;
             m.successful = true;
             SendToClient(JsonUtility.ToJson(m), m_Connections[connection]);
+            d_connections.Add(userID, m_Connections[connection]);
             // register sucessful
         }
     }
@@ -206,14 +215,14 @@ public class NetworkServer : MonoBehaviour
     void OnConnect(NetworkConnection c){
         m_Connections.Add(c);
 
-        d_Connections.Add(c.InternalId.ToString(), c);
+        //d_Connections.Add(c.InternalId.ToString(), c);
         Debug.Log(c.ToString());
         Debug.Log(c.InternalId.ToString());
         Debug.Log("Accepted a connection");
         Debug.Log("Added player:" + c.InternalId.ToString());
         // Example to send a handshake message:
         HandshakeMsg m = new HandshakeMsg();
-        m.InternalServerID = c.InternalId.ToString();
+        //m.InternalServerID = c.InternalId.ToString();
         //add the new player to our list of connected players
         //connectedPlayers.Add(m.player);
         SendToClient(JsonUtility.ToJson(m), c);
@@ -262,7 +271,7 @@ public class NetworkServer : MonoBehaviour
                 break;
             case Commands.HANDSHAKE:
                 HandshakeMsg hsMsg = JsonUtility.FromJson<HandshakeMsg>(recMsg);
-                //SendToClient(JsonUtility.ToJson(hsMsg), m_Connections[i]);
+                SendToClient(JsonUtility.ToJson(hsMsg), m_Connections[i]);
                 //Debug.Log("Handshake message received!");
                 break;
             case Commands.PLAYER_UPDATE:
@@ -356,6 +365,7 @@ public class NetworkServer : MonoBehaviour
     }
     void OnDisconnect(int i){
         Debug.Log("Client disconnected from server");
+
         foreach (var player in connectedPlayers)
         {
             if(player.id == m_Connections[i].InternalId.ToString())
@@ -378,6 +388,7 @@ public class NetworkServer : MonoBehaviour
         }
         droppedPlayer = null;
     }
+
 
     void Update ()
     {

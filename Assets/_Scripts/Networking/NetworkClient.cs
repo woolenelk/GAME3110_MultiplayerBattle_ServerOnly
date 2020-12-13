@@ -14,7 +14,7 @@ public class NetworkClient : MonoBehaviour
     public NetworkObjects.Lobby MyLobby;
     public string PlayerUserID = "";
     public NetworkObjects.Item Player;
-    public string myServerId = "-1";
+    //public string myServerId = "-1";
 
    
 
@@ -141,8 +141,8 @@ public class NetworkClient : MonoBehaviour
                 HandshakeMsg hsMsg = JsonUtility.FromJson<HandshakeMsg>(recMsg);
 
                 Debug.Log("Handshake message received!");
-                myServerId = hsMsg.InternalServerID;
-                Debug.Log("My id is:" + myServerId);
+                //myServerId = hsMsg.InternalServerID;
+                //Debug.Log("My id is:" + myServerId);
                 ////add our own id so we know who we are
                 //if (myId == "")
                 //{

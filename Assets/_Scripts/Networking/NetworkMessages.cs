@@ -32,10 +32,10 @@ namespace NetworkMessages
     [System.Serializable]
     public class HandshakeMsg:NetworkHeader{
         public NetworkObjects.NetworkPlayer player;
-        public string InternalServerID;
+        //public string InternalServerID;
         public HandshakeMsg(){      // Constructor
             cmd = Commands.HANDSHAKE;
-            InternalServerID = "-1";
+            //InternalServerID = "-1";
             player = new NetworkObjects.NetworkPlayer();
         }
     }
