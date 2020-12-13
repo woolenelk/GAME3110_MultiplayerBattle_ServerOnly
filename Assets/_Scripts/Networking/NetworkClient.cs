@@ -119,7 +119,7 @@ public class NetworkClient : MonoBehaviour
                     MyLobby = joinmsg.joinLobby;
                     if (joinmsg.joinLobby.Player1 == PlayerUserID)
                     {
-                        //FindObjectOfType<LobbyHandler>().UpdateLobby();
+                        FindObjectOfType<LobbyHandler>().UpdateLobby();
                     }
                     else
                     {
@@ -262,6 +262,7 @@ public class NetworkClient : MonoBehaviour
 
     public void SendServerStartSignal()
     {
+        Debug.Log("Sending Start Game to server");
         StartGameMsg m = new StartGameMsg();
         m.LobbyToStart = MyLobby;
         SendToServer(JsonUtility.ToJson(m));
@@ -269,11 +270,14 @@ public class NetworkClient : MonoBehaviour
 
     public void EnterPlay()
     {
+        Debug.Log("Loading Play Scene");
         SceneManager.LoadScene("Play");
     }
 
     public void JoinLobby(NetworkObjects.Lobby joiningLobby)
     {
+        Debug.Log("Sending join game message");
+        Debug.Log(joiningLobby);
         JoinGameMsg m = new JoinGameMsg();
         m.player.id = PlayerUserID;
         m.joinLobby = joiningLobby;
