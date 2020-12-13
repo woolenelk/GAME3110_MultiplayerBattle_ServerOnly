@@ -10,9 +10,13 @@ namespace NetworkMessages
         HANDSHAKE,
         PLAYER_INPUT,
         NEWPLAYER_UPDATE,
-        PLAYERLOGIN,
-        PLAYERREGISTER,
-        DROPPED_UPDATE
+        PLAYER_LOGIN,
+        PLAYER_REGISTER,
+        DROPPED_UPDATE,
+        HOST_GAME,
+        JOIN_GAME,
+        REQUEST_AVAILABLE_LOBBIES,
+        REQUEST_ALL_LOBBIES
     }
     
     [System.Serializable]
@@ -28,6 +32,19 @@ namespace NetworkMessages
             player = new NetworkObjects.NetworkPlayer();
         }
     }
+
+    public class HostGameMsg:NetworkHeader
+    {
+        
+    }
+
+    public class JoinGameMsg : NetworkHeader 
+    {
+        
+    }
+
+
+
     
     [System.Serializable]
     public class PlayerUpdateMsg:NetworkHeader{
@@ -45,7 +62,7 @@ namespace NetworkMessages
         public bool successful;
         public PlayerLoginMsg()
         {
-            cmd = Commands.PLAYERLOGIN;
+            cmd = Commands.PLAYER_LOGIN;
             userID = "";
             password = "";
             successful = false;
@@ -59,7 +76,7 @@ namespace NetworkMessages
         public bool successful;
         public PlayerRegisterMsg()
         {
-            cmd = Commands.PLAYERREGISTER;
+            cmd = Commands.PLAYER_REGISTER;
             userID = "";
             password = "";
             successful = false;

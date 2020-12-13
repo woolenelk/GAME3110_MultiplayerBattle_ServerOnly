@@ -71,7 +71,7 @@ public class NetworkClient : MonoBehaviour
         NetworkHeader header = JsonUtility.FromJson<NetworkHeader>(recMsg);
 
         switch(header.cmd){
-            case Commands.PLAYERLOGIN:
+            case Commands.PLAYER_LOGIN:
                 PlayerLoginMsg loginMsg = JsonUtility.FromJson<PlayerLoginMsg>(recMsg);
                 // check if successful is true
                 if (loginMsg.successful)
@@ -85,7 +85,7 @@ public class NetworkClient : MonoBehaviour
                     Debug.Log("UNSuccessful Login");
                 }
                 break;
-            case Commands.PLAYERREGISTER:
+            case Commands.PLAYER_REGISTER:
                 PlayerRegisterMsg registerMsg = JsonUtility.FromJson<PlayerRegisterMsg>(recMsg);
                 if (registerMsg.successful)
                 {
@@ -108,7 +108,6 @@ public class NetworkClient : MonoBehaviour
                     myId = hsMsg.player.id;
                     Debug.Log("My id is:" + myId);
                 }
-
                     break;
                 case Commands.PLAYER_UPDATE:
                     //not really receiveing player update messages as this is this client and not the server

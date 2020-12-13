@@ -148,11 +148,11 @@ public class NetworkServer : MonoBehaviour
         NetworkHeader header = JsonUtility.FromJson<NetworkHeader>(recMsg);
 
         switch(header.cmd){
-            case Commands.PLAYERLOGIN:
+            case Commands.PLAYER_LOGIN:
                 PlayerLoginMsg loginMsg = JsonUtility.FromJson<PlayerLoginMsg>(recMsg);
                 StartCoroutine(SendLoginWebRequest(loginMsg.userID, loginMsg.password, i));
                 break;
-            case Commands.PLAYERREGISTER:
+            case Commands.PLAYER_REGISTER:
                 PlayerRegisterMsg registerMsg = JsonUtility.FromJson<PlayerRegisterMsg>(recMsg);
                 StartCoroutine(SendRegisterWebRequest(registerMsg.userID, registerMsg.password, i));
                 break;
