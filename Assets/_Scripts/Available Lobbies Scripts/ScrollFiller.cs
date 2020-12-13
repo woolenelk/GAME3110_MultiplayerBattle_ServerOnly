@@ -14,7 +14,10 @@ public class ScrollFiller : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        for (int i = 0; i < 3; i ++)
+        {
+            GenerateItem("player 1", i.ToString());
+        }
     }
 
     // Update is called once per frame

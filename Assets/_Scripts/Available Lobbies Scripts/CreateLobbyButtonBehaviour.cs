@@ -6,9 +6,8 @@ public class CreateLobbyButtonBehaviour : MonoBehaviour
 {
     public void OnCreateLobbyButtonPressed()
     {
-
-        NetworkClient networkManager = FindObjectOfType<NetworkClient>();
-        networkManager.CreateLobby();
+        Debug.Log("Create a Lobby Pressed");
+        FindObjectOfType<NetworkClient>().CreateLobby();
     }
 }
 

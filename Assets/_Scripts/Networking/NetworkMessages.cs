@@ -32,18 +32,33 @@ namespace NetworkMessages
             player = new NetworkObjects.NetworkPlayer();
         }
     }
-
+    [System.Serializable]
     public class HostGameMsg:NetworkHeader
     {
+        
         public NetworkObjects.NetworkPlayer player;
-        public bool successful = false;
-    }
+        public bool successful;
 
+        public HostGameMsg()
+        {
+            cmd = Commands.HOST_GAME;
+            player = new NetworkObjects.NetworkPlayer();
+            successful = false;
+        }
+    }
+    [System.Serializable]
     public class JoinGameMsg : NetworkHeader 
     {
         public NetworkObjects.NetworkPlayer player;
         public NetworkObjects.Lobby joinLobby;
-        public bool successful = false;
+        public bool successful;
+
+        public JoinGameMsg()
+        {
+            cmd = Commands.JOIN_GAME;
+            player = new NetworkObjects.NetworkPlayer();
+            successful = false;
+        }
     }
 
     [System.Serializable]
@@ -75,7 +90,7 @@ namespace NetworkMessages
             player = new NetworkObjects.NetworkPlayer();
         }
     };
-
+    [System.Serializable]
     public class PlayerLoginMsg : NetworkHeader
     {
         public string userID;
@@ -89,7 +104,7 @@ namespace NetworkMessages
             successful = false;
         }
     }
-
+    [System.Serializable]
     public class PlayerRegisterMsg : NetworkHeader
     {
         public string userID;
@@ -103,7 +118,7 @@ namespace NetworkMessages
             successful = false;
         }
     }
-
+    [System.Serializable]
     public class PlayerInputMsg:NetworkHeader{
         public Input myInput;
         public PlayerInputMsg(){
@@ -164,9 +179,14 @@ namespace NetworkObjects
         public string Loses;
     }
 
+    [System.Serializable]
     public class PlayerList
     {
         Item[] Items;
+        public PlayerList ()
+        {
+            
+        }
     }
 
     [System.Serializable]
@@ -176,5 +196,13 @@ namespace NetworkObjects
         public string Player1;
         public string Player2;
         public bool full;
+
+        public Lobby()
+        {
+            lobbyID = -1;
+            Player1 = "";
+            Player2 = null;
+            full = false;
+        }
     }
 }

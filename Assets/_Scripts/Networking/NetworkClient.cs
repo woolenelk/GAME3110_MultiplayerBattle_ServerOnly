@@ -81,6 +81,7 @@ public class NetworkClient : MonoBehaviour
                 else
                 {
                     Debug.Log("UNSuccessful Login");
+                    FindObjectOfType<LoginButtonBehaviour>().DisplayError();
                 }
                 break;
             case Commands.PLAYER_REGISTER:
@@ -94,6 +95,7 @@ public class NetworkClient : MonoBehaviour
                 else
                 {
                     Debug.Log("UNSuccessful Register");
+                    FindObjectOfType<RegisterButtonBehaviour>().DisplayError();
                 }
                 // check if successful is true
                 break;
@@ -123,6 +125,10 @@ public class NetworkClient : MonoBehaviour
             case Commands.REQUEST_ALL_LOBBIES:
                 AllAvailableLobbies alMsg = JsonUtility.FromJson<AllAvailableLobbies>(recMsg);
                 Debug.Log("Server update message received!");
+                for (int i = 0; i < alMsg.Lobbies.Count; i ++)
+                {
+                    Debug.Log(JsonUtility.ToJson(alMsg.Lobbies[i]));
+                }
                 ScrollFiller scrollFiller = FindObjectOfType<ScrollFiller>();
                 scrollFiller.ClearLobbies();
                 foreach (var lobby in alMsg.Lobbies)
@@ -187,9 +193,6 @@ public class NetworkClient : MonoBehaviour
 
             cmd = m_Connection.PopEvent(m_Driver, out stream);
         }
-
-    
-
     }
 
     public void Login(string UserID, string Password)
@@ -210,8 +213,10 @@ public class NetworkClient : MonoBehaviour
 
     public void CreateLobby()
     {
+        Debug.Log("Client Create Lobby Called");
         HostGameMsg hostMsg = new HostGameMsg();
         hostMsg.player.id = PlayerUserID;
+        SendToServer(JsonUtility.ToJson(hostMsg));
     }
 
 

@@ -19,7 +19,7 @@ public class StartgameButtonBehaviour : MonoBehaviour
 
     public void OnStartGameButtonPressed()
     {
-        if(Player1.active && Player2.active) //make sure we have both player 1 and 2 in the lobby
+        if(Player1.activeInHierarchy && Player2.activeInHierarchy) //make sure we have both player 1 and 2 in the lobby
         {
             Debug.Log("Play Button Pressed");
             SceneManager.LoadScene("Play");

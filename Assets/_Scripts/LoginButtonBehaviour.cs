@@ -23,8 +23,7 @@ public class LoginButtonBehaviour : MonoBehaviour
     public void OnLoginButtonPressed()
     {
 
-        NetworkClient networkManager = FindObjectOfType<NetworkClient>();
-        networkManager.Login(usernameInput.text, passwordInput.text);
+        FindObjectOfType<NetworkClient>().Login(usernameInput.text, passwordInput.text);
 
 
         //if credentials valid move to lobbies scene

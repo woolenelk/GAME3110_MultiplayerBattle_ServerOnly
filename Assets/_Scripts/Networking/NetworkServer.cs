@@ -19,7 +19,7 @@ public class NetworkServer : MonoBehaviour
     public List<NetworkObjects.NetworkPlayer> connectedPlayers;
     public NetworkObjects.NetworkPlayer droppedPlayer;
 
-    public List<NetworkObjects.Lobby> AvailableLobbies;
+    public List<NetworkObjects.Lobby> AvailableLobbies = new List<NetworkObjects.Lobby>();
     private int LOBBYCURRENTMAXID = 0;
     
     void Start ()
@@ -110,13 +110,21 @@ public class NetworkServer : MonoBehaviour
 
         NetworkObjects.Lobby newLobby = new NetworkObjects.Lobby();
         if (newLobby != null)
+        {
             m.successful = true;
-        newLobby.lobbyID = LOBBYCURRENTMAXID;
-        newLobby.Player1 = UserID;
-        AvailableLobbies.Add(newLobby);
-
+            newLobby.lobbyID = LOBBYCURRENTMAXID;
+            newLobby.Player1 = UserID;
+            AvailableLobbies.Add(newLobby);
+            LOBBYCURRENTMAXID++;
+            Debug.Log("Lobby ID = " + newLobby.lobbyID);
+            Debug.Log(JsonUtility.ToJson(newLobby));
+            Debug.Log(JsonUtility.ToJson(AvailableLobbies[0]));
+        }
+        else
+        {
+            Debug.Log("Host Lobby Failed");
+        }
         SendToClient(JsonUtility.ToJson(m), m_Connections[connection]);
-        LOBBYCURRENTMAXID++;
     }
 
     public void JoinLobby(int LobbyID, string joiningUserID, int connection)
@@ -186,21 +194,25 @@ public class NetworkServer : MonoBehaviour
 
         switch(header.cmd){
             case Commands.PLAYER_LOGIN:
+                Debug.Log("Login request received");
                 PlayerLoginMsg loginMsg = JsonUtility.FromJson<PlayerLoginMsg>(recMsg);
                 StartCoroutine(SendLoginWebRequest(loginMsg.userID, loginMsg.password, i));
                 break;
             case Commands.PLAYER_REGISTER:
+                Debug.Log("Registration request received");
                 PlayerRegisterMsg registerMsg = JsonUtility.FromJson<PlayerRegisterMsg>(recMsg);
                 StartCoroutine(SendRegisterWebRequest(registerMsg.userID, registerMsg.password, i));
                 break;
             case Commands.HOST_GAME:
+                Debug.Log("HOSTED GAME received");
                 HostGameMsg hostMsg = JsonUtility.FromJson<HostGameMsg>(recMsg);
                 HostNewLobby(hostMsg.player.id, i);
                 break;
             case Commands.JOIN_GAME:
+                Debug.Log("JOINED GAME received");
                 JoinGameMsg joinMsg = JsonUtility.FromJson<JoinGameMsg>(recMsg);
                 JoinLobby(joinMsg.joinLobby.lobbyID, joinMsg.player.id, i);
-
+                
                 break;
             case Commands.HANDSHAKE:
                 HandshakeMsg hsMsg = JsonUtility.FromJson<HandshakeMsg>(recMsg);
@@ -220,9 +232,11 @@ public class NetworkServer : MonoBehaviour
                 Debug.Log("Server update message received!");
                 break;
             case Commands.REQUEST_AVAILABLE_LOBBIES:
-
+                Debug.Log("Received request for lobbies");
                 AllAvailableLobbies n = new AllAvailableLobbies();
                 n.Lobbies = AvailableLobbies;
+                Debug.Log(JsonUtility.ToJson(AvailableLobbies[0]));
+                Debug.Log(JsonUtility.ToJson(n.Lobbies[0]));
                 SendToClient(JsonUtility.ToJson(n), m_Connections[i]);
                 break;
             default:
