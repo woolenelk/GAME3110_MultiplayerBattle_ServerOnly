@@ -366,6 +366,8 @@ public class NetworkServer : MonoBehaviour
     void OnDisconnect(int i){
         Debug.Log("Client disconnected from server");
 
+        SendDroppedMessageToRemainingLobby(i);
+
         foreach (var player in connectedPlayers)
         {
             if(player.id == m_Connections[i].InternalId.ToString())
@@ -376,17 +378,48 @@ public class NetworkServer : MonoBehaviour
         connectedPlayers.Remove(droppedPlayer);
         m_Connections[i] = default(NetworkConnection);
 
-        //let all of the remaining clients know who dropped
-        DroppedUpdateMsg d = new DroppedUpdateMsg();
-        d.player = droppedPlayer;
-        foreach (NetworkConnection connection in m_Connections)
+
+    }
+
+    void SendDroppedMessageToRemainingLobby(int playerAddressThatDCd)
+    {
+        string playerName = ""; 
+        foreach (var keyValue in d_Connections)
         {
-            if (connection.IsCreated)
+            if (keyValue.Value == m_Connections[playerAddressThatDCd])
             {
-                SendToClient(JsonUtility.ToJson(d), connection);
+                playerName = keyValue.Key;
             }
         }
-        droppedPlayer = null;
+
+        int closingLobby = -1;
+        foreach (var keyValue in AvailableLobbies)
+        {
+            if(keyValue.Value.Player1 == playerName) //player 1 dc'd
+            {
+                closingLobby = keyValue.Key;
+                //update win loss
+                StartCoroutine(SendWinAndLossWebRequest(keyValue.Value.Player2, keyValue.Value.Player1));
+                //send dc message to other player
+                LobbyDisconnectedMsg dcMSG = new LobbyDisconnectedMsg();
+                SendToClient(JsonUtility.ToJson(dcMSG), d_Connections[keyValue.Value.Player2]);
+            }
+            else if(keyValue.Value.Player2 == playerName) //player2 dc
+            {
+                closingLobby = keyValue.Key;
+                //update win loss
+                StartCoroutine(SendWinAndLossWebRequest(keyValue.Value.Player1, keyValue.Value.Player2));
+                //send dc message to other player
+                LobbyDisconnectedMsg dcMSG = new LobbyDisconnectedMsg();
+                SendToClient(JsonUtility.ToJson(dcMSG), d_Connections[keyValue.Value.Player1]);
+            }
+        }
+
+        AvailableLobbies.Remove(closingLobby);
+
+        d_Connections.Remove(playerName);
+
+
     }
 
 
