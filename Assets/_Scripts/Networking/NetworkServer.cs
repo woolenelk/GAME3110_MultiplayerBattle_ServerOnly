@@ -272,6 +272,20 @@ public class NetworkServer : MonoBehaviour
 
                 }
                 break;
+            case Commands.BATTLE_WON:
+                BattleWinMsg winMsg = JsonUtility.FromJson<BattleWinMsg>(recMsg);
+                Debug.Log("Received Move from client");
+                if (winMsg.Lobby.player1addr == i)//if player 1 won
+                {
+                    //update player 1 win and player 2 loss
+                }
+                else
+                {
+                    //update player 2 win and player 1 loss
+
+                }
+                //remove the lobby form the lobbies list
+                break;
             default:
                 Debug.Log("SERVER ERROR: Unrecognized message received!");
                 break;
