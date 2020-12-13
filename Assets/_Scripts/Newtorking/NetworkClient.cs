@@ -83,6 +83,7 @@ public class NetworkClient : MonoBehaviour
                 else
                 {
                     Debug.Log("UNSuccessful Login");
+                    FindObjectOfType<LoginButtonBehaviour>().DisplayError();
                 }
                 break;
             case Commands.PLAYER_REGISTER:
@@ -96,6 +97,7 @@ public class NetworkClient : MonoBehaviour
                 else
                 {
                     Debug.Log("UNSuccessful Register");
+                    FindObjectOfType<RegisterButtonBehaviour>().DisplayError();
                 }
                 // check if successful is true
                 break;
@@ -130,6 +132,17 @@ public class NetworkClient : MonoBehaviour
             case Commands.DROPPED_UPDATE:
                 DroppedUpdateMsg dpMsg = JsonUtility.FromJson<DroppedUpdateMsg>(recMsg);
                 
+                break;
+            case Commands.REQUEST_ALL_LOBBIES:
+                AllAvailableLobbies alMSG = JsonUtility.FromJson<AllAvailableLobbies>(recMsg);
+                var LobbyList = FindObjectOfType<ScrollFiller>();
+                LobbyList.ClearLobbies();
+                foreach (var lobby in alMSG.Lobbies)
+                {
+                    //add the lobby to the scroll
+                    LobbyList.GenerateItem(lobby.Player1);
+                }
+
                 break;
             default:
             Debug.Log("Unrecognized message received!");

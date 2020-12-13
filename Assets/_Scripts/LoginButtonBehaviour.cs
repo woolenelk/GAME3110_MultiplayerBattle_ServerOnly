@@ -1,6 +1,5 @@
 ﻿using System.Collections;
 using UnityEngine;
-using UnityEngine.Events;
 using TMPro;
 
 
@@ -32,8 +31,13 @@ public class LoginButtonBehaviour : MonoBehaviour
         Debug.Log("Login Button Pressed");
         //SceneManager.LoadScene("Lobbies");
 
+        
+    }
+
+    public void DisplayError()
+    {
         //if credentials fail display error notification of incorrect credentials
-        if(errorMessageCoroutine != null)
+        if (errorMessageCoroutine != null)
         {
             StopCoroutine(errorMessageCoroutine);
 
@@ -41,7 +45,6 @@ public class LoginButtonBehaviour : MonoBehaviour
         errorMessageCoroutine = DisplayErrorMessage();
         StartCoroutine(errorMessageCoroutine);
     }
-
 
     IEnumerator DisplayErrorMessage()
     {

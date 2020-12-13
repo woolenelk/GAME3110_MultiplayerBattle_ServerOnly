@@ -20,6 +20,7 @@ public class NetworkServer : MonoBehaviour
     public NetworkObjects.NetworkPlayer droppedPlayer;
 
     public List<NetworkObjects.Lobby> AvailableLobbies;
+
     private int LOBBYCURRENTMAXID = 0;
     
     void Start ()
@@ -191,6 +192,15 @@ public class NetworkServer : MonoBehaviour
             case Commands.SERVER_UPDATE:
                 ServerUpdateMsg suMsg = JsonUtility.FromJson<ServerUpdateMsg>(recMsg);
                 Debug.Log("Server update message received!");
+                break;
+            case Commands.REQUEST_AVAILABLE_LOBBIES:
+                //RequestAvailableLobbiesMsg reMsg = JsonUtility.FromJson<RequestAvailableLobbiesMsg>(recMsg);
+                Debug.Log("Request for all lobies received");
+
+                AllAvailableLobbies m = new AllAvailableLobbies();
+                m.Lobbies = AvailableLobbies;
+                SendToClient(JsonUtility.ToJson(m), m_Connections[i]);
+
                 break;
             default:
                 Debug.Log("SERVER ERROR: Unrecognized message received!");
