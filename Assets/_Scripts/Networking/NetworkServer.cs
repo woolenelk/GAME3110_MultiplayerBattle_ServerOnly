@@ -19,11 +19,14 @@ public class NetworkServer : MonoBehaviour
     public List<NetworkObjects.NetworkPlayer> connectedPlayers;
     public NetworkObjects.NetworkPlayer droppedPlayer;
 
+    public Dictionary<string, NetworkConnection> d_Connections;
+
     public List<NetworkObjects.Lobby> AvailableLobbies = new List<NetworkObjects.Lobby>();
     private int LOBBYCURRENTMAXID = 0;
     
     void Start ()
     {
+        d_Connections = new Dictionary<string, NetworkConnection>();
         m_Driver = NetworkDriver.Create();
         var endpoint = NetworkEndPoint.AnyIpv4;
         endpoint.Port = serverPort;
@@ -202,13 +205,17 @@ public class NetworkServer : MonoBehaviour
 
     void OnConnect(NetworkConnection c){
         m_Connections.Add(c);
+
+        d_Connections.Add(c.InternalId.ToString(), c);
         Debug.Log(c.ToString());
+        Debug.Log(c.InternalId.ToString());
         Debug.Log("Accepted a connection");
         Debug.Log("Added player:" + c.InternalId.ToString());
         // Example to send a handshake message:
         HandshakeMsg m = new HandshakeMsg();
+        m.InternalServerID = c.InternalId.ToString();
         //add the new player to our list of connected players
-        connectedPlayers.Add(m.player);
+        //connectedPlayers.Add(m.player);
         SendToClient(JsonUtility.ToJson(m), c);
 
         ////send the new player all the other players and the other players the new player
@@ -255,6 +262,7 @@ public class NetworkServer : MonoBehaviour
                 break;
             case Commands.HANDSHAKE:
                 HandshakeMsg hsMsg = JsonUtility.FromJson<HandshakeMsg>(recMsg);
+                //SendToClient(JsonUtility.ToJson(hsMsg), m_Connections[i]);
                 //Debug.Log("Handshake message received!");
                 break;
             case Commands.PLAYER_UPDATE:
