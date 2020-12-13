@@ -54,6 +54,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3b1f8faf8a4588a40a50b675a1390d0d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  AvailableLobby:
+    lobbyID: -1
+    Player1: 
+    Player2: 
+    full: 0
 --- !u!1 &3556675249945929454
 GameObject:
   m_ObjectHideFlags: 0
@@ -792,13 +797,13 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 6024338282485544377}
-        m_TargetAssemblyTypeName: 
-        m_MethodName: 
+      - m_Target: {fileID: 604389732817068701}
+        m_TargetAssemblyTypeName: JoinLobbyScript, Assembly-CSharp
+        m_MethodName: OnJoinLobbyPressed
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: 
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -816,6 +821,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7bbb696f175985c4bbc0cac0e1f6db82, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  joinableLobby: {fileID: 3482678115970036736}
 --- !u!1 &7527924490698059870
 GameObject:
   m_ObjectHideFlags: 0
