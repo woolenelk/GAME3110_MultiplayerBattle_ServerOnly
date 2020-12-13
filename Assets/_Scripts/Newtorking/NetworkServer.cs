@@ -181,7 +181,7 @@ public class NetworkServer : MonoBehaviour
                 break;
             case Commands.JOIN_GAME:
                 JoinGameMsg joinMsg = JsonUtility.FromJson<JoinGameMsg>(recMsg);
-                JoinLobby(joinMsg.joinLobby.LobbyID, joinMsg.player.id, i);
+                JoinLobby(joinMsg.joinLobby.lobbyID, joinMsg.player.id, i);
 
                 break;
             case Commands.HANDSHAKE:
