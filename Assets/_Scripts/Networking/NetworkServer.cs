@@ -249,7 +249,12 @@ public class NetworkServer : MonoBehaviour
             case Commands.REQUEST_AVAILABLE_LOBBIES:
                 Debug.Log("Received request for lobbies");
                 AllAvailableLobbies n = new AllAvailableLobbies();
-                n.Lobbies = AvailableLobbies;
+                foreach (var item in AvailableLobbies)
+                {
+                    if (!item.full)
+                        n.Lobbies.Add(item);
+                }
+                //n.Lobbies = AvailableLobbies;
                 //Debug.Log(JsonUtility.ToJson(AvailableLobbies[0]));
                 //Debug.Log(JsonUtility.ToJson(n.Lobbies[0]));
                 SendToClient(JsonUtility.ToJson(n), m_Connections[i]);
@@ -272,12 +277,13 @@ public class NetworkServer : MonoBehaviour
                 Debug.Log("Received Move from client");
                 if (winMsg.Lobby.player1addr == i)//if player 1 won
                 {
-                    //update player 1 win and player 2 loss
+                    StartCoroutine(SendWinAndLossWebRequest(winMsg.Lobby.Player1, winMsg.Lobby.Player2));
+                        //update player 1 win and player 2 loss
                 }
                 else
                 {
+                    StartCoroutine(SendWinAndLossWebRequest(winMsg.Lobby.Player2, winMsg.Lobby.Player1));
                     //update player 2 win and player 1 loss
-
                 }
                 //remove the lobby form the lobbies list
                 break;
@@ -286,7 +292,19 @@ public class NetworkServer : MonoBehaviour
                 break;
         }
     }
+    IEnumerator SendWinAndLossWebRequest(string Winner, string Loser)
+    {
+        string winurl = "https://6of6hcn9f8.execute-api.us-east-2.amazonaws.com/default/FinalAssignmentPlayerWon?UserID=" + Winner;
+        string lossurl = "https://k03zoudx96.execute-api.us-east-2.amazonaws.com/default/FinalAssignmentPlayerLost?UserID=" + Loser;
 
+        UnityWebRequest www = UnityWebRequest.Get(winurl);
+        www.SetRequestHeader("Content-Type", "application/json");
+        yield return www.SendWebRequest();
+
+        UnityWebRequest www2 = UnityWebRequest.Get(lossurl);
+        www2.SetRequestHeader("Content-Type", "application/json");
+        yield return www2.SendWebRequest();
+    }
     void OnDisconnect(int i){
         Debug.Log("Client disconnected from server");
         foreach (var player in connectedPlayers)

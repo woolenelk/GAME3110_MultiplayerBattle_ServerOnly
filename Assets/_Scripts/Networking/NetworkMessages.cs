@@ -97,6 +97,7 @@ namespace NetworkMessages
 
         public AllAvailableLobbies()
         {      // Constructor
+            Lobbies = new List<NetworkObjects.Lobby>();
             cmd = Commands.REQUEST_ALL_LOBBIES;
         }
     };

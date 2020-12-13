@@ -174,7 +174,7 @@ public class NetworkClient : MonoBehaviour
                 scrollFiller.ClearLobbies();
                 foreach (var lobby in alMsg.Lobbies)
                 {
-                    if (!lobby.full)
+                    //if (!lobby.full)
                         scrollFiller.GenerateItem(lobby);
                 }
                 break;
