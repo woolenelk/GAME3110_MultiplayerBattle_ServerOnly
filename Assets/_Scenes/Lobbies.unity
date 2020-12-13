@@ -1142,6 +1142,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: JoinablePlayer
       objectReference: {fileID: 0}
+    - target: {fileID: 1006828282181794634, guid: 79b6b518a7957dc4c8ea7ddf30353ff6, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4795878219084315845, guid: 79b6b518a7957dc4c8ea7ddf30353ff6, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
