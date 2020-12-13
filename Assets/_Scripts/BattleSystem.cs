@@ -39,11 +39,13 @@ public class BattleSystem : MonoBehaviour
     public NetworkClient networkClient;
 
     public BattleState MyPlayerNum;
+    bool MoveAvailble;
 
 
     // Start is called before the first frame update
     void Start()
     {
+        MoveAvailble = true;
         networkClient = FindObjectOfType<NetworkClient>();
         state = BattleState.START;
         StartCoroutine(CreatePlayers());
@@ -81,12 +83,13 @@ public class BattleSystem : MonoBehaviour
         {
             playerDetails.waifu = Waifus.waifuList[0];
             MyPlayerNum = BattleState.PLAYER1;
-
+          
         }
         else
         {
             playerDetails.waifu = Waifus.waifuList[1];
             MyPlayerNum = BattleState.PLAYER2;
+            
         }
 
         playerDetails.waifuSprite.sprite = playerDetails.waifu.characterImage;
@@ -174,11 +177,13 @@ public class BattleSystem : MonoBehaviour
         if (state == BattleState.PLAYER2)
         {
             state = BattleState.PLAYER1;
+            MoveAvailble = true;
             Player1Turn();
         }
-        else if (state == BattleState.PROCESSING)
+        else if (state == BattleState.PLAYER1)
         {
             state = BattleState.PLAYER2;
+            MoveAvailble = true;
             Player2Turn();
         }
 
@@ -281,21 +286,23 @@ public class BattleSystem : MonoBehaviour
     public void OnButtonAttack1(AudioSource buttonSound)
     {
         //player 1 turn and player 1
-        if (MyPlayerNum == BattleState.PLAYER1)
+        if (MyPlayerNum == BattleState.PLAYER1 && MoveAvailble)
         {
             if (state != BattleState.PLAYER1)
                 return;
-            state = BattleState.PROCESSING;
+            
             buttonSound.Play();
+            MoveAvailble = false;
             networkClient.MakeMove(0);
             StartCoroutine(Attack(0, playerDetails, enemyDetails));
         }
-        else if(MyPlayerNum == BattleState.PLAYER2)//player 2 turn and player 2
+        else if(MyPlayerNum == BattleState.PLAYER2 & MoveAvailble)//player 2 turn and player 2
         {
             if (state != BattleState.PLAYER2)
                 return;
-            state = BattleState.PROCESSING;
+            
             buttonSound.Play();
+            MoveAvailble = false;
             networkClient.MakeMove(0);
             StartCoroutine(Attack(0, playerDetails, enemyDetails));
         }
@@ -304,21 +311,23 @@ public class BattleSystem : MonoBehaviour
 
     public void OnButtonAttack2(AudioSource buttonSound)
     {
-        if (MyPlayerNum == BattleState.PLAYER1)
+        if (MyPlayerNum == BattleState.PLAYER1 && MoveAvailble)
         {
             if (state != BattleState.PLAYER1)
                 return;
-            state = BattleState.PROCESSING;
+            
             buttonSound.Play();
+            MoveAvailble = false;
             networkClient.MakeMove(1);
             StartCoroutine(Attack(1, playerDetails, enemyDetails));
         }
-        else if (MyPlayerNum == BattleState.PLAYER2)//player 2 turn and player 2
+        else if (MyPlayerNum == BattleState.PLAYER2 && MoveAvailble)//player 2 turn and player 2
         {
             if (state != BattleState.PLAYER2)
                 return;
-            state = BattleState.PROCESSING;
+            
             buttonSound.Play();
+            MoveAvailble = false;
             networkClient.MakeMove(1);
             StartCoroutine(Attack(1, playerDetails, enemyDetails));
         }
@@ -326,42 +335,46 @@ public class BattleSystem : MonoBehaviour
 
     public void OnButtonAttack3(AudioSource buttonSound)
     {
-        if (MyPlayerNum == BattleState.PLAYER1)
+        if (MyPlayerNum == BattleState.PLAYER1 && MoveAvailble)
         {
             if (state != BattleState.PLAYER1)
                 return;
-            state = BattleState.PROCESSING;
+            
             buttonSound.Play();
+            MoveAvailble = false;
             networkClient.MakeMove(2);
             StartCoroutine(Attack(2, playerDetails, enemyDetails));
         }
-        else if (MyPlayerNum == BattleState.PLAYER2)//player 2 turn and player 2
+        else if (MyPlayerNum == BattleState.PLAYER2 && MoveAvailble)//player 2 turn and player 2
         {
             if (state != BattleState.PLAYER2)
                 return;
-            state = BattleState.PROCESSING;
+            
             buttonSound.Play();
+            MoveAvailble = false;
             networkClient.MakeMove(2);
             StartCoroutine(Attack(2, playerDetails, enemyDetails));
         }
     }
     public void OnButtonGuardUp(AudioSource buttonSound)
     {
-        if (MyPlayerNum == BattleState.PLAYER1)
+        if (MyPlayerNum == BattleState.PLAYER1 && MoveAvailble)
         {
             if (state != BattleState.PLAYER1)
                 return;
-            state = BattleState.PROCESSING;
+            
             buttonSound.Play();
+            MoveAvailble = false;
             networkClient.MakeMove(3);
             StartCoroutine(Attack(3, playerDetails, enemyDetails));
         }
-        else if (MyPlayerNum == BattleState.PLAYER2)//player 2 turn and player 2
+        else if (MyPlayerNum == BattleState.PLAYER2 && MoveAvailble)//player 2 turn and player 2
         {
             if (state != BattleState.PLAYER2)
                 return;
-            state = BattleState.PROCESSING;
+            
             buttonSound.Play();
+            MoveAvailble = false;
             networkClient.MakeMove(3);
             StartCoroutine(Attack(3, playerDetails, enemyDetails));
         }
@@ -370,21 +383,23 @@ public class BattleSystem : MonoBehaviour
 
     public void OnButtonRest(AudioSource buttonSound)
     {
-        if (MyPlayerNum == BattleState.PLAYER1)
+        if (MyPlayerNum == BattleState.PLAYER1 && MoveAvailble)
         {
             if (state != BattleState.PLAYER1)
                 return;
-            state = BattleState.PROCESSING;
+            
             buttonSound.Play();
+            MoveAvailble = false;
             networkClient.MakeMove(4);
             StartCoroutine(Attack(4, playerDetails, enemyDetails));
         }
-        else if (MyPlayerNum == BattleState.PLAYER2)//player 2 turn and player 2
+        else if (MyPlayerNum == BattleState.PLAYER2 && MoveAvailble)//player 2 turn and player 2
         {
             if (state != BattleState.PLAYER2)
                 return;
-            state = BattleState.PROCESSING;
+            
             buttonSound.Play();
+            MoveAvailble = false;
             networkClient.MakeMove(4);
             StartCoroutine(Attack(4, playerDetails, enemyDetails));
         }
