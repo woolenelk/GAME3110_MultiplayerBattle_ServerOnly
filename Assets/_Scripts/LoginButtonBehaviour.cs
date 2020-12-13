@@ -1,13 +1,20 @@
 ﻿using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
+using TMPro;
 
 
 public class LoginButtonBehaviour : MonoBehaviour
 {
     public GameObject errorMessage;
     public float errorMessageDuration;
-    IEnumerator errorMessageCoroutine;    
+    IEnumerator errorMessageCoroutine;
+
+    [SerializeField]
+    TMP_InputField usernameInput;
+    
+    [SerializeField]
+    TMP_InputField passwordInput;
 
     private void Start()
     {
@@ -18,7 +25,8 @@ public class LoginButtonBehaviour : MonoBehaviour
     {
 
         NetworkClient networkManager = FindObjectOfType<NetworkClient>();
-        networkManager.Login("kevin", "test");
+        networkManager.Login(usernameInput.text, passwordInput.text);
+
 
         //if credentials valid move to lobbies scene
         Debug.Log("Login Button Pressed");
