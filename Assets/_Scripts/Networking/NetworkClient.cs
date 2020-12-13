@@ -52,7 +52,7 @@ public class NetworkClient : MonoBehaviour
     {
         while (true)
         {
-            yield return new WaitForSeconds(2);
+            yield return new WaitForSeconds(0.5f);
             Debug.Log("Sending Handshake");
             HandshakeMsg m = new HandshakeMsg();
             m.player.id = m_Connection.InternalId.ToString();
