@@ -197,6 +197,10 @@ public class NetworkClient : MonoBehaviour
                 Debug.Log( "RAW MESSAGE PLAYER INFO "+  recMsg);
                 Player = infoMsg.Player;
                 break;
+            case Commands.LOBBY_DISCONNECTED:
+                Debug.Log("Other player disconnected form lobby");
+                OnOtherPlayerDisconnected();
+                break;
             default:
                 Debug.Log("Unrecognized message received!");
                 Debug.Log(recMsg);
@@ -221,6 +225,11 @@ public class NetworkClient : MonoBehaviour
         m_Connection = default(NetworkConnection);
         SceneManager.LoadScene("Start Menu");
         Destroy(gameObject);
+    }
+    void OnOtherPlayerDisconnected()
+    {
+        SceneManager.LoadScene("Lobbies");
+        MyLobby = null;
     }
 
     public void OnDestroy()

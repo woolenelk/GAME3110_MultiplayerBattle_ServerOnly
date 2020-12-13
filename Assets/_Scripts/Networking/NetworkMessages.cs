@@ -21,7 +21,8 @@ namespace NetworkMessages
         START_GAME,
         MOVE_TAKEN,
         BATTLE_WON,
-        PLAYER_INFO
+        PLAYER_INFO,
+        LOBBY_DISCONNECTED
     }
     
     [System.Serializable]
@@ -218,6 +219,16 @@ namespace NetworkMessages
             cmd = Commands.PLAYER_INFO;
             Player = new NetworkObjects.Item();
             successful = false;
+        }
+    }
+
+    [System.Serializable]
+    public class LobbyDisconnectedMsg : NetworkHeader
+    {
+
+        public LobbyDisconnectedMsg()
+        {
+            cmd = Commands.LOBBY_DISCONNECTED;
         }
     }
 
