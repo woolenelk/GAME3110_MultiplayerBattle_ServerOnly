@@ -1,10 +1,10 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Events;
+
 using TMPro;
 
-
-public class LoginButtonBehaviour : MonoBehaviour
+public class RegisterButtonBehaviour : MonoBehaviour
 {
     public GameObject errorMessage;
     public float errorMessageDuration;
@@ -12,7 +12,7 @@ public class LoginButtonBehaviour : MonoBehaviour
 
     [SerializeField]
     TMP_InputField usernameInput;
-    
+
     [SerializeField]
     TMP_InputField passwordInput;
 
@@ -21,19 +21,19 @@ public class LoginButtonBehaviour : MonoBehaviour
         errorMessage.SetActive(false);
     }
 
-    public void OnLoginButtonPressed()
+    public void OnRegisterButtonPressed()
     {
 
         NetworkClient networkManager = FindObjectOfType<NetworkClient>();
-        networkManager.Login(usernameInput.text, passwordInput.text);
+        networkManager.Register(usernameInput.text, passwordInput.text);
 
 
         //if credentials valid move to lobbies scene
-        Debug.Log("Login Button Pressed");
+        Debug.Log("Register Button Pressed");
         //SceneManager.LoadScene("Lobbies");
 
         //if credentials fail display error notification of incorrect credentials
-        if(errorMessageCoroutine != null)
+        if (errorMessageCoroutine != null)
         {
             StopCoroutine(errorMessageCoroutine);
 
