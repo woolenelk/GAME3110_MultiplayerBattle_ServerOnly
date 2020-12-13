@@ -149,7 +149,8 @@ public class NetworkServer : MonoBehaviour
                 i = AvailableLobbies.Count;
             }
         }
-        SendToClient(JsonUtility.ToJson(m), m_Connections[connection]);
+        SendToClient(JsonUtility.ToJson(m), m.joinLobby.player1addr);
+        SendToClient(JsonUtility.ToJson(m), m.joinLobby.player2addr);
 
     }
 
@@ -177,17 +178,17 @@ public class NetworkServer : MonoBehaviour
         connectedPlayers.Add(m.player);
         SendToClient(JsonUtility.ToJson(m), c);
 
-        //send the new player all the other players and the other players the new player
-        foreach (NetworkConnection connection in m_Connections)
-        {
-            if (connection.IsCreated)
-            {
-                Debug.Log("Sending connected players to player:" + connection.InternalId.ToString());
-                NewPlayerUpdateMsg n = new NewPlayerUpdateMsg();
-                n.players = new List<NetworkObjects.NetworkPlayer>(connectedPlayers);
-                SendToClient(JsonUtility.ToJson(n), connection);
-            }
-        }
+        ////send the new player all the other players and the other players the new player
+        //foreach (NetworkConnection connection in m_Connections)
+        //{
+        //    if (connection.IsCreated)
+        //    {
+        //        Debug.Log("Sending connected players to player:" + connection.InternalId.ToString());
+        //        NewPlayerUpdateMsg n = new NewPlayerUpdateMsg();
+        //        n.players = new List<NetworkObjects.NetworkPlayer>(connectedPlayers);
+        //        SendToClient(JsonUtility.ToJson(n), connection);
+        //    }
+        //}
     }
 
     void OnData(DataStreamReader stream, int i)  // i is the index in m_connection to get ip address
@@ -232,6 +233,12 @@ public class NetworkServer : MonoBehaviour
                     
                 }
                 break;
+            case Commands.START_GAME:
+                StartGameMsg startMsg = JsonUtility.FromJson<StartGameMsg>(recMsg);
+                startMsg.successful = true;
+                SendToClient(JsonUtility.ToJson(startMsg), startMsg.LobbyToStart.player1addr);
+                SendToClient(JsonUtility.ToJson(startMsg), startMsg.LobbyToStart.player2addr);
+                break;
             case Commands.SERVER_UPDATE:
                 ServerUpdateMsg suMsg = JsonUtility.FromJson<ServerUpdateMsg>(recMsg);
                 Debug.Log("Server update message received!");
@@ -239,9 +246,14 @@ public class NetworkServer : MonoBehaviour
             case Commands.REQUEST_AVAILABLE_LOBBIES:
                 Debug.Log("Received request for lobbies");
                 AllAvailableLobbies n = new AllAvailableLobbies();
-                n.Lobbies = AvailableLobbies;
-                Debug.Log(JsonUtility.ToJson(AvailableLobbies[0]));
-                Debug.Log(JsonUtility.ToJson(n.Lobbies[0]));
+                foreach (NetworkObjects.Lobby item in AvailableLobbies)
+                {
+                    if (!item.full)
+                        n.Lobbies.Add(item);
+                }
+                //n.Lobbies = AvailableLobbies;
+                //Debug.Log(JsonUtility.ToJson(AvailableLobbies[0]));
+                //Debug.Log(JsonUtility.ToJson(n.Lobbies[0]));
                 SendToClient(JsonUtility.ToJson(n), m_Connections[i]);
                 break;
             default:

@@ -17,7 +17,8 @@ namespace NetworkMessages
         HOST_GAME,
         JOIN_GAME,
         REQUEST_AVAILABLE_LOBBIES,
-        REQUEST_ALL_LOBBIES
+        REQUEST_ALL_LOBBIES,
+        START_GAME
     }
     
     [System.Serializable]
@@ -59,7 +60,21 @@ namespace NetworkMessages
         public JoinGameMsg()
         {
             cmd = Commands.JOIN_GAME;
+            joinLobby = new NetworkObjects.Lobby();
             player = new NetworkObjects.NetworkPlayer();
+            successful = false;
+        }
+    }
+
+    public class StartGameMsg : NetworkHeader
+    {
+        public NetworkObjects.Lobby LobbyToStart;
+        public bool successful;
+
+        public StartGameMsg()
+        {
+            cmd = Commands.START_GAME;
+            LobbyToStart = new NetworkObjects.Lobby();
             successful = false;
         }
     }

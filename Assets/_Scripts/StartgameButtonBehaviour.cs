@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using NetworkMessages;
 
 public class StartgameButtonBehaviour : MonoBehaviour
 {
@@ -12,31 +13,36 @@ public class StartgameButtonBehaviour : MonoBehaviour
     public float errorMessageDuration;
     IEnumerator errorMessageCoroutine;
 
-    public NetworkObjects.Lobby lobby;
 
     private void Start()
     {
-        lobby = FindObjectOfType<NetworkClient>().MyLobby;
         errorMessage.SetActive(false);
     }
 
     public void OnStartGameButtonPressed()
     {
-        
-        if (Player1.activeInHierarchy && Player2.activeInHierarchy) //make sure we have both player 1 and 2 in the lobby
+        if (FindObjectOfType<NetworkClient>().isHostingPlayer())
         {
-            Debug.Log("Play Button Pressed");
-            SceneManager.LoadScene("Play");
-        }
-        else
-        {
-            if (errorMessageCoroutine != null)
+            if (Player1.activeInHierarchy && Player2.activeInHierarchy) //make sure we have both player 1 and 2 in the lobby
             {
-                StopCoroutine(errorMessageCoroutine);
+
+                FindObjectOfType<NetworkClient>().SendServerStartSignal();
+
+                Debug.Log("Play Button Pressed");
+                //SceneManager.LoadScene("Play");
+
 
             }
-            errorMessageCoroutine = DisplayErrorMessage();
-            StartCoroutine(errorMessageCoroutine);
+            else
+            {
+                if (errorMessageCoroutine != null)
+                {
+                    StopCoroutine(errorMessageCoroutine);
+
+                }
+                errorMessageCoroutine = DisplayErrorMessage();
+                StartCoroutine(errorMessageCoroutine);
+            }
         }
     }
 

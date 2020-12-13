@@ -29,7 +29,7 @@ public class NetworkClient : MonoBehaviour
         DontDestroyOnLoad(gameObject);
     }
     
-    void SendToServer(string message){
+    public void SendToServer(string message){
         var writer = m_Driver.BeginSend(m_Connection);
         NativeArray<byte> bytes = new NativeArray<byte>(Encoding.ASCII.GetBytes(message),Allocator.Temp);
         writer.WriteBytes(bytes);
@@ -101,7 +101,7 @@ public class NetworkClient : MonoBehaviour
                 break;
             case Commands.HOST_GAME:
                 HostGameMsg hostmsg = JsonUtility.FromJson<HostGameMsg>(recMsg);
-                if (hostmsg.successful && hostmsg.player.id == PlayerUserID)
+                if (hostmsg.successful && (hostmsg.newLobby.Player1 == PlayerUserID || hostmsg.newLobby.Player2 == PlayerUserID))
                 {
                     MyLobby = hostmsg.newLobby;
                     SceneManager.LoadScene("Lobby");
@@ -114,10 +114,18 @@ public class NetworkClient : MonoBehaviour
                 break;
             case Commands.JOIN_GAME:
                 JoinGameMsg joinmsg = JsonUtility.FromJson<JoinGameMsg>(recMsg);
-                if (joinmsg.successful && joinmsg.player.id == PlayerUserID)
+                if (joinmsg.successful && (joinmsg.joinLobby.Player1 == PlayerUserID || joinmsg.joinLobby.Player2 == PlayerUserID))
                 {
                     MyLobby = joinmsg.joinLobby;
-                    SceneManager.LoadScene("Lobby");
+                    if (joinmsg.joinLobby.Player1 == PlayerUserID)
+                    {
+                        //FindObjectOfType<LobbyHandler>().UpdateLobby();
+                    }
+                    else
+                    {
+                        SceneManager.LoadScene("Lobby");
+                    }
+                    
                     // success move to the lobby scene
                 }
                 else
@@ -133,6 +141,13 @@ public class NetworkClient : MonoBehaviour
                 {
                     myId = hsMsg.player.id;
                     Debug.Log("My id is:" + myId);
+                }
+                break;
+            case Commands.START_GAME:
+                StartGameMsg startMsg = JsonUtility.FromJson<StartGameMsg>(recMsg);
+                if (startMsg.successful)
+                {
+                    EnterPlay();
                 }
                 break;
             case Commands.PLAYER_UPDATE:
@@ -245,5 +260,20 @@ public class NetworkClient : MonoBehaviour
         SendToServer(JsonUtility.ToJson(hostMsg));
     }
 
+    public void SendServerStartSignal()
+    {
+        StartGameMsg m = new StartGameMsg();
+        m.LobbyToStart = MyLobby;
+        SendToServer(JsonUtility.ToJson(m));
+    }
 
+    public void EnterPlay()
+    {
+        SceneManager.LoadScene("Play");
+    }
+
+    public bool isHostingPlayer()
+    {
+        return (MyLobby.Player1 == PlayerUserID);
+    }
 }

@@ -24,9 +24,7 @@ public class RegisterButtonBehaviour : MonoBehaviour
     public void OnRegisterButtonPressed()
     {
 
-        NetworkClient networkManager = FindObjectOfType<NetworkClient>();
-        networkManager.Register(usernameInput.text, passwordInput.text);
-
+        FindObjectOfType<NetworkClient>().Register(usernameInput.text, passwordInput.text);
 
         //if credentials valid move to lobbies scene
         Debug.Log("Register Button Pressed");

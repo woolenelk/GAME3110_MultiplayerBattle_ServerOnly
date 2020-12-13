@@ -1298,7 +1298,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   errorMessage: {fileID: 2044407922}
-  errorMessageDuration: 0
+  errorMessageDuration: 2
   usernameInput: {fileID: 1710058353}
   passwordInput: {fileID: 1193608545}
 --- !u!1 &1229972786
