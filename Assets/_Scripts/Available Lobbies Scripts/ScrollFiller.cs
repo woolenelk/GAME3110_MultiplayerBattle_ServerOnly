@@ -29,7 +29,7 @@ public class ScrollFiller : MonoBehaviour
         var lobbies = FindObjectsOfType<JoinablePlayer>();
         foreach (var lobby in lobbies)
         {
-            Destroy(lobby);
+            Destroy(lobby.gameObject);
         }
     }
 
