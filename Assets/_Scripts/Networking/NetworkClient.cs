@@ -119,7 +119,7 @@ public class NetworkClient : MonoBehaviour
                     MyLobby = joinmsg.joinLobby;
                     if (joinmsg.joinLobby.Player1 == PlayerUserID)
                     {
-                        //FindObjectOfType<LobbyHandler>().UpdateLobby();
+                        FindObjectOfType<LobbyHandler>().UpdateLobby();
                     }
                     else
                     {
