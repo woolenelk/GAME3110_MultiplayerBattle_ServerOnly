@@ -62,8 +62,6 @@ public class NetworkClient : MonoBehaviour
     }
 
 
-
-
     void OnData(DataStreamReader stream){
         NativeArray<byte> bytes = new NativeArray<byte>(stream.Length,Allocator.Temp);
         stream.ReadBytes(bytes);
@@ -83,7 +81,6 @@ public class NetworkClient : MonoBehaviour
                 else
                 {
                     Debug.Log("UNSuccessful Login");
-                    FindObjectOfType<LoginButtonBehaviour>().DisplayError();
                 }
                 break;
             case Commands.PLAYER_REGISTER:
@@ -97,7 +94,6 @@ public class NetworkClient : MonoBehaviour
                 else
                 {
                     Debug.Log("UNSuccessful Register");
-                    FindObjectOfType<RegisterButtonBehaviour>().DisplayError();
                 }
                 // check if successful is true
                 break;
@@ -110,8 +106,8 @@ public class NetworkClient : MonoBehaviour
                     myId = hsMsg.player.id;
                     Debug.Log("My id is:" + myId);
                 }
-                    break;
-                case Commands.PLAYER_UPDATE:
+                break;
+            case Commands.PLAYER_UPDATE:
                     //not really receiveing player update messages as this is this client and not the server
                 PlayerUpdateMsg puMsg = JsonUtility.FromJson<PlayerUpdateMsg>(recMsg);
                 Debug.Log("Player update message received!");
@@ -122,27 +118,7 @@ public class NetworkClient : MonoBehaviour
                 for (int i = 0; i < suMsg.players.Count; i++)
                 {
                    
-
                 }
-                break;
-            case Commands.NEWPLAYER_UPDATE:
-                NewPlayerUpdateMsg npMsg = JsonUtility.FromJson<NewPlayerUpdateMsg>(recMsg);
-                
-                break;
-            case Commands.DROPPED_UPDATE:
-                DroppedUpdateMsg dpMsg = JsonUtility.FromJson<DroppedUpdateMsg>(recMsg);
-                
-                break;
-            case Commands.REQUEST_ALL_LOBBIES:
-                AllAvailableLobbies alMSG = JsonUtility.FromJson<AllAvailableLobbies>(recMsg);
-                var LobbyList = FindObjectOfType<ScrollFiller>();
-                LobbyList.ClearLobbies();
-                foreach (var lobby in alMSG.Lobbies)
-                {
-                    //add the lobby to the scroll
-                    LobbyList.GenerateItem(lobby.Player1);
-                }
-
                 break;
             default:
             Debug.Log("Unrecognized message received!");
