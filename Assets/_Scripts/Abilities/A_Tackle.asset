@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   abilityID: 2
   abilityName: Tackle
-  attackMultiplier: 1.5
+  attackMultiplier: 100
   description: Deals increased damage but get hurt in the process.
   costHP: 10
   selfBuff: 000000000000000000000000
