@@ -161,11 +161,11 @@ public class NetworkServer : MonoBehaviour
             newLobby.Player1 = UserID;
             newLobby.player1addr = connection;
             m.newLobby = newLobby;
-            AvailableLobbies[newLobby.lobbyID] = newLobby;
+            AvailableLobbies[newLobby.lobbyID]= newLobby;
             LOBBYCURRENTMAXID++;
             Debug.Log("Lobby ID = " + newLobby.lobbyID);
-            Debug.Log(JsonUtility.ToJson(newLobby));
-            Debug.Log(JsonUtility.ToJson(AvailableLobbies[0]));
+            //Debug.Log(JsonUtility.ToJson(newLobby));
+            //Debug.Log(JsonUtility.ToJson(AvailableLobbies[0]));
         }
         else
         {
