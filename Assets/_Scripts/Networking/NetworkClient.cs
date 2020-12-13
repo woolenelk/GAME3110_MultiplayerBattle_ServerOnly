@@ -12,7 +12,7 @@ public class NetworkClient : MonoBehaviour
     public string serverIP;
     public ushort serverPort;
     public NetworkObjects.Lobby MyLobby;
-    string PlayerUserID = "";
+    public string PlayerUserID = "";
 
     public string myId = "";
 
@@ -177,6 +177,12 @@ public class NetworkClient : MonoBehaviour
                     scrollFiller.GenerateItem(lobby);
                 }
                 break;
+            case Commands.MOVE_TAKEN:
+                MoveTakenMsg moveMsg = JsonUtility.FromJson<MoveTakenMsg>(recMsg);
+                Debug.Log("Received move from player");
+                FindObjectOfType<BattleSystem>().EnemyAttack(moveMsg.move);
+                
+                break;
             default:
             Debug.Log("Unrecognized message received!");
             break;
@@ -288,4 +294,13 @@ public class NetworkClient : MonoBehaviour
     {
         return (MyLobby.Player1 == PlayerUserID);
     }
+
+    public void MakeMove(int MoveNum)
+    {
+        MoveTakenMsg m = new MoveTakenMsg();
+        m.move = MoveNum;
+        m.Lobby = MyLobby;
+        SendToServer(JsonUtility.ToJson(m));
+    }
+
 }

@@ -259,6 +259,19 @@ public class NetworkServer : MonoBehaviour
                 //Debug.Log(JsonUtility.ToJson(n.Lobbies[0]));
                 SendToClient(JsonUtility.ToJson(n), m_Connections[i]);
                 break;
+            case Commands.MOVE_TAKEN:
+                MoveTakenMsg moveMsg = JsonUtility.FromJson<MoveTakenMsg>(recMsg);
+                Debug.Log("Received Move from client");
+                if (moveMsg.Lobby.player1addr == i)//if player 1 made the move
+                {
+                    SendToClient(JsonUtility.ToJson(moveMsg), m_Connections[moveMsg.Lobby.player2addr]);
+                }
+                else
+                {
+                    SendToClient(JsonUtility.ToJson(moveMsg), m_Connections[moveMsg.Lobby.player1addr]);
+
+                }
+                break;
             default:
                 Debug.Log("SERVER ERROR: Unrecognized message received!");
                 break;

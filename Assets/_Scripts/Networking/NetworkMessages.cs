@@ -18,7 +18,9 @@ namespace NetworkMessages
         JOIN_GAME,
         REQUEST_AVAILABLE_LOBBIES,
         REQUEST_ALL_LOBBIES,
-        START_GAME
+        START_GAME,
+        MOVE_TAKEN,
+        BATTLE_LOSS
     }
     
     [System.Serializable]
@@ -174,6 +176,33 @@ namespace NetworkMessages
             player = new NetworkObjects.NetworkPlayer();
         }
     }
+
+    [System.Serializable]
+    public class MoveTakenMsg : NetworkHeader
+    {
+        public NetworkObjects.Lobby Lobby;
+        public int move;
+        public MoveTakenMsg()
+        {      // Constructor
+            cmd = Commands.MOVE_TAKEN;
+            Lobby = new NetworkObjects.Lobby();
+            move = -1;
+        }
+    }
+
+    [System.Serializable]
+    public class BattleLossMsg : NetworkHeader
+    {
+        public NetworkObjects.Lobby Lobby;
+        public bool won;
+        public BattleLossMsg()
+        {      // Constructor
+            cmd = Commands.BATTLE_LOSS;
+            Lobby = new NetworkObjects.Lobby();
+            won = true;
+        }
+    }
+
 } 
 
 namespace NetworkObjects
