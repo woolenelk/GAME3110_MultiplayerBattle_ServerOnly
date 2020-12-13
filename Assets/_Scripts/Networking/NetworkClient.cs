@@ -174,7 +174,7 @@ public class NetworkClient : MonoBehaviour
                 scrollFiller.ClearLobbies();
                 foreach (var lobby in alMsg.Lobbies)
                 {
-                    scrollFiller.GenerateItem(lobby.Player1);
+                    scrollFiller.GenerateItem(lobby);
                 }
                 break;
             default:
@@ -270,6 +270,14 @@ public class NetworkClient : MonoBehaviour
     public void EnterPlay()
     {
         SceneManager.LoadScene("Play");
+    }
+
+    public void JoinLobby(NetworkObjects.Lobby joiningLobby)
+    {
+        JoinGameMsg m = new JoinGameMsg();
+        m.player.id = PlayerUserID;
+        m.joinLobby = joiningLobby;
+        SendToServer(JsonUtility.ToJson(m));
     }
 
     public bool isHostingPlayer()

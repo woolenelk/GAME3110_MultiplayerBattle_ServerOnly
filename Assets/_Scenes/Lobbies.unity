@@ -1144,7 +1144,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1006828282181794634, guid: 79b6b518a7957dc4c8ea7ddf30353ff6, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4795878219084315845, guid: 79b6b518a7957dc4c8ea7ddf30353ff6, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1443,7 +1443,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 752021272}
   m_HandleRect: {fileID: 752021271}
   m_Direction: 0
-  m_Value: 1
+  m_Value: 0
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:

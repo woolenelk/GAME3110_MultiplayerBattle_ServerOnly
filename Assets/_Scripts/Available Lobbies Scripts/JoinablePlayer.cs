@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class JoinablePlayer : MonoBehaviour
 {
+    public NetworkObjects.Lobby AvailableLobby;
+
     // Start is called before the first frame update
     void Start()
     {

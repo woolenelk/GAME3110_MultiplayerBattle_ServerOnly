@@ -33,12 +33,13 @@ public class ScrollFiller : MonoBehaviour
         }
     }
 
-    public void GenerateItem(string username, string level = "0")
+    public void GenerateItem(NetworkObjects.Lobby lobby, string level = "0")
     {
         GameObject scrollItemObj = Instantiate(scrollItemprefab);
         scrollItemObj.transform.SetParent(scrollContent.transform, false);
         scrollItemObj.transform.Find("PlayerLevel").gameObject.GetComponent<TMP_Text>().text = level;
-        scrollItemObj.transform.Find("PlayerName").gameObject.GetComponent<TMP_Text>().text = username;
+        scrollItemObj.transform.Find("PlayerName").gameObject.GetComponent<TMP_Text>().text = lobby.Player1;
+        scrollItemObj.transform.GetComponent<JoinablePlayer>().AvailableLobby = lobby;
 
         scrollView.verticalNormalizedPosition = 1;
     }
