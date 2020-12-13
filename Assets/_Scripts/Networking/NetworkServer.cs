@@ -178,20 +178,20 @@ public class NetworkServer : MonoBehaviour
     {
         JoinGameMsg m = new JoinGameMsg();
         m.player.id = joiningUserID;
-        
-        for (int i = 0; i < AvailableLobbies.Count; i++)
+
+        foreach (var Lobby in AvailableLobbies)
         {
-            if (AvailableLobbies[i].lobbyID == LobbyID)
+            if (Lobby.Key == LobbyID)
             {
-                if (AvailableLobbies[i].Player2 == null)
+                if (Lobby.Value.Player2 == null)
                 {
-                    AvailableLobbies[i].Player2 = joiningUserID;
-                    AvailableLobbies[i].player2addr = connection;
-                    AvailableLobbies[i].full = true;
-                    m.joinLobby = AvailableLobbies[i];
+                    Lobby.Value.Player2 = joiningUserID;
+                    Lobby.Value.player2addr = connection;
+                    Lobby.Value.full = true;
+                    m.joinLobby = Lobby.Value;
                     m.successful = true;
                 }
-                i = AvailableLobbies.Count;
+                break;
             }
         }
         SendToClient(JsonUtility.ToJson(m), m_Connections[m.joinLobby.player1addr]);
