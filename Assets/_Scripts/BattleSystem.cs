@@ -64,16 +64,8 @@ public class BattleSystem : MonoBehaviour
         state = BattleState.PLAYER1;
 
 
-        if (MyPlayerNum == BattleState.PLAYER1)
-        {
-            Player1Turn();
+        Player1Turn();
 
-        }
-        else
-        {
-            Player2Turn();
-
-        }
 
     }
 
