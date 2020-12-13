@@ -170,7 +170,7 @@ public class BattleSystem : MonoBehaviour
             EndBattle();
         }
 
-
+        Debug.Log("Move Made");
         if (state == BattleState.PLAYER2)
         {
             state = BattleState.PLAYER1;
@@ -250,10 +250,17 @@ public class BattleSystem : MonoBehaviour
 
         }
     }
-
     public void EnemyAttack(int move)
     {
+        Debug.Log("Enemy Uses ability: " + move);
+        StartCoroutine(StartEnemyAttack(move));
+    }
+    IEnumerator StartEnemyAttack(int move)
+    {
+        dialogueText.text = enemyDetails.waifu.CharacterName + " attacks!";
+        yield return new WaitForSeconds(1.0f);
         StartCoroutine(Attack(move, enemyDetails, playerDetails));
+        yield return new WaitForSeconds(1.0f);
     }
 
     //IEnumerator EnemyTurn()
