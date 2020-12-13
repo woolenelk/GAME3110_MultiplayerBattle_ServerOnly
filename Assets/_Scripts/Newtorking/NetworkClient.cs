@@ -4,7 +4,7 @@ using Unity.Networking.Transport;
 using NetworkMessages;
 using System.Text;
 using System.Collections;
-
+using UnityEngine.SceneManagement;
 public class NetworkClient : MonoBehaviour
 {
     public NetworkDriver m_Driver;
@@ -12,6 +12,7 @@ public class NetworkClient : MonoBehaviour
     public string serverIP;
     public ushort serverPort;
 
+    string PlayerUserID = "";
 
     public string myId = "";
 
@@ -75,14 +76,26 @@ public class NetworkClient : MonoBehaviour
                 // check if successful is true
                 if (loginMsg.successful)
                 {
-
+                    Debug.Log("Successful Login");
+                    PlayerUserID = loginMsg.userID;
+                    SceneManager.LoadScene("Lobbies");
+                }
+                else
+                {
+                    Debug.Log("UNSuccessful Login");
                 }
                 break;
             case Commands.PLAYERREGISTER:
                 PlayerRegisterMsg registerMsg = JsonUtility.FromJson<PlayerRegisterMsg>(recMsg);
                 if (registerMsg.successful)
                 {
-
+                    Debug.Log("Successful Register");
+                    PlayerUserID = registerMsg.userID;
+                    SceneManager.LoadScene("Lobbies");
+                }
+                else
+                {
+                    Debug.Log("UNSuccessful Register");
                 }
                 // check if successful is true
                 break;
