@@ -90,7 +90,7 @@ public class NetworkServer : MonoBehaviour
             Debug.Log(www.error);
             PlayerRegisterMsg m = new PlayerRegisterMsg();
             m.userID = userID;
-            // SendToClient(JsonUtility.ToJson(m), m_Connections[connection]);
+            SendToClient(JsonUtility.ToJson(m), m_Connections[connection]);
             // register unsuccessful
         }
         else
@@ -98,28 +98,45 @@ public class NetworkServer : MonoBehaviour
             PlayerRegisterMsg m = new PlayerRegisterMsg();
             m.userID = userID;
             m.successful = true;
-            // SendToClient(JsonUtility.ToJson(m), m_Connections[connection]);
+            SendToClient(JsonUtility.ToJson(m), m_Connections[connection]);
             // register sucessful
         }
     }
 
     public void HostNewLobby(string UserID, int connection)
     {
-        LOBBYCURRENTMAXID++;
+        HostGameMsg m = new HostGameMsg();
+        m.player.id = UserID;
+
         NetworkObjects.Lobby newLobby = new NetworkObjects.Lobby();
+        if (newLobby != null)
+            m.successful = true;
         newLobby.lobbyID = LOBBYCURRENTMAXID;
         newLobby.Player1 = UserID;
         AvailableLobbies.Add(newLobby);
 
-        HostGameMsg m = new HostGameMsg();
-        m.player.id = UserID;
-        m.successful = true;
         SendToClient(JsonUtility.ToJson(m), m_Connections[connection]);
+        LOBBYCURRENTMAXID++;
     }
 
     public void JoinLobby(int LobbyID, string joiningUserID, int connection)
     {
-
+        JoinGameMsg m = new JoinGameMsg();
+        m.player.id = joiningUserID;
+        
+        for (int i = 0; i < AvailableLobbies.Count; i++)
+        {
+            if (AvailableLobbies[i].lobbyID == LobbyID)
+            {
+                if (AvailableLobbies[i].Player2 == null)
+                {
+                    AvailableLobbies[i].Player2 = joiningUserID;
+                    m.successful = true;
+                }
+                i = AvailableLobbies.Count;
+            }
+        }
+        SendToClient(JsonUtility.ToJson(m), m_Connections[connection]);
     }
 
     void SendToClient(string message, NetworkConnection c)
