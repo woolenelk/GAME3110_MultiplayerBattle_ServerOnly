@@ -241,6 +241,8 @@ public class BattleSystem : MonoBehaviour
             dialogueText.text = "You lost the battle!";
 
         }
+
+        StartCoroutine(ReturnToLobbies());
     }
 
     IEnumerator ReturnToLobbies()
