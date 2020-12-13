@@ -21,6 +21,7 @@ namespace NetworkMessages
         START_GAME,
         MOVE_TAKEN,
         BATTLE_WON,
+        PLAYER_INFO
     }
     
     [System.Serializable]
@@ -204,6 +205,20 @@ namespace NetworkMessages
         }
     }
 
+    [System.Serializable]
+    public class MyInfoMsg:NetworkHeader
+    {
+        public NetworkObjects.Item Player;
+        public bool successful;
+
+        public MyInfoMsg()
+        {
+            cmd = Commands.PLAYER_INFO;
+            Player = new NetworkObjects.Item();
+            successful = false;
+        }
+    }
+
 } 
 
 namespace NetworkObjects
@@ -225,6 +240,14 @@ namespace NetworkObjects
         public string Password;
         public string Wins;
         public string Loses;
+
+        public Item()
+        {
+            UserID = null;
+            Password = null;
+            Wins = null;
+            Loses = null;
+        }
     }
 
     [System.Serializable]

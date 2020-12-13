@@ -13,21 +13,23 @@ public class NetworkClient : MonoBehaviour
     public ushort serverPort;
     public NetworkObjects.Lobby MyLobby;
     public string PlayerUserID = "";
-
+    public NetworkObjects.Item Player;
     public string myId = "";
 
    
 
     void Start ()
     {
+        Player = new NetworkObjects.Item();
         MyLobby = new NetworkObjects.Lobby();
         m_Driver = NetworkDriver.Create();
         m_Connection = default(NetworkConnection);
-        var endpoint = NetworkEndPoint.Parse(serverIP,serverPort);
+        var endpoint = NetworkEndPoint.Parse(serverIP, serverPort);
         m_Connection = m_Driver.Connect(endpoint);
 
         DontDestroyOnLoad(gameObject);
     }
+
     
     public void SendToServer(string message){
         var writer = m_Driver.BeginSend(m_Connection);
@@ -76,6 +78,7 @@ public class NetworkClient : MonoBehaviour
                 {
                     Debug.Log("Successful Login");
                     PlayerUserID = loginMsg.userID;
+                    //RequestPlayerInfo();
                     SceneManager.LoadScene("Lobbies");
                 }
                 else
@@ -90,6 +93,7 @@ public class NetworkClient : MonoBehaviour
                 {
                     Debug.Log("Successful Register");
                     PlayerUserID = registerMsg.userID;
+                    //RequestPlayerInfo();
                     SceneManager.LoadScene("Lobbies");
                 }
                 else
@@ -175,7 +179,7 @@ public class NetworkClient : MonoBehaviour
                 foreach (var lobby in alMsg.Lobbies)
                 {
                     //if (!lobby.full)
-                        scrollFiller.GenerateItem(lobby);
+                    scrollFiller.GenerateItem(lobby);
                 }
                 break;
             case Commands.MOVE_TAKEN:
@@ -183,6 +187,12 @@ public class NetworkClient : MonoBehaviour
                 Debug.Log("Received move from player");
                 FindObjectOfType<BattleSystem>().EnemyAttack(moveMsg.move);
                 
+                break;
+            case Commands.PLAYER_INFO:
+                MyInfoMsg infoMsg = JsonUtility.FromJson<MyInfoMsg>(recMsg);
+                Debug.Log("Received info about player");
+                Debug.Log( "RAW MESSAGE PLAYER INFO "+  recMsg);
+                Player = infoMsg.Player;
                 break;
             default:
                 Debug.Log("Unrecognized message received!");
@@ -206,6 +216,8 @@ public class NetworkClient : MonoBehaviour
     void OnDisconnect(){
         Debug.Log("Client got disconnected from server");
         m_Connection = default(NetworkConnection);
+        SceneManager.LoadScene("Start Menu");
+        Destroy(gameObject);
     }
 
     public void OnDestroy()
@@ -312,4 +324,13 @@ public class NetworkClient : MonoBehaviour
         SendToServer(JsonUtility.ToJson(m));
     }
 
+    public void RequestPlayerInfo()
+    {
+        
+        MyInfoMsg infomsg = new MyInfoMsg();
+        infomsg.Player.UserID = PlayerUserID;
+        Debug.Log("Requesting Player Info");
+        Debug.Log(JsonUtility.ToJson(infomsg));
+        SendToServer(JsonUtility.ToJson(infomsg));
+    }
 }

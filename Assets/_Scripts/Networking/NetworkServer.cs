@@ -45,7 +45,7 @@ public class NetworkServer : MonoBehaviour
         UnityWebRequest www = UnityWebRequest.Get(url);
         www.SetRequestHeader("Content-Type", "application/json");
         yield return www.SendWebRequest();
-
+        Debug.Log(www.downloadHandler.text);
         if (www.isNetworkError || www.isHttpError)
         {
             Debug.Log(www.error);
@@ -58,7 +58,7 @@ public class NetworkServer : MonoBehaviour
         {
             Debug.Log(www.downloadHandler.text);
             NetworkObjects.Item test = JsonUtility.FromJson<NetworkObjects.Item>(www.downloadHandler.text);
-            Debug.Log(test.UserID);
+            //Debug.Log(test.UserID);
             //message
             if (password == test.Password)
             {
@@ -78,6 +78,39 @@ public class NetworkServer : MonoBehaviour
         }
     }
 
+    IEnumerator PlayerInfoWebRequest(string userID, int connection)
+    {
+        string url = "https://pnz7w1hjm3.execute-api.us-east-2.amazonaws.com/default/FinalAssignmentGetPlayer?UserID=" + userID;
+        UnityWebRequest www = UnityWebRequest.Get(url);
+        www.SetRequestHeader("Content-Type", "application/json");
+        yield return www.SendWebRequest();
+        Debug.Log(" player info finished requesting from db ");
+        if (www.isNetworkError || www.isHttpError)
+        {
+            Debug.Log(" player info error getting ");
+            Debug.Log(www.error);
+            MyInfoMsg m = new MyInfoMsg();
+            m.Player.UserID = userID;
+            SendToClient(JsonUtility.ToJson(m), m_Connections[connection]);
+            // register unsuccessful
+        }
+        else
+        {
+            Debug.Log(" player info successfully gotten. Sending to player ..... ");
+            MyInfoMsg m = new MyInfoMsg();
+            NetworkObjects.Item test = JsonUtility.FromJson<NetworkObjects.Item>(www.downloadHandler.text);
+            m.Player = test;
+            m.Player.UserID = test.UserID;
+            m.Player.Wins = test.Wins;
+            m.Player.Loses = test.Loses;
+            m.successful = true;
+            Debug.Log(JsonUtility.ToJson(m));
+            Debug.Log(" ....... now. ");
+
+            SendToClient(JsonUtility.ToJson(m), m_Connections[connection]);
+            // register sucessful
+        }
+    }
     IEnumerator SendRegisterWebRequest(string userID, string password, int connection)
     {
         string url = "https://mmhs1umqc0.execute-api.us-east-2.amazonaws.com/default/FinalAssignmentAddPlayer?UserID=" + userID + "&Password=" + password;
@@ -222,7 +255,7 @@ public class NetworkServer : MonoBehaviour
                 break;
             case Commands.HANDSHAKE:
                 HandshakeMsg hsMsg = JsonUtility.FromJson<HandshakeMsg>(recMsg);
-                Debug.Log("Handshake message received!");
+                //Debug.Log("Handshake message received!");
                 break;
             case Commands.PLAYER_UPDATE:
                 PlayerUpdateMsg puMsg = JsonUtility.FromJson<PlayerUpdateMsg>(recMsg);
@@ -272,6 +305,11 @@ public class NetworkServer : MonoBehaviour
 
                 }
                 break;
+            case Commands.PLAYER_INFO:
+                MyInfoMsg infoMsg = JsonUtility.FromJson<MyInfoMsg>(recMsg);
+                Debug.Log("Received Player Info from " + infoMsg.Player.UserID);
+                StartCoroutine(PlayerInfoWebRequest(infoMsg.Player.UserID, i));
+                break;
             case Commands.BATTLE_WON:
                 BattleWinMsg winMsg = JsonUtility.FromJson<BattleWinMsg>(recMsg);
                 Debug.Log("Received Move from client");
@@ -292,6 +330,7 @@ public class NetworkServer : MonoBehaviour
                 break;
         }
     }
+
     IEnumerator SendWinAndLossWebRequest(string Winner, string Loser)
     {
         string winurl = "https://6of6hcn9f8.execute-api.us-east-2.amazonaws.com/default/FinalAssignmentPlayerWon?UserID=" + Winner;
