@@ -304,4 +304,11 @@ public class NetworkClient : MonoBehaviour
         SendToServer(JsonUtility.ToJson(m));
     }
 
+    public void PlayerWon()
+    {
+        BattleWinMsg m = new BattleWinMsg();
+        m.Lobby = MyLobby;
+        SendToServer(JsonUtility.ToJson(m));
+    }
+
 }

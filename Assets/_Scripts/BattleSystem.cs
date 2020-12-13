@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using NetworkMessages;
+using UnityEngine.SceneManagement;
 
 public enum BattleState { 
     START,
@@ -240,6 +241,16 @@ public class BattleSystem : MonoBehaviour
             dialogueText.text = "You lost the battle!";
 
         }
+
+        StartCoroutine(ReturnToLobbies());
+    }
+
+    IEnumerator ReturnToLobbies()
+    {
+        yield return new WaitForSeconds(3.0f);
+        //reset network client values
+        networkClient.MyLobby = new NetworkObjects.Lobby();
+        SceneManager.LoadScene("Lobbies");
     }
 
     public void Player2Turn()
