@@ -19,7 +19,7 @@ public class NetworkServer : MonoBehaviour
     public List<NetworkObjects.NetworkPlayer> connectedPlayers;
     public NetworkObjects.NetworkPlayer droppedPlayer;
 
-    public List<NetworkObjects.Lobby> AvailableLobbies = new List<NetworkObjects.Lobby>();
+    public Dictionary<int,NetworkObjects.Lobby> AvailableLobbies = new Dictionary<int, NetworkObjects.Lobby>();
     private int LOBBYCURRENTMAXID = 0;
     
     void Start ()
@@ -149,7 +149,7 @@ public class NetworkServer : MonoBehaviour
             newLobby.Player1 = UserID;
             newLobby.player1addr = connection;
             m.newLobby = newLobby;
-            AvailableLobbies.Add(newLobby);
+            AvailableLobbies[newLobby.lobbyID] = newLobby;
             LOBBYCURRENTMAXID++;
             Debug.Log("Lobby ID = " + newLobby.lobbyID);
             Debug.Log(JsonUtility.ToJson(newLobby));
@@ -274,6 +274,7 @@ public class NetworkServer : MonoBehaviour
                 Debug.Log(startMsg);
                 SendToClient(JsonUtility.ToJson(startMsg), m_Connections[i]);
                 SendToClient(JsonUtility.ToJson(startMsg), m_Connections[startMsg.LobbyToStart.player2addr]);
+                
                 break;
             case Commands.SERVER_UPDATE:
                 ServerUpdateMsg suMsg = JsonUtility.FromJson<ServerUpdateMsg>(recMsg);
@@ -282,10 +283,10 @@ public class NetworkServer : MonoBehaviour
             case Commands.REQUEST_AVAILABLE_LOBBIES:
                 Debug.Log("Received request for lobbies");
                 AllAvailableLobbies n = new AllAvailableLobbies();
-                foreach (var item in AvailableLobbies)
+                foreach (KeyValuePair<int, NetworkObjects.Lobby> Lobby in AvailableLobbies)
                 {
-                    if (!item.full)
-                        n.Lobbies.Add(item);
+                    if (!Lobby.Value.full)
+                        n.Lobbies.Add(Lobby.Value);
                 }
                 //n.Lobbies = AvailableLobbies;
                 //Debug.Log(JsonUtility.ToJson(AvailableLobbies[0]));
@@ -323,7 +324,8 @@ public class NetworkServer : MonoBehaviour
                     StartCoroutine(SendWinAndLossWebRequest(winMsg.Lobby.Player2, winMsg.Lobby.Player1));
                     //update player 2 win and player 1 loss
                 }
-                //remove the lobby form the lobbies list
+                //remove the lobby from the available lobbies list
+                AvailableLobbies.Remove(winMsg.Lobby.lobbyID);
                 break;
             default:
                 Debug.Log("SERVER ERROR: Unrecognized message received!");
