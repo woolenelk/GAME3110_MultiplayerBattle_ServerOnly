@@ -131,6 +131,7 @@ public class NetworkServer : MonoBehaviour
                 if (AvailableLobbies[i].Player2 == null)
                 {
                     AvailableLobbies[i].Player2 = joiningUserID;
+                    AvailableLobbies[i].full = true;
                     m.successful = true;
                 }
                 i = AvailableLobbies.Count;
