@@ -21,7 +21,7 @@ public class NetworkServer : MonoBehaviour
 
    
 
-    public Dictionary<string, NetworkConnection> d_connections; // string is USERID, CONNECTION IS IP.ADDRESS/PORT
+    public Dictionary<string, NetworkConnection> d_Connections; // string is USERID, CONNECTION IS IP.ADDRESS/PORT
     public Dictionary<int,NetworkObjects.Lobby> AvailableLobbies = new Dictionary<int, NetworkObjects.Lobby>();
 
     private int LOBBYCURRENTMAXID = 0;
@@ -32,7 +32,7 @@ public class NetworkServer : MonoBehaviour
 
 
 
-        d_connections = new Dictionary<string, NetworkConnection>();
+        d_Connections = new Dictionary<string, NetworkConnection>();
         m_Driver = NetworkDriver.Create();
         var endpoint = NetworkEndPoint.AnyIpv4;
         endpoint.Port = serverPort;
@@ -76,7 +76,7 @@ public class NetworkServer : MonoBehaviour
                 m.userID = userID;
                 m.successful = true;
                 SendToClient(JsonUtility.ToJson(m), m_Connections[connection]);
-                d_connections.Add(userID, m_Connections[connection]);
+                d_Connections.Add(userID, m_Connections[connection]);
                 // login successful
             }
             else
@@ -143,7 +143,7 @@ public class NetworkServer : MonoBehaviour
             m.userID = userID;
             m.successful = true;
             SendToClient(JsonUtility.ToJson(m), m_Connections[connection]);
-            d_connections.Add(userID, m_Connections[connection]);
+            d_Connections.Add(userID, m_Connections[connection]);
             // register sucessful
         }
     }
