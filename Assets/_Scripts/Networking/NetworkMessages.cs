@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Unity.Networking.Transport;
 using UnityEngine;
 
 namespace NetworkMessages
@@ -37,11 +38,13 @@ namespace NetworkMessages
     {
         
         public NetworkObjects.NetworkPlayer player;
+        public NetworkObjects.Lobby newLobby;
         public bool successful;
 
         public HostGameMsg()
         {
             cmd = Commands.HOST_GAME;
+            newLobby = new NetworkObjects.Lobby();
             player = new NetworkObjects.NetworkPlayer();
             successful = false;
         }
@@ -194,14 +197,18 @@ namespace NetworkObjects
     {
         public int lobbyID;
         public string Player1;
+        public NetworkConnection player1addr;
         public string Player2;
+        public NetworkConnection player2addr;
         public bool full;
 
         public Lobby()
         {
             lobbyID = -1;
             Player1 = "";
+            player1addr = new NetworkConnection();
             Player2 = null;
+            player2addr = new NetworkConnection();
             full = false;
         }
     }

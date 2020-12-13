@@ -11,7 +11,7 @@ public class NetworkClient : MonoBehaviour
     public NetworkConnection m_Connection;
     public string serverIP;
     public ushort serverPort;
-
+    public NetworkObjects.Lobby MyLobby;
     string PlayerUserID = "";
 
     public string myId = "";
@@ -20,7 +20,7 @@ public class NetworkClient : MonoBehaviour
 
     void Start ()
     {
-
+        MyLobby = new NetworkObjects.Lobby();
         m_Driver = NetworkDriver.Create();
         m_Connection = default(NetworkConnection);
         var endpoint = NetworkEndPoint.Parse(serverIP,serverPort);
@@ -98,6 +98,32 @@ public class NetworkClient : MonoBehaviour
                     FindObjectOfType<RegisterButtonBehaviour>().DisplayError();
                 }
                 // check if successful is true
+                break;
+            case Commands.HOST_GAME:
+                HostGameMsg hostmsg = JsonUtility.FromJson<HostGameMsg>(recMsg);
+                if (hostmsg.successful && hostmsg.player.id == PlayerUserID)
+                {
+                    MyLobby = hostmsg.newLobby;
+                    SceneManager.LoadScene("Lobby");
+                    // success move to the lobby scene
+                }
+                else
+                {
+                    // display error
+                }
+                break;
+            case Commands.JOIN_GAME:
+                JoinGameMsg joinmsg = JsonUtility.FromJson<JoinGameMsg>(recMsg);
+                if (joinmsg.successful && joinmsg.player.id == PlayerUserID)
+                {
+                    MyLobby = joinmsg.joinLobby;
+                    SceneManager.LoadScene("Lobby");
+                    // success move to the lobby scene
+                }
+                else
+                {
+                    // display error
+                }
                 break;
             case Commands.HANDSHAKE:
                 HandshakeMsg hsMsg = JsonUtility.FromJson<HandshakeMsg>(recMsg);

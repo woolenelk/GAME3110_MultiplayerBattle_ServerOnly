@@ -12,14 +12,18 @@ public class StartgameButtonBehaviour : MonoBehaviour
     public float errorMessageDuration;
     IEnumerator errorMessageCoroutine;
 
+    public NetworkObjects.Lobby lobby;
+
     private void Start()
     {
+        lobby = FindObjectOfType<NetworkClient>().MyLobby;
         errorMessage.SetActive(false);
     }
 
     public void OnStartGameButtonPressed()
     {
-        if(Player1.activeInHierarchy && Player2.activeInHierarchy) //make sure we have both player 1 and 2 in the lobby
+        
+        if (Player1.activeInHierarchy && Player2.activeInHierarchy) //make sure we have both player 1 and 2 in the lobby
         {
             Debug.Log("Play Button Pressed");
             SceneManager.LoadScene("Play");

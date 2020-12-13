@@ -114,6 +114,8 @@ public class NetworkServer : MonoBehaviour
             m.successful = true;
             newLobby.lobbyID = LOBBYCURRENTMAXID;
             newLobby.Player1 = UserID;
+            newLobby.player1addr = m_Connections[connection];
+            m.newLobby = newLobby;
             AvailableLobbies.Add(newLobby);
             LOBBYCURRENTMAXID++;
             Debug.Log("Lobby ID = " + newLobby.lobbyID);
@@ -139,13 +141,16 @@ public class NetworkServer : MonoBehaviour
                 if (AvailableLobbies[i].Player2 == null)
                 {
                     AvailableLobbies[i].Player2 = joiningUserID;
+                    AvailableLobbies[i].player2addr = m_Connections[connection];
                     AvailableLobbies[i].full = true;
+                    m.joinLobby = AvailableLobbies[i];
                     m.successful = true;
                 }
                 i = AvailableLobbies.Count;
             }
         }
         SendToClient(JsonUtility.ToJson(m), m_Connections[connection]);
+
     }
 
     void SendToClient(string message, NetworkConnection c)
