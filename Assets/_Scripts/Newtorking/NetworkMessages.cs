@@ -43,9 +43,27 @@ namespace NetworkMessages
         
     }
 
+    [System.Serializable]
+    public class RequestAvailableLobbiesMsg : NetworkHeader
+    {
+        public RequestAvailableLobbiesMsg()
+        {      // Constructor
+            cmd = Commands.REQUEST_AVAILABLE_LOBBIES;
+        }
+    };
+
+    [System.Serializable]
+    public class AllAvailableLobbies : NetworkHeader
+    {
+        public List<NetworkObjects.Lobby> Lobbies;
+
+        public AllAvailableLobbies()
+        {      // Constructor
+            cmd = Commands.REQUEST_ALL_LOBBIES;
+        }
+    };
 
 
-    
     [System.Serializable]
     public class PlayerUpdateMsg:NetworkHeader{
         public NetworkObjects.NetworkPlayer player;
@@ -146,5 +164,15 @@ namespace NetworkObjects
     public class PlayerList
     {
         Item[] Items;
+    }
+
+    [System.Serializable]
+    public class Lobby
+    {
+        public int lobbyID;
+        public string Player1;
+        public string Player2;
+        public bool full;
+        
     }
 }

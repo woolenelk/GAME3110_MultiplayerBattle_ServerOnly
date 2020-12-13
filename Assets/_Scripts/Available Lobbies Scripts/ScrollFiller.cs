@@ -14,11 +14,7 @@ public class ScrollFiller : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        for (int i = 0; i < 5; i++)
-        {
-            GenerateItem(i);
-        }
-        scrollView.verticalNormalizedPosition = 1;
+        
     }
 
     // Update is called once per frame
@@ -27,10 +23,22 @@ public class ScrollFiller : MonoBehaviour
         
     }
 
-    void GenerateItem(int level)
+    public void ClearLobbies()
+    {
+        var lobbies = FindObjectsOfType<JoinablePlayer>();
+        foreach (var lobby in lobbies)
+        {
+            Destroy(lobby);
+        }
+    }
+
+    public void GenerateItem(string username, string level = "0")
     {
         GameObject scrollItemObj = Instantiate(scrollItemprefab);
         scrollItemObj.transform.SetParent(scrollContent.transform, false);
-        scrollItemObj.transform.Find("PlayerLevel").gameObject.GetComponent<TMP_Text>().text = level.ToString();
+        scrollItemObj.transform.Find("PlayerLevel").gameObject.GetComponent<TMP_Text>().text = level;
+        scrollItemObj.transform.Find("PlayerName").gameObject.GetComponent<TMP_Text>().text = username;
+
+        scrollView.verticalNormalizedPosition = 1;
     }
 }

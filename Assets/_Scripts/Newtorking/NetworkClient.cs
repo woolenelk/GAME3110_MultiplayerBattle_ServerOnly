@@ -133,6 +133,17 @@ public class NetworkClient : MonoBehaviour
                 DroppedUpdateMsg dpMsg = JsonUtility.FromJson<DroppedUpdateMsg>(recMsg);
                 
                 break;
+            case Commands.REQUEST_ALL_LOBBIES:
+                AllAvailableLobbies alMSG = JsonUtility.FromJson<AllAvailableLobbies>(recMsg);
+                var LobbyList = FindObjectOfType<ScrollFiller>();
+                LobbyList.ClearLobbies();
+                foreach (var lobby in alMSG.Lobbies)
+                {
+                    //add the lobby to the scroll
+                    LobbyList.GenerateItem(lobby.Player1);
+                }
+
+                break;
             default:
             Debug.Log("Unrecognized message received!");
             break;
