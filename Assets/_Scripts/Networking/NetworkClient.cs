@@ -184,8 +184,9 @@ public class NetworkClient : MonoBehaviour
                 
                 break;
             default:
-            Debug.Log("Unrecognized message received!");
-            break;
+                Debug.Log("Unrecognized message received!");
+                Debug.Log(recMsg);
+                break;
         }
     }
 
