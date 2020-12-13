@@ -249,12 +249,12 @@ public class NetworkServer : MonoBehaviour
             case Commands.REQUEST_AVAILABLE_LOBBIES:
                 Debug.Log("Received request for lobbies");
                 AllAvailableLobbies n = new AllAvailableLobbies();
-                //foreach (NetworkObjects.Lobby item in AvailableLobbies)
-                //{
-                //    if (!item.full)
-                //        n.Lobbies.Add(item);
-                //}
-                n.Lobbies = AvailableLobbies;
+                foreach (NetworkObjects.Lobby item in AvailableLobbies)
+                {
+                    if (!item.full)
+                        n.Lobbies.Add(item);
+                }
+                //n.Lobbies = AvailableLobbies;
                 //Debug.Log(JsonUtility.ToJson(AvailableLobbies[0]));
                 //Debug.Log(JsonUtility.ToJson(n.Lobbies[0]));
                 SendToClient(JsonUtility.ToJson(n), m_Connections[i]);
