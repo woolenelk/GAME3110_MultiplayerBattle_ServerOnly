@@ -83,6 +83,7 @@ public class NetworkClient : MonoBehaviour
                 else
                 {
                     Debug.Log("UNSuccessful Login");
+                    FindObjectOfType<LoginButtonBehaviour>().DisplayError();
                 }
                 break;
             case Commands.PLAYERREGISTER:
@@ -96,6 +97,7 @@ public class NetworkClient : MonoBehaviour
                 else
                 {
                     Debug.Log("UNSuccessful Register");
+                    FindObjectOfType<RegisterButtonBehaviour>().DisplayError();
                 }
                 // check if successful is true
                 break;

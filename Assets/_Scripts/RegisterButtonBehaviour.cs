@@ -32,6 +32,12 @@ public class RegisterButtonBehaviour : MonoBehaviour
         Debug.Log("Register Button Pressed");
         //SceneManager.LoadScene("Lobbies");
 
+        
+    }
+
+
+    public void DisplayError()
+    {
         //if credentials fail display error notification of incorrect credentials
         if (errorMessageCoroutine != null)
         {
@@ -41,7 +47,6 @@ public class RegisterButtonBehaviour : MonoBehaviour
         errorMessageCoroutine = DisplayErrorMessage();
         StartCoroutine(errorMessageCoroutine);
     }
-
 
     IEnumerator DisplayErrorMessage()
     {
