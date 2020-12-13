@@ -3,9 +3,7 @@ using Unity.Collections;
 using Unity.Networking.Transport;
 using NetworkMessages;
 using System.Text;
-
-
-
+using System.Collections;
 
 public class NetworkClient : MonoBehaviour
 {
@@ -45,25 +43,25 @@ public class NetworkClient : MonoBehaviour
         //m.player.id = m_Connection.InternalId.ToString();
         //SendToServer(JsonUtility.ToJson(m));
 
-        //StartCoroutine(SendRepeatedHandshake());
+        StartCoroutine(SendRepeatedHandshake());
     }
 
 
-    //IEnumerator SendRepeatedHandshake()
-    //{
-    //    while (true)
-    //    {
-    //        yield return new WaitForSeconds(2);
-    //        Debug.Log("Sending Handshake");
-    //        HandshakeMsg m = new HandshakeMsg();
-    //        m.player.id = m_Connection.InternalId.ToString();
-    //        SendToServer(JsonUtility.ToJson(m));
+    IEnumerator SendRepeatedHandshake()
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(2);
+            Debug.Log("Sending Handshake");
+            HandshakeMsg m = new HandshakeMsg();
+            m.player.id = m_Connection.InternalId.ToString();
+            SendToServer(JsonUtility.ToJson(m));
 
-    //    }
-    //}
+        }
+    }
 
 
-   
+
 
     void OnData(DataStreamReader stream){
         NativeArray<byte> bytes = new NativeArray<byte>(stream.Length,Allocator.Temp);
@@ -72,6 +70,22 @@ public class NetworkClient : MonoBehaviour
         NetworkHeader header = JsonUtility.FromJson<NetworkHeader>(recMsg);
 
         switch(header.cmd){
+            case Commands.PLAYERLOGIN:
+                PlayerLoginMsg loginMsg = JsonUtility.FromJson<PlayerLoginMsg>(recMsg);
+                // check if successful is true
+                if (loginMsg.successful)
+                {
+
+                }
+                break;
+            case Commands.PLAYERREGISTER:
+                PlayerRegisterMsg registerMsg = JsonUtility.FromJson<PlayerRegisterMsg>(recMsg);
+                if (registerMsg.successful)
+                {
+
+                }
+                // check if successful is true
+                break;
             case Commands.HANDSHAKE:
                 HandshakeMsg hsMsg = JsonUtility.FromJson<HandshakeMsg>(recMsg);
                 Debug.Log("Handshake message received!");
