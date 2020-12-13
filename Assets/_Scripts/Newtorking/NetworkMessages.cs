@@ -35,17 +35,17 @@ namespace NetworkMessages
 
     public class HostGameMsg:NetworkHeader
     {
-        
+        public NetworkObjects.NetworkPlayer player;
+        public bool successful = false;
     }
 
     public class JoinGameMsg : NetworkHeader 
     {
-        
+        public NetworkObjects.NetworkPlayer player;
+        public NetworkObjects.Lobby joinLobby;
+        public bool successful = false;
     }
-
-
-
-    
+        
     [System.Serializable]
     public class PlayerUpdateMsg:NetworkHeader{
         public NetworkObjects.NetworkPlayer player;
@@ -146,5 +146,13 @@ namespace NetworkObjects
     public class PlayerList
     {
         Item[] Items;
+    }
+
+    public class Lobby
+    {
+        public int LobbyID;
+        public string Player1;
+        public string Player2;
+        public bool available;
     }
 }

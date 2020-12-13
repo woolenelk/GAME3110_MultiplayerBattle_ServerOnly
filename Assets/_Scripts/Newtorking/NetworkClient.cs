@@ -198,12 +198,17 @@ public class NetworkClient : MonoBehaviour
 
     public void Register(string UserID, string Password)
     {
-        PlayerRegisterMsg loginmsg = new PlayerRegisterMsg();
-        loginmsg.userID = UserID;
-        loginmsg.password = Password;
-        SendToServer(JsonUtility.ToJson(loginmsg));
+        PlayerRegisterMsg registsermsg = new PlayerRegisterMsg();
+        registsermsg.userID = UserID;
+        registsermsg.password = Password;
+        SendToServer(JsonUtility.ToJson(registsermsg));
     }
 
+    public void CreateLobby()
+    {
+        HostGameMsg hostMsg = new HostGameMsg();
+        hostMsg.player.id = PlayerUserID;
+    }
 
 
 }

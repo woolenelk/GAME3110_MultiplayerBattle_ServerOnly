@@ -19,10 +19,9 @@ public class NetworkServer : MonoBehaviour
     public List<NetworkObjects.NetworkPlayer> connectedPlayers;
     public NetworkObjects.NetworkPlayer droppedPlayer;
 
-
+    public List<NetworkObjects.Lobby> AvailableLobbies;
+    private int LOBBYCURRENTMAXID = 0;
     
-    
-
     void Start ()
     {
         m_Driver = NetworkDriver.Create();
@@ -104,9 +103,20 @@ public class NetworkServer : MonoBehaviour
         }
     }
 
-    void SendToClient(string message, NetworkConnection c){
+    public void HostNewLobby(string UserID, int connection)
+    {
+        LOBBYCURRENTMAXID++;
+    }
+
+    public void JoinLobby(int LobbyID, string joiningUserID, int connection)
+    {
+
+    }
+
+    void SendToClient(string message, NetworkConnection c)
+    {
         var writer = m_Driver.BeginSend(NetworkPipeline.Null, c);
-        NativeArray<byte> bytes = new NativeArray<byte>(Encoding.ASCII.GetBytes(message),Allocator.Temp);
+        NativeArray<byte> bytes = new NativeArray<byte>(Encoding.ASCII.GetBytes(message), Allocator.Temp);
         writer.WriteBytes(bytes);
         m_Driver.EndSend(writer);
     }
@@ -155,6 +165,15 @@ public class NetworkServer : MonoBehaviour
             case Commands.PLAYER_REGISTER:
                 PlayerRegisterMsg registerMsg = JsonUtility.FromJson<PlayerRegisterMsg>(recMsg);
                 StartCoroutine(SendRegisterWebRequest(registerMsg.userID, registerMsg.password, i));
+                break;
+            case Commands.HOST_GAME:
+                HostGameMsg hostMsg = JsonUtility.FromJson<HostGameMsg>(recMsg);
+                HostNewLobby(hostMsg.player.id, i);
+                break;
+            case Commands.JOIN_GAME:
+                JoinGameMsg joinMsg = JsonUtility.FromJson<JoinGameMsg>(recMsg);
+                JoinLobby(joinMsg.joinLobby.LobbyID, joinMsg.player.id, i);
+
                 break;
             case Commands.HANDSHAKE:
                 HandshakeMsg hsMsg = JsonUtility.FromJson<HandshakeMsg>(recMsg);

@@ -27,6 +27,8 @@ public class ScrollFiller : MonoBehaviour
         
     }
 
+
+
     void GenerateItem(int level)
     {
         GameObject scrollItemObj = Instantiate(scrollItemprefab);
