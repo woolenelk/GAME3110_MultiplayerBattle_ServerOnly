@@ -120,6 +120,16 @@ public class NetworkClient : MonoBehaviour
                    
                 }
                 break;
+            case Commands.REQUEST_ALL_LOBBIES:
+                AllAvailableLobbies alMsg = JsonUtility.FromJson<AllAvailableLobbies>(recMsg);
+                Debug.Log("Server update message received!");
+                ScrollFiller scrollFiller = FindObjectOfType<ScrollFiller>();
+                scrollFiller.ClearLobbies();
+                foreach (var lobby in alMsg.Lobbies)
+                {
+                    scrollFiller.GenerateItem(lobby.Player1);
+                }
+                break;
             default:
             Debug.Log("Unrecognized message received!");
             break;
@@ -127,6 +137,11 @@ public class NetworkClient : MonoBehaviour
     }
 
    
+    public void RequestNewLobbies()
+    {
+        RequestAvailableLobbiesMsg m = new RequestAvailableLobbiesMsg();
+        SendToServer(JsonUtility.ToJson(m));
+    }
 
     void Disconnect(){
         m_Connection.Disconnect(m_Driver);

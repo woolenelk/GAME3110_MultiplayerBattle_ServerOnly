@@ -219,6 +219,12 @@ public class NetworkServer : MonoBehaviour
                 ServerUpdateMsg suMsg = JsonUtility.FromJson<ServerUpdateMsg>(recMsg);
                 Debug.Log("Server update message received!");
                 break;
+            case Commands.REQUEST_AVAILABLE_LOBBIES:
+
+                AllAvailableLobbies n = new AllAvailableLobbies();
+                n.Lobbies = AvailableLobbies;
+                SendToClient(JsonUtility.ToJson(n), m_Connections[i]);
+                break;
             default:
                 Debug.Log("SERVER ERROR: Unrecognized message received!");
                 break;
