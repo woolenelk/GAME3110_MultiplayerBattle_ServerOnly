@@ -20,7 +20,7 @@ namespace NetworkMessages
         REQUEST_ALL_LOBBIES,
         START_GAME,
         MOVE_TAKEN,
-        BATTLE_WON
+        BATTLE_WON,
     }
     
     [System.Serializable]
@@ -197,7 +197,7 @@ namespace NetworkMessages
         public bool won;
         public BattleWinMsg()
         {      // Constructor
-            cmd = Commands.BATTLE_LOSS;
+            cmd = Commands.BATTLE_WON;
             Lobby = new NetworkObjects.Lobby();
             won = true;
         }
