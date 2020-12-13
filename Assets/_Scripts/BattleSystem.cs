@@ -233,6 +233,7 @@ public class BattleSystem : MonoBehaviour
     {
         if (state == BattleState.WIN)
         {
+            networkClient.PlayerWon();
             dialogueText.text = "You won the battle!";
 
         }
