@@ -212,18 +212,18 @@ namespace NetworkObjects
     {
         public int lobbyID;
         public string Player1;
-        public NetworkConnection player1addr;
+        public int player1addr;
         public string Player2;
-        public NetworkConnection player2addr;
+        public int player2addr;
         public bool full;
 
         public Lobby()
         {
             lobbyID = -1;
             Player1 = "";
-            player1addr = new NetworkConnection();
+            player1addr = -1;
             Player2 = null;
-            player2addr = new NetworkConnection();
+            player2addr = -1;
             full = false;
         }
     }

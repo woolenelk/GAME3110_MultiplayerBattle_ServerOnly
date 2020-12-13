@@ -114,7 +114,7 @@ public class NetworkServer : MonoBehaviour
             m.successful = true;
             newLobby.lobbyID = LOBBYCURRENTMAXID;
             newLobby.Player1 = UserID;
-            newLobby.player1addr = m_Connections[connection];
+            newLobby.player1addr = connection;
             m.newLobby = newLobby;
             AvailableLobbies.Add(newLobby);
             LOBBYCURRENTMAXID++;
@@ -141,7 +141,7 @@ public class NetworkServer : MonoBehaviour
                 if (AvailableLobbies[i].Player2 == null)
                 {
                     AvailableLobbies[i].Player2 = joiningUserID;
-                    AvailableLobbies[i].player2addr = m_Connections[connection];
+                    AvailableLobbies[i].player2addr = connection;
                     AvailableLobbies[i].full = true;
                     m.joinLobby = AvailableLobbies[i];
                     m.successful = true;
@@ -149,8 +149,8 @@ public class NetworkServer : MonoBehaviour
                 i = AvailableLobbies.Count;
             }
         }
-        SendToClient(JsonUtility.ToJson(m), m.joinLobby.player1addr);
-        SendToClient(JsonUtility.ToJson(m), m.joinLobby.player2addr);
+        SendToClient(JsonUtility.ToJson(m), m_Connections[m.joinLobby.player1addr]);
+        SendToClient(JsonUtility.ToJson(m), m_Connections[connection]);
 
     }
 
@@ -236,8 +236,11 @@ public class NetworkServer : MonoBehaviour
             case Commands.START_GAME:
                 StartGameMsg startMsg = JsonUtility.FromJson<StartGameMsg>(recMsg);
                 startMsg.successful = true;
-                SendToClient(JsonUtility.ToJson(startMsg), startMsg.LobbyToStart.player1addr);
-                SendToClient(JsonUtility.ToJson(startMsg), startMsg.LobbyToStart.player2addr);
+                Debug.Log("Start Message Sucess:");
+                Debug.Log(startMsg.successful ? "Sucess": "Fail");
+                Debug.Log(startMsg);
+                SendToClient(JsonUtility.ToJson(startMsg), m_Connections[i]);
+                SendToClient(JsonUtility.ToJson(startMsg), m_Connections[startMsg.LobbyToStart.player2addr]);
                 break;
             case Commands.SERVER_UPDATE:
                 ServerUpdateMsg suMsg = JsonUtility.FromJson<ServerUpdateMsg>(recMsg);
