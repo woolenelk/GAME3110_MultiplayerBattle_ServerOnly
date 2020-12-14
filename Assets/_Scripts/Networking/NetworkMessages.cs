@@ -76,12 +76,18 @@ namespace NetworkMessages
     {
         public NetworkObjects.Lobby LobbyToStart;
         public bool successful;
+        public int Player1Char;
+        public int Player2Char;
+
 
         public StartGameMsg()
         {
             cmd = Commands.START_GAME;
             LobbyToStart = new NetworkObjects.Lobby();
             successful = false;
+            Player1Char = -1;
+            Player2Char = -1;
+
         }
     }
 
