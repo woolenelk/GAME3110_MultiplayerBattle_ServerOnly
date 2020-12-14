@@ -201,27 +201,52 @@ public class NetworkServer : MonoBehaviour
 
     public void JoinLobby(int LobbyID, string joiningUserID, int connection)
     {
-        JoinGameMsg m = new JoinGameMsg();
-        m.player.id = joiningUserID;
+        StartCoroutine(JoinsLobby(LobbyID, joiningUserID, connection));
+    }
 
-        foreach (var Lobby in AvailableLobbies)
+    IEnumerator JoinsLobby(int LobbyID, string joiningUserID, int connection)
+    {
+
+        NetworkObjects.Item test;
+        string url = "https://pnz7w1hjm3.execute-api.us-east-2.amazonaws.com/default/FinalAssignmentGetPlayer?UserID=" + UserID;
+        UnityWebRequest www = UnityWebRequest.Get(url);
+        www.SetRequestHeader("Content-Type", "application/json");
+        yield return www.SendWebRequest();
+        Debug.Log(" player info finished requesting from db ");
+        if (www.isNetworkError || www.isHttpError)
         {
-            if (Lobby.Key == LobbyID)
-            {
-                if (Lobby.Value.Player2 == null)
-                {
-                    Lobby.Value.Player2 = joiningUserID;
-                    Lobby.Value.player2addr = connection;
-                    Lobby.Value.full = true;
-                    m.joinLobby = Lobby.Value;
-                    m.successful = true;
-                }
-                break;
-            }
+            Debug.Log(" player info error getting ");
+            Debug.Log(www.error);
+            // register unsuccessful
         }
-        SendToClient(JsonUtility.ToJson(m), m_Connections[m.joinLobby.player1addr]);
-        SendToClient(JsonUtility.ToJson(m), m_Connections[connection]);
+        else
+        {
+            Debug.Log(" player info successfully gotten. Sending to player ..... ");
+            test = JsonUtility.FromJson<NetworkObjects.Item>(www.downloadHandler.text);
 
+            //////////////////////////////////
+            JoinGameMsg m = new JoinGameMsg();
+            m.player.id = joiningUserID;
+
+            foreach (var Lobby in AvailableLobbies)
+            {
+                if (Lobby.Key == LobbyID)
+                {
+                    if (Lobby.Value.Player2 == null)
+                    {
+                        Lobby.Value.Player2 = joiningUserID;
+                        Lobby.Value.player2addr = connection;
+                        Lobby.Value.full = true;
+                        Lobby.Value.Player2Wins = int.Parse(test.Wins);
+                        m.joinLobby = Lobby.Value;
+                        m.successful = true;
+                    }
+                    break;
+                }
+            }
+            SendToClient(JsonUtility.ToJson(m), m_Connections[m.joinLobby.player1addr]);
+            SendToClient(JsonUtility.ToJson(m), m_Connections[connection]);
+        }
     }
 
     void SendToClient(string message, NetworkConnection c)

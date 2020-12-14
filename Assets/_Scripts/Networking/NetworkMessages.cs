@@ -289,7 +289,7 @@ namespace NetworkObjects
         public int player2addr;
         public bool full;
         public int HostWins;
-        
+        public int Player2Wins;
         public Lobby()
         {
             lobbyID = -1;

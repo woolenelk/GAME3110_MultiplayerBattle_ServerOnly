@@ -136,9 +136,13 @@ public class BattleSystem : MonoBehaviour
         dialogueText.text = attacker.waifu.CharacterName + " uses " + move.AbilityName + "!";
         yield return new WaitForSeconds(1);
         float levelAdjustmentBonus = 0.0f;
-        if (MyPlayerNum == state)
+        if (MyPlayerNum == state) // my turn use my level
         {
-            levelAdjustmentBonus = (int.Parse(networkClient.Player.Wins) / 10);
+            levelAdjustmentBonus = networkClient.MyLevel / 10;
+        }
+        else // other players turn // use their level
+        {
+            levelAdjustmentBonus = networkClient.OpponentLevel / 10;
         }
 
         defenderDefeated = defender.TakeDamage((int)((levelAdjustmentBonus + attacker.waifu.Attack) * move.AttackMultipier * (1.0f + 0.05f * attacker.buffs[(int)BUFF_ARRAY.ATTACK])));

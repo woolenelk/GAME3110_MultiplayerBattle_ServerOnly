@@ -14,6 +14,8 @@ public class NetworkClient : MonoBehaviour
     public NetworkObjects.Lobby MyLobby;
     public string PlayerUserID = "";
     public NetworkObjects.Item Player;
+    public int MyLevel;
+    public int OpponentLevel;
     //public string myServerId = "-1";
 
 
@@ -126,10 +128,14 @@ public class NetworkClient : MonoBehaviour
                     MyLobby = joinmsg.joinLobby;
                     if (joinmsg.joinLobby.Player1 == PlayerUserID)
                     {
+                        MyLevel = joinmsg.joinLobby.HostWins;
+                        OpponentLevel = joinmsg.joinLobby.Player2Wins;
                         FindObjectOfType<LobbyHandler>().UpdateLobby();
                     }
                     else
                     {
+                        MyLevel = joinmsg.joinLobby.Player2Wins;
+                        OpponentLevel = joinmsg.joinLobby.HostWins;
                         SceneManager.LoadScene("Lobby");
                     }
                     
