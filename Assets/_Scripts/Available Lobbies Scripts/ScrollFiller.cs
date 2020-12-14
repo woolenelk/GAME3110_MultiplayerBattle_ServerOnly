@@ -47,11 +47,11 @@ public class ScrollFiller : MonoBehaviour
         {
             newColor = Color.red;
         }
-        else if(levelOfRoom - myLevel > 3) //more than 3 levels 
+        else if(levelOfRoom - myLevel > 2) //more than 3 levels 
         {
             newColor = Color.yellow;
         }
-        else if (levelOfRoom - myLevel > -2) //no more than 2 levels below us
+        else if (levelOfRoom - myLevel >= -2) //no more than 2 levels below us
         {
             newColor = Color.green;
         }

@@ -165,6 +165,9 @@ public class NetworkServer : MonoBehaviour
         {
             Debug.Log(" player info error getting ");
             Debug.Log(www.error);
+            HostGameMsg m = new HostGameMsg();
+            m.player.id = UserID;
+            SendToClient(JsonUtility.ToJson(m), m_Connections[connection]);
             // register unsuccessful
         }
         else
@@ -218,6 +221,9 @@ public class NetworkServer : MonoBehaviour
             Debug.Log(" player info error getting ");
             Debug.Log(www.error);
             // register unsuccessful
+            JoinGameMsg m = new JoinGameMsg();
+            m.player.id = joiningUserID;
+            SendToClient(JsonUtility.ToJson(m), m_Connections[connection]);
         }
         else
         {
