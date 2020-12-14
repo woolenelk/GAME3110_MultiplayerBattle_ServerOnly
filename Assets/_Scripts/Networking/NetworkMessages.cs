@@ -278,11 +278,12 @@ namespace NetworkObjects
     {
         public int lobbyID;
         public string Player1;
-        public int player1addr;
         public string Player2;
+        public int player1addr;
         public int player2addr;
         public bool full;
-
+        public int HostWins;
+        
         public Lobby()
         {
             lobbyID = -1;

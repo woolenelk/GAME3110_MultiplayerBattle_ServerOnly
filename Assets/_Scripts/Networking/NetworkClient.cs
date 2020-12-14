@@ -182,7 +182,7 @@ public class NetworkClient : MonoBehaviour
                 foreach (var lobby in alMsg.Lobbies)
                 {
                     //if (!lobby.full)
-                    scrollFiller.GenerateItem(lobby);
+                    scrollFiller.GenerateItem(lobby, lobby.HostWins);
                 }
                 break;
             case Commands.MOVE_TAKEN:

@@ -76,7 +76,7 @@ public class NetworkServer : MonoBehaviour
                 m.userID = userID;
                 m.successful = true;
                 SendToClient(JsonUtility.ToJson(m), m_Connections[connection]);
-                d_Connections.Add(userID, m_Connections[connection]);
+                d_Connections[userID]= m_Connections[connection];
                 // login successful
             }
             else
@@ -143,35 +143,60 @@ public class NetworkServer : MonoBehaviour
             m.userID = userID;
             m.successful = true;
             SendToClient(JsonUtility.ToJson(m), m_Connections[connection]);
-            d_Connections.Add(userID, m_Connections[connection]);
+            d_Connections[userID]= m_Connections[connection];
             // register sucessful
         }
     }
 
-    public void HostNewLobby(string UserID, int connection)
+    void HostNewLobby(string UserID, int connection)
     {
-        HostGameMsg m = new HostGameMsg();
-        m.player.id = UserID;
+        StartCoroutine(HostsNewLobby(UserID, connection));
+    }
 
-        NetworkObjects.Lobby newLobby = new NetworkObjects.Lobby();
-        if (newLobby != null)
+    IEnumerator HostsNewLobby(string UserID, int connection)
+    {
+        NetworkObjects.Item test;
+        string url = "https://pnz7w1hjm3.execute-api.us-east-2.amazonaws.com/default/FinalAssignmentGetPlayer?UserID=" + UserID;
+        UnityWebRequest www = UnityWebRequest.Get(url);
+        www.SetRequestHeader("Content-Type", "application/json");
+        yield return www.SendWebRequest();
+        Debug.Log(" player info finished requesting from db ");
+        if (www.isNetworkError || www.isHttpError)
         {
-            m.successful = true;
-            newLobby.lobbyID = LOBBYCURRENTMAXID;
-            newLobby.Player1 = UserID;
-            newLobby.player1addr = connection;
-            m.newLobby = newLobby;
-            AvailableLobbies[newLobby.lobbyID]= newLobby;
-            LOBBYCURRENTMAXID++;
-            Debug.Log("Lobby ID = " + newLobby.lobbyID);
-            //Debug.Log(JsonUtility.ToJson(newLobby));
-            //Debug.Log(JsonUtility.ToJson(AvailableLobbies[0]));
+            Debug.Log(" player info error getting ");
+            Debug.Log(www.error);
+            // register unsuccessful
         }
         else
         {
-            Debug.Log("Host Lobby Failed");
+            Debug.Log(" player info successfully gotten. Sending to player ..... ");
+            test = JsonUtility.FromJson<NetworkObjects.Item>(www.downloadHandler.text);
+
+            /////////////////////////////////////
+            HostGameMsg m = new HostGameMsg();
+            m.player.id = UserID;
+
+            NetworkObjects.Lobby newLobby = new NetworkObjects.Lobby();
+            if (newLobby != null)
+            {
+                m.successful = true;
+                newLobby.lobbyID = LOBBYCURRENTMAXID;
+                newLobby.Player1 = UserID;
+                newLobby.player1addr = connection;
+                newLobby.HostWins = int.Parse(test.Wins);
+                m.newLobby = newLobby;
+                AvailableLobbies[newLobby.lobbyID] = newLobby;
+                LOBBYCURRENTMAXID++;
+                Debug.Log("Lobby ID = " + newLobby.lobbyID);
+                //Debug.Log(JsonUtility.ToJson(newLobby));
+                //Debug.Log(JsonUtility.ToJson(AvailableLobbies[0]));
+            }
+            else
+            {
+                Debug.Log("Host Lobby Failed");
+            }
+            SendToClient(JsonUtility.ToJson(m), m_Connections[connection]);
         }
-        SendToClient(JsonUtility.ToJson(m), m_Connections[connection]);
     }
 
     public void JoinLobby(int LobbyID, string joiningUserID, int connection)
@@ -320,7 +345,6 @@ public class NetworkServer : MonoBehaviour
                 else
                 {
                     SendToClient(JsonUtility.ToJson(moveMsg), m_Connections[moveMsg.Lobby.player1addr]);
-
                 }
                 break;
             case Commands.PLAYER_INFO:
