@@ -208,7 +208,7 @@ public class NetworkServer : MonoBehaviour
     {
 
         NetworkObjects.Item test;
-        string url = "https://pnz7w1hjm3.execute-api.us-east-2.amazonaws.com/default/FinalAssignmentGetPlayer?UserID=" + UserID;
+        string url = "https://pnz7w1hjm3.execute-api.us-east-2.amazonaws.com/default/FinalAssignmentGetPlayer?UserID=" + joiningUserID;
         UnityWebRequest www = UnityWebRequest.Get(url);
         www.SetRequestHeader("Content-Type", "application/json");
         yield return www.SendWebRequest();
