@@ -16,6 +16,9 @@ public class NetworkClient : MonoBehaviour
     public NetworkObjects.Item Player;
     //public string myServerId = "-1";
 
+
+    public int MyPlayerCharacter;
+    public int EnemyPlayerCharacter;
    
 
     void Start ()
@@ -152,6 +155,16 @@ public class NetworkClient : MonoBehaviour
                 break;
             case Commands.START_GAME:
                 StartGameMsg startMsg = JsonUtility.FromJson<StartGameMsg>(recMsg);
+                if(startMsg.LobbyToStart.Player1 == PlayerUserID) // i am player 1
+                {
+                    MyPlayerCharacter = startMsg.Player1Char;
+                    EnemyPlayerCharacter = startMsg.Player2Char;
+                }
+                else // i am player 2
+                {
+                    MyPlayerCharacter = startMsg.Player2Char;
+                    EnemyPlayerCharacter = startMsg.Player1Char;
+                }
                 if (startMsg.successful)
                 {
                     EnterPlay();
@@ -230,7 +243,9 @@ public class NetworkClient : MonoBehaviour
     {
         SceneManager.LoadScene("Lobbies");
         MyLobby = null;
-    }
+        MyPlayerCharacter = -1;
+        EnemyPlayerCharacter = -1;
+}
 
     public void OnDestroy()
     {

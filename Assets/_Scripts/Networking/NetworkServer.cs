@@ -311,6 +311,13 @@ public class NetworkServer : MonoBehaviour
             case Commands.START_GAME:
                 StartGameMsg startMsg = JsonUtility.FromJson<StartGameMsg>(recMsg);
                 startMsg.successful = true;
+                startMsg.Player1Char = UnityEngine.Random.Range(0,4);
+                int player2 = UnityEngine.Random.Range(0, 4);
+                while(startMsg.Player1Char == player2)
+                {
+                    player2 = UnityEngine.Random.Range(0, 4);
+                }
+                startMsg.Player2Char = player2;
                 Debug.Log("Start Message Sucess:");
                 Debug.Log(startMsg.successful ? "Sucess": "Fail");
                 Debug.Log(startMsg);

@@ -82,13 +82,13 @@ public class BattleSystem : MonoBehaviour
         //TODO: get the waifu from the network client
         if (networkClient.MyLobby.Player1 == networkClient.PlayerUserID)//if player 1
         {
-            playerDetails.waifu = Waifus.waifuList[0];
+            playerDetails.waifu = Waifus.waifuList[networkClient.MyPlayerCharacter];
             MyPlayerNum = BattleState.PLAYER1;
           
         }
         else
         {
-            playerDetails.waifu = Waifus.waifuList[1];
+            playerDetails.waifu = Waifus.waifuList[networkClient.MyPlayerCharacter];
             MyPlayerNum = BattleState.PLAYER2;
             
         }
@@ -103,15 +103,15 @@ public class BattleSystem : MonoBehaviour
         GameObject enemy = Instantiate(enemyCharacter);
         enemyDetails = enemy.GetComponent<WaifuDetails>();
         //enemyDetails.waifu = Waifus.waifuList[1];
-        if (networkClient.MyLobby.Player1 == networkClient.PlayerUserID)//if player 1
-        {
-            enemyDetails.waifu = Waifus.waifuList[1];
+        //if (networkClient.MyLobby.Player1 == networkClient.PlayerUserID)//if player 1
+        //{
+        enemyDetails.waifu = Waifus.waifuList[networkClient.EnemyPlayerCharacter];
 
-        }
-        else
-        {
-            enemyDetails.waifu = Waifus.waifuList[0];
-        }
+        //}
+        //else
+        //{
+        //    enemyDetails.waifu = Waifus.waifuList[networkClient.EnemyPlayerCharacter];
+        //}
         enemyDetails.waifuSprite.sprite = enemyDetails.waifu.characterImage;
         enemyDetails.Health = enemyDetails.waifu.HealthMax;
 
