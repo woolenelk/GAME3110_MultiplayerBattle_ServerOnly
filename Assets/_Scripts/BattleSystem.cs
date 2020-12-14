@@ -135,7 +135,13 @@ public class BattleSystem : MonoBehaviour
         Ability move = attacker.waifu.MyAbilties.abilityList[ability];
         dialogueText.text = attacker.waifu.CharacterName + " uses " + move.AbilityName + "!";
         yield return new WaitForSeconds(1);
-        defenderDefeated = defender.TakeDamage((int)(attacker.waifu.Attack * move.AttackMultipier * (1.0f + 0.05f * attacker.buffs[(int)BUFF_ARRAY.ATTACK])));
+        float levelAdjustmentBonus = 0.0f;
+        if (MyPlayerNum == state)
+        {
+            levelAdjustmentBonus = (int.Parse(networkClient.Player.Wins) / 10);
+        }
+
+        defenderDefeated = defender.TakeDamage((int)((levelAdjustmentBonus + attacker.waifu.Attack) * move.AttackMultipier * (1.0f + 0.05f * attacker.buffs[(int)BUFF_ARRAY.ATTACK])));
         attackerDefeated = attacker.Recoil((int)(move.CostHp));
 
         // buffs and debuffs
@@ -156,8 +162,7 @@ public class BattleSystem : MonoBehaviour
         dialogueText.text = move.Description;
         yield return new WaitForSeconds(1);
 
-
-        attacker.Rest((int)(attacker.waifu.Love * move.LoveMultiplier * (1.0f + 0.05f * attacker.buffs[(int)BUFF_ARRAY.LOVE])));
+        attacker.Rest((int)((levelAdjustmentBonus + attacker.waifu.Love) * move.LoveMultiplier * (1.0f + 0.05f * attacker.buffs[(int)BUFF_ARRAY.LOVE])));
 
         UpdateCharactersUI();
 
