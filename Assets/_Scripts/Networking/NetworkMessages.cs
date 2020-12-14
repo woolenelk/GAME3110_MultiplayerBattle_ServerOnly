@@ -264,8 +264,8 @@ namespace NetworkObjects
         {
             UserID = null;
             Password = null;
-            Wins = null;
-            Loses = null;
+            Wins = "0";
+            Loses = "0";
         }
     }
 
