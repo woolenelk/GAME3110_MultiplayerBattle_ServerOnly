@@ -9,12 +9,13 @@ public class ScrollFiller : MonoBehaviour
     public ScrollRect scrollView;
     public GameObject scrollContent;
     public GameObject scrollItemprefab;
+    public NetworkClient networkClient;
     
 
     // Start is called before the first frame update
     void Start()
     {
-
+        networkClient = FindObjectOfType<NetworkClient>();
     }
 
     // Update is called once per frame
@@ -33,12 +34,27 @@ public class ScrollFiller : MonoBehaviour
         }
     }
 
-    public void GenerateItem(NetworkObjects.Lobby lobby, string level = "0")
+    public void GenerateItem(NetworkObjects.Lobby lobby, int Wins = -1)
     {
         GameObject scrollItemObj = Instantiate(scrollItemprefab);
         scrollItemObj.transform.SetParent(scrollContent.transform, false);
-        scrollItemObj.transform.Find("PlayerLevel").gameObject.GetComponent<TMP_Text>().text = level;
+        scrollItemObj.transform.Find("PlayerLevel").gameObject.GetComponent<TMP_Text>().text = Wins.ToString();
         scrollItemObj.transform.Find("PlayerName").gameObject.GetComponent<TMP_Text>().text = lobby.Player1;
+        Color newColor = Color.white;
+        if(Wins - (int.Parse(networkClient.Player.Wins) /3) > 5 ) //5 level or more greater
+        {
+            newColor = Color.red;
+        }
+        else if(Wins - (int.Parse(networkClient.Player.Wins) / 3) > 3) //more than 3 levels 
+        {
+            newColor = Color.yellow;
+        }
+        else if (Wins - (int.Parse(networkClient.Player.Wins) / 3) > -2) //no more than 2 levels below us
+        {
+            newColor = Color.green;
+        }
+        scrollItemObj.transform.Find("Background").gameObject.GetComponent<Image>().color = newColor;
+
         scrollItemObj.transform.GetComponent<JoinablePlayer>().AvailableLobby = lobby;
 
         scrollView.verticalNormalizedPosition = 1;
