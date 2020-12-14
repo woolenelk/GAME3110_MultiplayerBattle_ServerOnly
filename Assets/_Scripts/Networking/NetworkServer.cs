@@ -155,6 +155,10 @@ public class NetworkServer : MonoBehaviour
 
     IEnumerator HostsNewLobby(string UserID, int connection)
     {
+        /////////////////////////////////////
+        HostGameMsg m = new HostGameMsg();
+        m.player.id = UserID;
+
         NetworkObjects.Item test;
         string url = "https://pnz7w1hjm3.execute-api.us-east-2.amazonaws.com/default/FinalAssignmentGetPlayer?UserID=" + UserID;
         UnityWebRequest www = UnityWebRequest.Get(url);
@@ -166,15 +170,12 @@ public class NetworkServer : MonoBehaviour
             Debug.Log(" player info error getting ");
             Debug.Log(www.error);
             // register unsuccessful
+            SendToClient(JsonUtility.ToJson(m), m_Connections[connection]);
         }
         else
         {
             Debug.Log(" player info successfully gotten. Sending to player ..... ");
             test = JsonUtility.FromJson<NetworkObjects.Item>(www.downloadHandler.text);
-
-            /////////////////////////////////////
-            HostGameMsg m = new HostGameMsg();
-            m.player.id = UserID;
 
             NetworkObjects.Lobby newLobby = new NetworkObjects.Lobby();
             if (newLobby != null)
@@ -206,6 +207,8 @@ public class NetworkServer : MonoBehaviour
 
     IEnumerator JoinsLobby(int LobbyID, string joiningUserID, int connection)
     {
+        JoinGameMsg m = new JoinGameMsg();
+        m.player.id = joiningUserID;
 
         NetworkObjects.Item test;
         string url = "https://pnz7w1hjm3.execute-api.us-east-2.amazonaws.com/default/FinalAssignmentGetPlayer?UserID=" + joiningUserID;
@@ -218,6 +221,7 @@ public class NetworkServer : MonoBehaviour
             Debug.Log(" player info error getting ");
             Debug.Log(www.error);
             // register unsuccessful
+            SendToClient(JsonUtility.ToJson(m), m_Connections[connection]);
         }
         else
         {
@@ -225,8 +229,7 @@ public class NetworkServer : MonoBehaviour
             test = JsonUtility.FromJson<NetworkObjects.Item>(www.downloadHandler.text);
 
             //////////////////////////////////
-            JoinGameMsg m = new JoinGameMsg();
-            m.player.id = joiningUserID;
+           
 
             foreach (var Lobby in AvailableLobbies)
             {
