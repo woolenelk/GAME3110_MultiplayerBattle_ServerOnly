@@ -16,6 +16,6 @@ public class ProfileScript : MonoBehaviour
     void FixedUpdate()
     {
         NetworkObjects.Item player = FindObjectOfType<NetworkClient>().Player;
-        nameText.text = player.UserID + "  |   LEVEL : " + (int)(int.Parse(player.Wins)/10);
+        nameText.text = player.UserID + "  |   LEVEL : " + (int.Parse(player.Wins) / 10).ToString(); ;
     }
 }
