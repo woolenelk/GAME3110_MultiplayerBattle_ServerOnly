@@ -38,18 +38,20 @@ public class ScrollFiller : MonoBehaviour
     {
         GameObject scrollItemObj = Instantiate(scrollItemprefab);
         scrollItemObj.transform.SetParent(scrollContent.transform, false);
-        scrollItemObj.transform.Find("PlayerLevel").gameObject.GetComponent<TMP_Text>().text = ((int)(Wins / 10)).ToString();
+        int levelOfRoom = (int)(Wins / 10);
+        int myLevel = (int)(int.Parse(networkClient.Player.Wins)/10);
+        scrollItemObj.transform.Find("PlayerLevel").gameObject.GetComponent<TMP_Text>().text = levelOfRoom.ToString();
         scrollItemObj.transform.Find("PlayerName").gameObject.GetComponent<TMP_Text>().text = lobby.Player1;
         Color newColor = Color.white;
-        if(Wins - (int.Parse(networkClient.Player.Wins) /3) > 5 ) //5 level or more greater
+        if(levelOfRoom - myLevel > 5 ) //5 level or more greater
         {
             newColor = Color.red;
         }
-        else if(Wins - (int.Parse(networkClient.Player.Wins) / 3) > 3) //more than 3 levels 
+        else if(levelOfRoom - myLevel > 3) //more than 3 levels 
         {
             newColor = Color.yellow;
         }
-        else if (Wins - (int.Parse(networkClient.Player.Wins) / 3) > -2) //no more than 2 levels below us
+        else if (levelOfRoom - myLevel > -2) //no more than 2 levels below us
         {
             newColor = Color.green;
         }
